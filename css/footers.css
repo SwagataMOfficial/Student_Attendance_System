@@ -1,0 +1,26 @@
+:root {
+    --clr-nav: #141824;
+    --clr-border: #373e53;
+    --clr-heading-mark: #6e7891;
+    --clr-hover-color: #31374a;
+    --clr-btn-text-logo: #9fa6bc;
+    --clr-bgcolor: #0f111a;
+}
+
+/* footer styling */
+
+footer {
+    width: 100%;
+    background-color: var(--clr-bgcolor);
+    color: #8ca6bc;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--clr-border);
+}
+
+footer h3 {
+    padding: 20px;
+    margin: 0px 2vw;
+    font-family: emoji;
+}

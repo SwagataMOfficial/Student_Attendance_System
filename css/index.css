@@ -1,0 +1,152 @@
+/* this is main css styling */
+:root {
+    --clr-nav: #141824;
+    --clr-border: #373e53;
+    --clr-heading-mark: #6e7891;
+    --clr-hover-color: #31374a;
+    --clr-btn-text-logo: #9fa6bc;
+    --clr-bgcolor: #0f111a;
+}
+
+@import url("css/_colors.css");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+/* main container styling */
+.container {
+    display: flex;
+    min-height: 100vh;
+    max-width: 100vw;
+    background-color: var(--clr-bgcolor);
+}
+
+.container__rightMain {
+    /* background: rgb(86, 64, 64); */
+    width: calc(100vw - 16.5vw);
+    /* height: 100vh; */
+}
+
+.welcome-heading {
+    /* background-color: red; */
+    color: var(--clr-btn-text-logo);
+    margin: 10px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.welcome-heading .welcome-text {
+    font-size: 3.2rem;
+}
+
+.welcome-heading .logout {
+    text-decoration: none;
+    color: var(--clr-btn-text-logo);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.welcome-heading .logout:hover {
+    color: white;
+    background-color: #d43e3e;
+}
+
+.container__rightMain .nofifications {
+    /* background-color: red; */
+    width: 100%;
+    height: 12vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: var(--clr-btn-text-logo);
+    font-size: 2rem;
+    border-top: 1px solid var(--clr-border);
+    border-bottom: 1px solid var(--clr-border);
+}
+
+.container__rightMain .nofifications form{
+    position: absolute;
+    transform: scale(0);
+}
+
+.nofifications .scanner-button {
+    width: 90px;
+    height: 95%;
+    border-radius: 15px;
+    display: inherit;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: none;
+    border: none;
+    outline: none;
+    text-decoration: none;
+    color: var(--clr-btn-text-logo);
+    transition: 0.3s ease-in;
+}
+
+.nofifications .scanner-button:hover {
+    background: #1e2436;
+    color: white;
+}
+
+.nofifications .scanner-button .material-symbols-outlined {
+    font-size: 2.5rem;
+}
+
+.nofifications .scanner-button .scanner-text {
+    font-size: 1.3rem;
+}
+
+.container__rightMain .charts {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 0.7rem;
+    /* background-color: red; */
+    color: var(--clr-btn-text-logo);;
+}
+
+.charts .chart {
+    height: 60vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.7rem;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.charts .chart .bar-chart-heading {
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.charts .chart .pie-chart-heading {
+    font-size: 1.5rem;
+    text-align: center;
+
+}
+
+.charts img {
+    width: 90%;
+    height: 85%;
+}
+
+.chart .result{
+    position: absolute;
+    top: 41%;
+    font-size: 5rem;
+}

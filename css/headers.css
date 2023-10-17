@@ -1,0 +1,115 @@
+:root {
+    --clr-nav: #141824;
+    --clr-border: #373e53;
+    --clr-heading-mark: #6e7891;
+    --clr-hover-color: #31374a;
+    --clr-btn-text-logo: #9fa6bc;
+    --clr-bgcolor: #0f111a;
+}
+
+/* header styling */
+
+header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    background-color: var(--clr-nav);
+    color: white;
+    width: 100%;
+    z-index: 1;
+}
+
+.header__navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--clr-border);
+}
+
+.header__navbar .nav__left {
+    margin-left: 4vw;
+    margin-right: 6vw;
+    font-size: 1.7rem;
+    font-family: monospace;
+}
+
+.nav__search {
+    position: relative;
+}
+
+.nav__search .search-icon {
+    position: absolute;
+    top: 3.3vh;
+    left: 1.8vw;
+    font-size: 1.1rem;
+    color: #525b75;
+    font-weight: bold;
+}
+
+.nav__search #search {
+    padding: 8px;
+    padding-left: 2.4vw;
+    border-radius: 3rem;
+    width: 25rem;
+    margin: 16px;
+    border: 1px solid var(--clr-border);
+    outline: none;
+    background: transparent;
+    font-size: .8rem;
+    color: white;
+}
+
+.nav__search #search::placeholder {
+    font-size: .8rem;
+    color: #9ba6bc;
+    font-weight: 500;
+}
+
+.header__navbar .nav__right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-right: 2rem;
+}
+
+.nav__right .right__themeToggle {
+    background: #1c2e58;
+    width: 2.3vw;
+    height: 2.3vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: .7s;
+}
+
+.nav__right .right__themeToggle:hover {
+    background: #3874ffb3;
+}
+
+.nav__right .right__themeToggle:hover span {
+    color: white !important;
+}
+
+.nav__right .right__themeToggle span {
+    font-size: 1.2rem !important;
+    color: #7b9ad8;
+    transition: .7s;
+}
+
+.nav__right .util-icons span {
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #9ba6bc;
+    transition: .5s;
+}
+
+.nav__right .util-icons:hover span {
+    color: white;
+}
+
+.nav__right .right__imageLogo span {
+    font-size: 3rem;
+    cursor: pointer;
+}

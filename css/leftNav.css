@@ -1,0 +1,170 @@
+:root {
+    --clr-nav: #141824;
+    --clr-border: #373e53;
+    --clr-heading-mark: #6e7891;
+    --clr-hover-color: #31374a;
+    --clr-btn-text-logo: #9fa6bc;
+    --clr-bgcolor: #0f111a;
+}
+
+@import url("css/_colors.css");
+
+.container .container__leftNav {
+    background-color: var(--clr-nav);
+    width: 16.5vw;
+    /* height: 100vh; */
+    border-right: 1px solid var(--clr-border);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.container__leftNav .leftNav__contents {
+    border-radius: 15px;
+    width: 93%;
+    height: 96%;
+}
+
+.leftNav__contents .contents__home {
+    text-decoration: none;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    transition: .3s;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.leftNav__contents .contents__home:hover {
+    background-color: var(--clr-hover-color);
+}
+
+
+
+.contents__home span {
+    color: var(--clr-btn-text-logo);
+    padding-left: 20px;
+    font-size: 20px;
+    transition: .3s;
+}
+
+.leftNav__contents .contents__home:hover span {
+    color: white;
+}
+
+.contents__home p {
+    color: var(--clr-btn-text-logo);
+    padding: 9px 14px;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: .8rem;
+    transition: .3s;
+}
+
+.leftNav__contents .contents__home:hover p {
+    color: white;
+}
+
+
+.apps__p {
+    color: var(--clr-heading-mark);
+    font-size: 0.8rem;
+    padding-left: 16px;
+    margin: 15px 0;
+}
+
+.apps__e-commerce {
+    text-decoration: none;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    transition: .3s;
+}
+
+.apps__e-commerce:hover {
+    background-color: var(--clr-hover-color);
+}
+
+.apps__e-commerce span {
+    color: var(--clr-btn-text-logo);
+    padding-left: 20px;
+    font-size: 20px;
+    transition: .3s;
+}
+
+.apps__e-commerce:hover span {
+    color: white;
+}
+
+.apps__e-commerce p {
+    color: var(--clr-btn-text-logo);
+    padding: 9px 14px;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: .8rem;
+    transition: .3s;
+}
+
+.apps__e-commerce:hover p {
+    color: white;
+}
+
+.apps__crm {
+    text-decoration: none;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    transition: .3s;
+}
+
+.apps__crm:hover {
+    background-color: var(--clr-hover-color);
+}
+
+.apps__crm span {
+    color: var(--clr-btn-text-logo);
+    padding-left: 20px;
+    font-size: 20px;
+    transition: .3s;
+}
+
+.apps__crm:hover span {
+    color: white;
+}
+
+.apps__crm p {
+    color: var(--clr-btn-text-logo);
+    padding: 9px 14px;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: .8rem;
+    transition: .3s;
+}
+
+.apps__crm:hover p {
+    color: white;
+}
+
+#collapse-btn {
+    width: 16vw;
+    height: 5vh;
+    position: sticky;
+    bottom: 0px;
+    outline: none;
+    border: none;
+    border-top: 1px solid var(--clr-border);
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin: 2px;
+    background: transparent;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+#collapse-btn:hover {
+    background-color: var(--clr-hover-color);
+}
