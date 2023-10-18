@@ -71,7 +71,7 @@ if ($result) {
 }
 
 // table 5 - Student Profile
-$sql = 'CREATE TABLE IF NOT EXISTS `student_profile` (`sno` INT(5) NOT NULL AUTO_INCREMENT , `student_id` VARCHAR(20) NOT NULL , `student_name` VARCHAR(50) NOT NULL , `student_phone` CHAR(10) NOT NULL , `student_email` VARCHAR(100) NOT NULL , `student_gender` CHAR(1) NOT NULL , `student_stream` VARCHAR(5) NOT NULL , `student_semester` INT(2) NOT NULL , `registration` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`student_id`), UNIQUE `student_profile_sno_un` (`sno`), UNIQUE `student_profile_phone_un` (`student_phone`), UNIQUE `student_profile_email_un` (`student_email`)) ENGINE = InnoDB';
+$sql = 'CREATE TABLE IF NOT EXISTS `student_profile` (`sno` INT(5) NOT NULL AUTO_INCREMENT , `student_id` VARCHAR(20) NOT NULL , `student_name` VARCHAR(50) NOT NULL , `student_phone` CHAR(10) NOT NULL , `student_email` VARCHAR(100) NOT NULL , `student_gender` CHAR(1) NOT NULL , `student_stream` VARCHAR(5) NOT NULL , `student_semester` INT(2) NOT NULL , `profile_picture` TEXT NOT NULL, `registration` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`student_id`), UNIQUE `student_profile_sno_un` (`sno`), UNIQUE `student_profile_phone_un` (`student_phone`), UNIQUE `student_profile_email_un` (`student_email`)) ENGINE = InnoDB';
 $result = mysqli_query($conn, $sql);
 if ($result) {
     $tablecreated = true;
