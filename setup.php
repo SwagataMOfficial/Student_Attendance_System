@@ -80,7 +80,7 @@ if ($result) {
 }
 
 // table 6 - teacher Profile
-$sql = 'CREATE TABLE IF NOT EXISTS `teacher_profile` (`sno` INT(5) NOT NULL AUTO_INCREMENT , `teacher_id` VARCHAR(20) NOT NULL , `teacher_name` VARCHAR(50) NOT NULL , `teacher_phone` CHAR(10) NOT NULL , `teacher_email` VARCHAR(100) NOT NULL , `teacher_gender` CHAR(1) NOT NULL , `hod_department` VARCHAR(5) NULL DEFAULT NULL, `registration_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`teacher_id`), UNIQUE `teacher_profile_sno_un` (`sno`), UNIQUE `teacher_profile_phone_un` (`teacher_phone`), UNIQUE `teacher_profile_email_un` (`teacher_email`)) ENGINE = InnoDB';
+$sql = 'CREATE TABLE IF NOT EXISTS `teacher_profile` (`sno` INT(5) NOT NULL AUTO_INCREMENT , `teacher_id` VARCHAR(20) NOT NULL , `teacher_name` VARCHAR(50) NOT NULL , `teacher_phone` CHAR(10) NOT NULL , `teacher_email` VARCHAR(100) NOT NULL , `teacher_gender` CHAR(1) NOT NULL , `hod_department` VARCHAR(5) NULL DEFAULT NULL, `profile_picture` TEXT NOT NULL, `registration_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`teacher_id`), UNIQUE `teacher_profile_sno_un` (`sno`), UNIQUE `teacher_profile_phone_un` (`teacher_phone`), UNIQUE `teacher_profile_email_un` (`teacher_email`)) ENGINE = InnoDB';
 $result = mysqli_query($conn, $sql);
 if ($result) {
     $tablecreated = true;
