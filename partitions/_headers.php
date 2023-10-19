@@ -29,11 +29,11 @@
                 <?php
                 if (isset($_SESSION["teacher_picture"])) {
                     $image = $_SESSION["teacher_picture"];
-                    echo '<img src="assets/profile_pictures/' . $image . '" alt="profile_image">';
+                    echo '<img src="../profile_pictures/' . $image . '" alt="profile_image">';
                 }
                 else if (isset($_SESSION["student_picture"])) {
                     $image = $_SESSION["student_picture"];
-                    echo '<img src="assets/profile_pictures/' . $image . '" alt="profile_image">';
+                    echo '<img src="../profile_pictures/' . $image . '" alt="profile_image">';
                 }
                 else {
                     echo '<span class="material-symbols-outlined">account_circle</span>';

@@ -14,7 +14,8 @@ if (isset($_POST["register"]) && $_POST["register"] == "register") {
     $result = $query->execute();
     if ($result) {
         $submitted = true;
-        header('location: loginTeacher.php');
+        // header('location: loginTeacher.php');
+        header("Location: /Minor_Project/Student_Attendance_System/teacherProfile.php?teacher_email=$email");
     }
 }
 ?>
@@ -98,7 +99,7 @@ if (isset($_POST["register"]) && $_POST["register"] == "register") {
         const loginLink = document.querySelector('.login-link');
 
         function showAnimation(){
-            alert("Registration Successful! Click Ok to Login...");
+            alert("Registration Successful! Click Ok to Create Your Profile...");
         }
 
         registerLink.addEventListener('click', () => {

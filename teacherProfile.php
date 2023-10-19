@@ -97,39 +97,86 @@ if (isset($_POST["teacherAccount"]) && $_POST["teacherAccount"] == "teacherAccou
 
     }
     else {
-        // creating account for non-hod teachers
-        $sql = "INSERT INTO `teacher_profile` (`teacher_id`, `teacher_name`, `teacher_phone`, `teacher_email`, `teacher_gender`) VALUES ('0', '$teacher_name', '$teacher_phone', '$teacher_email', '$gender')";
-        // $result = mysqli_query($conn, $sql);
-        $query = $pdo->prepare($sql);
-        $result = $query->execute();
-        if ($result) {
-            $accountCreated = true;
+        // this if block handles profile pic uploading
+        if (isset($_FILES['teacher_profile_pic']['name'])) {
+            $imageName = $_FILES['teacher_profile_pic']['name'];
+            $imageSize = $_FILES['teacher_profile_pic']['size'];
+            $tmpName = $_FILES['teacher_profile_pic']['tmp_name'];
 
-            // getting serial number and email for id updation
-            $sql = "SELECT `sno` FROM `teacher_profile` WHERE `teacher_email` ='$teacher_email'";
-            // $result = mysqli_query($conn, $sql);
-            $query = $pdo->prepare($sql);
-            $result = $query->execute();
-            // $teacher = mysqli_fetch_assoc($result);
-            $teacher = $query->fetch(PDO::FETCH_ASSOC);
-
-            //Updating teacher id
-
-            if ($teacher["sno"] < 10) {
-                $sno = "00" . $teacher["sno"];
+            //Image validation
+            $validImageExtention = ['jpg', 'jpeg', 'png'];
+            $imageExtention = explode('.', $imageName);
+            $imageExtention = strtolower(end($imageExtention));
+            if (!in_array($imageExtention, $validImageExtention)) {
+                echo "  <script>
+                            alert('Please select an image');
+                            document.location.href='teacherProfile.php';
+                        </script>";
             }
-            elseif ($teacher["sno"] >= 10 && $teacher["sno"] < 100) {
-                $sno = "0" . $teacher["sno"];
+            // if image size is too big then this block will execute
+            else if ($imageSize > 1200000) {
+                echo "  <script>
+                            alert('Image size too big');
+                            document.location.href='teacherProfile.php';
+                        </script>";
             }
+            // this block uploads the image and stores into the database
             else {
-                $sno = $teacher["sno"];
+                $newImageName = $imageName . '-' . date('Y.m.d') . '-' . date('h.i.sa');
+                $newImageName .= '.' . $imageExtention;
+
+                // insertion query to create teacher profile
+                // $query = "UPDATE `picture_upload_testing` SET image='$newImageName' WHERE id=$id;";
+                // mysqli_query($conn, $query);
+
+                // temp lines starts
+
+                // creating account for non-hod teachers
+                $sql = "INSERT INTO `teacher_profile` (`teacher_id`, `teacher_name`, `teacher_phone`, `teacher_email`, `teacher_gender`, `profile_picture`) VALUES ('0', '$teacher_name', '$teacher_phone', '$teacher_email', '$gender', '$newImageName')";
+                // $result = mysqli_query($conn, $sql);
+                $query = $pdo->prepare($sql);
+                $result = $query->execute();
+                if ($result) {
+                    $accountCreated = true;
+
+                    // getting serial number and email for id updation
+                    $sql = "SELECT `sno` FROM `teacher_profile` WHERE `teacher_email` ='$teacher_email'";
+                    // $result = mysqli_query($conn, $sql);
+                    $query = $pdo->prepare($sql);
+                    $result = $query->execute();
+                    // $teacher = mysqli_fetch_assoc($result);
+                    $teacher = $query->fetch(PDO::FETCH_ASSOC);
+
+                    //Updating teacher id
+
+                    if ($teacher["sno"] < 10) {
+                        $sno = "00" . $teacher["sno"];
+                    }
+                    elseif ($teacher["sno"] >= 10 && $teacher["sno"] < 100) {
+                        $sno = "0" . $teacher["sno"];
+                    }
+                    else {
+                        $sno = $teacher["sno"];
+                    }
+                    $tid = "T" . $sno;
+                    $sql = "UPDATE `teacher_profile` SET `teacher_id` = '$tid' WHERE `teacher_email` ='$teacher_email'";
+                    // $result = mysqli_query($conn, $sql);
+                    $query = $pdo->prepare($sql);
+                    $result = $query->execute();
+                }
+
+                // temp lines ends
+
+
+                move_uploaded_file($tmpName, '../profile_pictures/' . $newImageName);
+                echo "  <script>
+                            alert('Profile Successfully Created! Now you can login....');
+                            document.location.href='index.php';
+                        </script>";
             }
-            $tid = "T" . $sno;
-            $sql = "UPDATE `teacher_profile` SET `teacher_id` = '$tid' WHERE `teacher_email` ='$teacher_email'";
-            // $result = mysqli_query($conn, $sql);
-            $query = $pdo->prepare($sql);
-            $result = $query->execute();
         }
+
+        // file handling block ends here
     }
 }
 ?>
