@@ -7,8 +7,6 @@
     --clr-bgcolor: #0f111a;
 }
 
-@import url("css/_colors.css");
-
 .container .container__leftNav {
     background-color: var(--clr-nav);
     width: 16.5vw;

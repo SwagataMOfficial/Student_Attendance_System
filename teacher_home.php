@@ -18,6 +18,9 @@ if (isset($_SESSION['teacher_loggedin']) && $_SESSION['teacher_loggedin'] == tru
         $teacher = $query->fetch(PDO::FETCH_ASSOC);
         $_SESSION["teacher_id"] = $teacher['teacher_id'];
         $_SESSION["teacher_name"] = $teacher['teacher_name'];
+        if($teacher['profile_picture'] != null){
+            $_SESSION["teacher_picture"] = $teacher['profile_picture'];
+        }
     }
     else {
         unset($_SESSION['teacher_loggedin']);

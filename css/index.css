@@ -8,8 +8,6 @@
     --clr-bgcolor: #0f111a;
 }
 
-@import url("css/_colors.css");
-
 * {
     margin: 0;
     padding: 0;

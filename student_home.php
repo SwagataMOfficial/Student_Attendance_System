@@ -18,6 +18,9 @@ if (isset($_SESSION['student_loggedin']) && $_SESSION['student_loggedin'] == tru
         $student = $query->fetch(PDO::FETCH_ASSOC);
         $_SESSION["student_id"] = $student['student_id'];
         $_SESSION["student_name"] = $student['student_name'];
+        if($student['profile_picture'] != null){
+            $_SESSION["student_picture"] = $student['profile_picture'];
+        }
     } else {
         unset($_SESSION['student_loggedin']);
         header("Location: /Minor_Project/Student_Attendance_System/studentProfile.php?student_email=$student_email");
