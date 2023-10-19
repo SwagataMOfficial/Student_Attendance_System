@@ -84,7 +84,7 @@ if (isset($_POST["createAccount"]) && $_POST["createAccount"] == "createAccount"
 
             // 
 
-            move_uploaded_file($tmpName, 'assets/profile_pictures/' . $newImageName);
+            move_uploaded_file($tmpName, '../profile_pictures/' . $newImageName);
             echo "  <script>
                         alert('Profile Successfully Created! Now you can login....');
                         document.location.href='index.php';
