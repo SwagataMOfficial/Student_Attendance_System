@@ -1,27 +1,31 @@
 <?php
 include('partitions/_dbconnect.php');
 
-// default bool variables
-$login = false;
-$failed = false;
 if (isset($_POST["teacherLogin"]) && $_POST["teacherLogin"] == "teacherLogin") {
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $sql = "SELECT * FROM `teacher_registration` WHERE `teacher_email`='$email' AND `teacher_password`='$password'";
-    // $result = mysqli_query($conn, $sql);
+    $sql = "SELECT * FROM `teacher_registration` WHERE `teacher_email`='$email'";
+
     $query = $pdo->prepare($sql);
     $result = $query->execute();
 
-    // $num = mysqli_num_rows($result);
-    $num = $query->rowCount();
-    if ($num == 1) {
-        $login = true;
-        session_start();
-        $_SESSION["teacher_loggedin"] = true;
-        $_SESSION["teacher_email"] = $email;
-        header('location: teacher_home.php');
-    } else {
-        $failed = true;
+    if($result){
+        $num = $query->rowCount();
+        if ($num == 1) {
+            $credentials = $query->fetch(PDO::FETCH_ASSOC);
+            if (password_verify($password, $credentials['teacher_password'])) {
+                $login = true;
+                session_start();
+                $_SESSION["teacher_loggedin"] = true;
+                $_SESSION["teacher_email"] = $email;
+            }
+            else{
+                $passNotMatched = true;
+            }
+        }
+        else {
+            $userNotExist = true;
+        }
     }
 }
 ?>
@@ -32,7 +36,7 @@ if (isset($_POST["teacherLogin"]) && $_POST["teacherLogin"] == "teacherLogin") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login to MyLogin</title>
+    <title>Login to Classified Teacher Login</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="css/login_register.css" type="text/css">
 </head>
@@ -71,7 +75,7 @@ if (isset($_POST["teacherLogin"]) && $_POST["teacherLogin"] == "teacherLogin") {
         <!-- this is register part -->
         <div class="form-box register">
             <h2 class="animation" style="--i:17; --j:0;">Sign Up</h2>
-            <form action="registerTeacher.php" method="post" autocomplete="off" onsubmit="showAnimation()">
+            <form action="registerTeacher.php" method="post" autocomplete="off">
                 <div class="input-box animation" style="--i:19; --j:2;">
                     <input type="email" name="email" required>
                     <label for="email">Email</label>
@@ -106,9 +110,19 @@ if (isset($_POST["teacherLogin"]) && $_POST["teacherLogin"] == "teacherLogin") {
         const registerLink = document.querySelector('.register-link');
         const loginLink = document.querySelector('.login-link');
 
-        function showAnimation() {
-            alert("Registration Successful! Click Ok to Login...");
-        }
+        <?php
+            if(isset($login) && $login){
+                echo 'alert("You are successfully loggedin! Click ok to continue....");
+                    window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";
+                ';
+            }
+            if(isset($passNotMatched) && $passNotMatched){
+                echo 'alert("Invalid Password!");';
+            }
+            if(isset($userNotExist) && $userNotExist){
+                echo 'alert("Email not Registered!");';
+            }
+        ?>
 
         registerLink.addEventListener('click', () => {
             wrapper.classList.add('active');
@@ -118,13 +132,6 @@ if (isset($_POST["teacherLogin"]) && $_POST["teacherLogin"] == "teacherLogin") {
             wrapper.classList.remove('active');
         });
     </script>
-    <?php
-    if ($failed) {
-        echo '<script>
-            alert("Invalid Credentials");
-        </script>';
-    }
-    ?>
 
 </body>
 

@@ -88,7 +88,7 @@ if (isset($_POST["teacherAccount"]) && $_POST["teacherAccount"] == "teacherAccou
                 move_uploaded_file($tmpName, '../profile_pictures/' . $newImageName);
                 echo "  <script>
                             alert('Profile Successfully Created! Now you can login....');
-                            document.location.href='index.php';
+                            document.location.href='/Minor_Project/Student_Attendance_System/';
                         </script>";
             }
         }
@@ -171,7 +171,7 @@ if (isset($_POST["teacherAccount"]) && $_POST["teacherAccount"] == "teacherAccou
                 move_uploaded_file($tmpName, '../profile_pictures/' . $newImageName);
                 echo "  <script>
                             alert('Profile Successfully Created! Now you can login....');
-                            document.location.href='index.php';
+                            document.location.href='/Minor_Project/Student_Attendance_System/';
                         </script>";
             }
         }

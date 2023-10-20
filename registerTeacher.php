@@ -1,21 +1,20 @@
 <?php
 include('partitions/_dbconnect.php');
 
-// default bool variables
-$submitted = false;
 
 if (isset($_POST["register"]) && $_POST["register"] == "register") {
     $email = $_POST['email'];
     $password = $_POST['password'];
     $cpassword = $_POST['cpassword'];
-    $sql = "INSERT INTO `teacher_registration` (`teacher_email`, `teacher_password`) VALUES ('$email', '$password')";
-    // $result = mysqli_query($conn, $sql);
-    $query = $pdo->prepare($sql);
-    $result = $query->execute();
-    if ($result) {
-        $submitted = true;
-        // header('location: loginTeacher.php');
-        header("Location: /Minor_Project/Student_Attendance_System/teacherProfile.php?teacher_email=$email");
+    if ($password == $cpassword) {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $sql = "INSERT INTO `teacher_registration` (`teacher_email`, `teacher_password`) VALUES ('$email', '$hashedPassword')";
+        // $result = mysqli_query($conn, $sql);
+        $query = $pdo->prepare($sql);
+        $registered = $query->execute();
+    }
+    else{
+        $passNotMatched = true;
     }
 }
 ?>
@@ -49,7 +48,8 @@ if (isset($_POST["register"]) && $_POST["register"] == "register") {
                     <label for="password">Password</label>
                     <i class='bx bxs-lock-alt'></i>
                 </div>
-                <button type="submit" name="login" value="login" class="btn animation" style="--i:3; --j:24;">Login</button>
+                <button type="submit" name="login" value="login" class="btn animation"
+                    style="--i:3; --j:24;">Login</button>
                 <div class="logreg-link animation" style="--i:4; --j:25;">
                     <p>Don't have an account? <span class="register-link" title="Click Here to Sign Up">Sign
                             Up</span></p>
@@ -58,7 +58,8 @@ if (isset($_POST["register"]) && $_POST["register"] == "register") {
         </div>
         <div class="info-text login">
             <h2 class="animation" style="--i:0; --j:20;">Welcome Back!</h2>
-            <p class="animation" style="--i:1; --j:21;">Enter your correct email and password to login as a Teacher or HOD.</p>
+            <p class="animation" style="--i:1; --j:21;">Enter your correct email and password to login as a Teacher or
+                HOD.</p>
         </div>
 
         <!-- this is register part -->
@@ -80,7 +81,8 @@ if (isset($_POST["register"]) && $_POST["register"] == "register") {
                     <label for="password">Confirm Password</label>
                     <i class='bx bxs-lock'></i>
                 </div>
-                <button type="submit" name="register" value="register" class="btn animation" style="--i:21; --j:4;">Sign Up</button>
+                <button type="submit" name="register" value="register" class="btn animation" style="--i:21; --j:4;">Sign
+                    Up</button>
                 <div class="logreg-link animation" style="--i:22; --j:5;">
                     <p>Already have an account? <span class="login-link" title="Click Here to Login">Login</span></p>
                 </div>
@@ -98,9 +100,16 @@ if (isset($_POST["register"]) && $_POST["register"] == "register") {
         const registerLink = document.querySelector('.register-link');
         const loginLink = document.querySelector('.login-link');
 
-        function showAnimation(){
-            alert("Registration Successful! Click Ok to Create Your Profile...");
-        }
+        <?php
+            if(isset($registered) && $registered){
+                echo 'alert("Registration Successful! Click Ok to Create Your Profile...");
+                        window.location.href = "/Minor_Project/Student_Attendance_System/teacherProfile.php?teacher_email=' . $email . '";
+                ';
+            }
+            if(isset($passNotMatched) && $passNotMatched) {
+                echo 'alert("Passwords Do Not Matched!");';
+            }
+        ?>
 
         registerLink.addEventListener('click', () => {
             wrapper.classList.add('active');
