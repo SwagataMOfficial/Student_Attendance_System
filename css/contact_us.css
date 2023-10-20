@@ -67,7 +67,7 @@ header nav ul li a:hover {
 
 header nav .buttons .btn{
 	padding: 8px 15px;
-	border-radius: 11px;
+	border-radius: 8px;
 	background-color: #44e4f2;
 	border: 1px solid rgb(70, 2, 104);
 	outline: none;
@@ -252,7 +252,6 @@ main::before {
 .content .input-box input:valid~label {
 	top: 0;
 	left: 12px;
-	display: 14px;
 	color: #ba24c2;
 	background: #fff;
 }
@@ -317,6 +316,36 @@ main::before {
 .content .input-box button[type="submit"]:active {
 	transform: scale(0.9);
 }
+
+.confirm-submit {
+	position: relative;
+	height: 5vh;
+	color: #109e10;
+	font-size: 1.2rem;
+}
+
+.confirm-submit .confirm-text {
+	position: absolute;
+	top: 6%;
+	left: 3%;
+	background: #f3c3f4;
+	border-radius: 6px;
+	padding: 1px 5px;
+}
+
+.confirm-submit #confirmCloseBtn {
+	position: absolute;
+	top: 14%;
+	right: 4%;
+	background: #f5baff;
+	border-radius: 6px;
+	cursor: pointer;
+}
+
+.confirm-submit #confirmCloseBtn:hover {
+	background-color: #dda9e6;
+}
+
 
 @media (max-width: 1000px) {
 	.content .image-box {

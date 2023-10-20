@@ -5,18 +5,18 @@ require("partitions/_dbconnect.php");
 $sent = false;
 
 if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
-    $name = $_POST["name"];
-    $phone = $_POST["phone"];
-    $email = $_POST["email"];
-    $message = $_POST["message"];
+	$name = $_POST["name"];
+	$phone = $_POST["phone"];
+	$email = $_POST["email"];
+	$message = $_POST["message"];
 
-    $sql = "INSERT INTO `contact_us` (`name`, `phone_number`, `email`, `user_concern`) VALUES ('$name', '$phone', '$email', '$message')";
-    // $result = mysqli_query($conn, $sql);
-    $query = $pdo->prepare($sql);
-    $result = $query->execute();
-    if ($result) {
-        $sent = true;
-    }
+	$sql = "INSERT INTO `contact_us` (`name`, `phone_number`, `email`, `user_concern`) VALUES ('$name', '$phone', '$email', '$message')";
+	// $result = mysqli_query($conn, $sql);
+	$query = $pdo->prepare($sql);
+	$result = $query->execute();
+	if ($result) {
+		$sent = true;
+	}
 }
 ?>
 
@@ -29,7 +29,8 @@ if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Contact Us</title>
 	<link rel="stylesheet" href="css/contact_us.css" />
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 
 <body>
@@ -88,6 +89,14 @@ if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
 					<div class="input-box">
 						<button type="submit" name="sent" value="sent">Submit</button>
 					</div>
+					<?php
+					if ($sent) {
+						echo '<p class="confirm-submit">
+						<span class="confirm-text">Your Concern has been submitted</span>
+						<span role="button" class="material-symbols-outlined" id="confirmCloseBtn">close</span>
+					</p>';
+					}
+					?>
 				</form>
 			</div>
 		</div>
@@ -96,18 +105,27 @@ if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
 		const loginBtn = document.getElementById('loginBtn');
 		const signUpBtn = document.getElementById('signUpBtn');
 		const closeBtn = document.getElementById('closeBtn');
+		const confirmCloseBtn = document.getElementById('confirmCloseBtn');
 
-		closeBtn.addEventListener('click', ()=>{
+		closeBtn.addEventListener('click', () => {
 			document.querySelector('.login-signup').style.display = 'none';
 		});
+
+		<?php
+			if($sent){
+				echo "confirmCloseBtn.addEventListener('click', () => {
+					document.querySelector('.confirm-submit').style.display = 'none';
+				});";
+			}
+		?>
 
 		loginBtn.addEventListener('click', () => {
 			document.querySelector('.login-signup .signup-options').style.display = 'none';
 			document.querySelector('.login-signup').style.display = 'block';
 			document.querySelector('.login-signup .login-options').style.display = 'flex';
-			
+
 		});
-		
+
 		signUpBtn.addEventListener('click', () => {
 			document.querySelector('.login-signup .login-options').style.display = 'none';
 			document.querySelector('.login-signup').style.display = 'block';
