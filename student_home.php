@@ -23,7 +23,8 @@ if (isset($_SESSION['student_loggedin']) && $_SESSION['student_loggedin'] == tru
         }
     } else {
         unset($_SESSION['student_loggedin']);
-        header("Location: /Minor_Project/Student_Attendance_System/studentProfile.php?student_email=$student_email");
+        $_SESSION['student_profile_email'] = $student_email;
+        header("Location: /Minor_Project/Student_Attendance_System/studentProfile.php");
     }
 }
 // if no one has logged in then don't allow anyone to enter the student home page

@@ -98,8 +98,10 @@ if (isset($_POST["register"]) && $_POST["register"] == "register") {
 
         <?php
             if(isset($registered) && $registered){
+                session_start();
+                $_SESSION["student_profile_email"] = $email;
                 echo 'alert("Registration Successful! Click Ok to Create Your Profile...");
-                        window.location.href = "/Minor_Project/Student_Attendance_System/studentProfile.php?student_email=' . $email . '";
+                        window.location.href = "/Minor_Project/Student_Attendance_System/studentProfile.php";
                 ';
             }
             if(isset($passNotMatched) && $passNotMatched) {

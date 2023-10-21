@@ -36,10 +36,10 @@ if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
 <body>
 	<header>
 		<nav>
-			<div><a href="index.php" class="nav-logo">Classified.in</a></div>
+			<div><a href="/Minor_Project/Student_Attendance_System/" class="nav-logo">Classified.in</a></div>
 			<div class="nav-lists">
 				<ul>
-					<li><a href="index.php">Home</a></li>
+					<li><a href="/Minor_Project/Student_Attendance_System/">Home</a></li>
 					<li><a href="#">Docs</a></li>
 					<li><a href="#">Blog</a></li>
 					<li><a href="contactUs.php">Contact Us</a></li>

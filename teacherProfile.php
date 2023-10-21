@@ -1,5 +1,6 @@
 <?php
 require("partitions/_dbconnect.php");
+session_start();
 // if account is created then
 if (isset($_POST["teacherAccount"]) && $_POST["teacherAccount"] == "teacherAccount") {
     $teacher_name = $_POST['teacher_name'];
@@ -211,8 +212,8 @@ if (isset($_POST["teacherAccount"]) && $_POST["teacherAccount"] == "teacherAccou
                 <label for="t_email" class="form-label disabled">Teacher Email</label>
                 <input type="t_email" name="teacher_email" class="form-control" id="t_email"
                     aria-describedby="emailHelp" placeholder="Enter Your Email" <?php
-                    if (isset($_GET["teacher_email"])) {
-                        echo "value=" . $_GET["teacher_email"];
+                    if (isset($_SESSION['teacher_profile_email'])) {
+                        echo "value=" . $_SESSION['teacher_profile_email'];
                     }
                     ?> readonly required>
             </div>

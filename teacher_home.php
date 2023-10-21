@@ -24,7 +24,8 @@ if (isset($_SESSION['teacher_loggedin']) && $_SESSION['teacher_loggedin'] == tru
     }
     else {
         unset($_SESSION['teacher_loggedin']);
-        header("Location: /Minor_Project/Student_Attendance_System/teacherProfile.php?teacher_email=$teacher_email");
+        $_SESSION['teacher_profile_email'] = $teacher_email;
+        header("Location: /Minor_Project/Student_Attendance_System/teacherProfile.php");
     }
 
     // checking for deletion request
