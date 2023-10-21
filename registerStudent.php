@@ -1,15 +1,70 @@
 <?php
 include('partitions/_dbconnect.php');
+require('partitions/_otp_generator.php');
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+// function to send a mail
+function sendMail($email, $newOTP)
+{
+    // including all necessary files
+    require("PHPMailer/PHPMailer.php");
+    require("PHPMailer/SMTP.php");
+    require("PHPMailer/Exception.php");
+
+    $mail = new PHPMailer(true);
+
+    // setting the mail
+    try {
+        //Server settings
+        $mail->isSMTP(); //Send using SMTP
+        $mail->Host = 'smtp.gmail.com'; //Set the SMTP server to send through
+        $mail->SMTPAuth = true; //Enable SMTP authentication
+        $mail->Username = 'attendancesystem24x7@gmail.com'; //SMTP username
+        $mail->Password = 'ymfu zmou nlvr dwjx'; //SMTP password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; //Enable implicit TLS encryption
+        $mail->Port = 465; //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+        //Recipients
+        $mail->setFrom('attendancesystem365@gmail.com', 'Student Attendance');
+        $mail->addAddress($email); // receiver's email address
+
+        //Content
+        $mail->isHTML(true); //Set email format to HTML
+        $mail->Subject = 'OTP for verification for Student Attendance';
+        $mail->Body = ' Thanks for registering in our website<br>
+                        Your OTP is ' . $newOTP . '<br>
+                        <strong>Do not share OTP with Anyone else.</strong>';
+
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        return false;
+    }
+}
+
+
 
 if (isset($_POST["register"]) && $_POST["register"] == "register") {
     $email = $_POST['email'];
     $password = $_POST['password'];
     $cpassword = $_POST['cpassword'];
     if ($password == $cpassword) {
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $sql = "INSERT INTO `student_registration` (`student_email`, `student_password`) VALUES ('$email', '$hashedPassword')";
-        $query = $pdo->prepare($sql);
-        $registered = $query->execute();
+
+        // generating otp here
+        $otp = new OTP();
+        $newOTP = $otp->generateOTP();
+        if(sendMail($email, $newOTP)){
+            session_start();
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $_SESSION['validation_email'] = $email;
+            $_SESSION['validation_password'] = $hashedPassword;
+            $_SESSION['validation_otp'] = $newOTP;
+            $validate = true;
+        }
     }
     else{
         $passNotMatched = true;
@@ -78,8 +133,7 @@ if (isset($_POST["register"]) && $_POST["register"] == "register") {
                     <label for="password">Confirm Password</label>
                     <i class='bx bxs-lock'></i>
                 </div>
-                <button type="submit" name="register" value="register" class="btn animation" style="--i:21; --j:4;">Sign
-                    Up</button>
+                <button type="submit" name="register" value="register" class="btn animation" style="--i:21; --j:4;">Sign Up</button>
                 <div class="logreg-link animation" style="--i:22; --j:5;">
                     <p>Already have an account? <span class="login-link" title="Click Here to Login">Login</span></p>
                 </div>
@@ -97,12 +151,9 @@ if (isset($_POST["register"]) && $_POST["register"] == "register") {
         const loginLink = document.querySelector('.login-link');
 
         <?php
-            if(isset($registered) && $registered){
-                session_start();
-                $_SESSION["student_profile_email"] = $email;
-                echo 'alert("Registration Successful! Click Ok to Create Your Profile...");
-                        window.location.href = "/Minor_Project/Student_Attendance_System/studentProfile.php";
-                ';
+            if(isset($validate) && $validate){
+                echo '  alert("Click Ok to Validate OTP and Register....");
+                        window.location.href = "/Minor_Project/Student_Attendance_System/verify_OTP.php";';
             }
             if(isset($passNotMatched) && $passNotMatched) {
                 echo 'alert("Passwords Do Not Matched!");';
