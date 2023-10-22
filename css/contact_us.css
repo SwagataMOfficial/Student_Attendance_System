@@ -274,7 +274,8 @@ main::before {
 	transition: all 0.3s ease;
 }
 
-.content .message-box textarea:focus {
+.content .message-box textarea:focus,
+.content .message-box textarea:valid {
 	border-color: #ba24c2;
 	background-color: #fff;
 }
@@ -289,7 +290,8 @@ main::before {
 	transition: all 0.3s ease;
 }
 
-.content .message-box textarea:focus~label {
+.content .message-box textarea:focus ~ label,
+.content .message-box textarea:valid ~ label {
 	left: 12px;
 	top: -10px;
 	color: #ba24c2;
@@ -343,6 +345,35 @@ main::before {
 }
 
 .confirm-submit #confirmCloseBtn:hover {
+	background-color: #dda9e6;
+}
+
+.non-confirm-submit {
+	position: relative;
+	height: 5vh;
+	color: #109e10;
+	font-size: 1.2rem;
+}
+
+.non-confirm-submit .confirm-text {
+	position: absolute;
+	top: 6%;
+	left: 3%;
+	background: #f3c3f4;
+	border-radius: 6px;
+	padding: 1px 5px;
+}
+
+.non-confirm-submit #nonConfirmCloseBtn {
+	position: absolute;
+	top: 14%;
+	right: 4%;
+	background: #f5baff;
+	border-radius: 6px;
+	cursor: pointer;
+}
+
+.non-confirm-submit #nonConfirmCloseBtn:hover {
 	background-color: #dda9e6;
 }
 

@@ -1,21 +1,74 @@
 <?php
 require("partitions/_dbconnect.php");
 
-// utility variables
-$sent = false;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+// function to send a mail
+function sendQuery($name, $phone, $email, $message)
+{
+    // including all necessary files
+    require("PHPMailer/PHPMailer.php");
+    require("PHPMailer/SMTP.php");
+    require("PHPMailer/Exception.php");
+
+    $mail = new PHPMailer(true);
+
+	$current_date = (string)date('d-M-Y');
+
+    // setting the mail
+    try {
+        //Server settings
+        $mail->isSMTP(); //Send using SMTP
+        $mail->Host = 'smtp.gmail.com'; //Set the SMTP server to send through
+        $mail->SMTPAuth = true; //Enable SMTP authentication
+        $mail->Username = 'attendancesystem24x7@gmail.com'; //SMTP username
+        $mail->Password = 'ymfu zmou nlvr dwjx'; //SMTP password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; //Enable implicit TLS encryption
+        $mail->Port = 465; //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+        //Recipients
+        $mail->setFrom('attendancesystem24x7@gmail.com', 'Student Attendance');
+        $mail->addAddress('attendancesystem24x7@gmail.com'); // receiver's email address
+
+        //Content
+        $mail->isHTML(true); //Set email format to HTML
+        $mail->Subject = 'Concern from ' . $name . ' | ' . $current_date;
+        $mail->Body = 
+		"
+			<h4>Date: $current_date</h4>
+			<h4>Dear Student Attendance Team,</h4>
+			<p style='padding-left: 20px;'>One of your user, who's name is $name, phone number is $phone and email is $email submitted a concern. That is, </p>
+			<p style='padding-left: 20px;'>$message</p>
+			<h4 style='padding-left: 20px;'>Kindly respond to this email and solve user's problem as soon as possible.</h4>
+			<p>With Regards,</p>
+			<p>$name</p>
+			<p>$phone</p>
+			<p>$email</p>
+		";
+
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        return false;
+    }
+}
 
 if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
-	$name = $_POST["name"];
-	$phone = $_POST["phone"];
-	$email = $_POST["email"];
-	$message = $_POST["message"];
+	$name = filter_var($_POST["name"], FILTER_SANITIZE_SPECIAL_CHARS);
+	$phone = filter_var($_POST["phone"], FILTER_SANITIZE_SPECIAL_CHARS);
+	$email = filter_var($_POST["email"], FILTER_SANITIZE_SPECIAL_CHARS);
+	$message = filter_var($_POST["message"], FILTER_SANITIZE_SPECIAL_CHARS);
 
-	$sql = "INSERT INTO `contact_us` (`name`, `phone_number`, `email`, `user_concern`) VALUES ('$name', '$phone', '$email', '$message')";
-	// $result = mysqli_query($conn, $sql);
-	$query = $pdo->prepare($sql);
-	$result = $query->execute();
-	if ($result) {
-		$sent = true;
+	if(sendQuery($name, $phone, $email, $message)){
+		$sql = "INSERT INTO `contact_us` (`name`, `phone_number`, `email`, `user_concern`) VALUES ('$name', '$phone', '$email', '$message')";
+		$query = $pdo->prepare($sql);
+		$sent = $query->execute();
+	}
+	else{
+		$notsend = true;
 	}
 }
 ?>
@@ -83,17 +136,23 @@ if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
 						<label for="email">Enter your Email ID</label>
 					</div>
 					<div class="message-box">
-						<textarea name="message" id="message"></textarea>
+						<textarea name="message" id="message" required></textarea>
 						<label for="message">Enter your Message</label>
 					</div>
 					<div class="input-box">
 						<button type="submit" name="sent" value="sent">Submit</button>
 					</div>
 					<?php
-					if ($sent) {
+					if(isset($sent) && $sent) {
 						echo '<p class="confirm-submit">
 						<span class="confirm-text">Your Concern has been submitted</span>
 						<span role="button" class="material-symbols-outlined" id="confirmCloseBtn">close</span>
+					</p>';
+					}
+					if(isset($notsend) && $notsend) {
+						echo '<p class="non-confirm-submit">
+						<span class="confirm-text">Failed to submit your concern! Please Try Again</span>
+						<span role="button" class="material-symbols-outlined" id="nonConfirmCloseBtn">close</span>
 					</p>';
 					}
 					?>
@@ -106,15 +165,21 @@ if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
 		const signUpBtn = document.getElementById('signUpBtn');
 		const closeBtn = document.getElementById('closeBtn');
 		const confirmCloseBtn = document.getElementById('confirmCloseBtn');
+		const nonConfirmCloseBtn = document.getElementById('nonConfirmCloseBtn');
 
 		closeBtn.addEventListener('click', () => {
 			document.querySelector('.login-signup').style.display = 'none';
 		});
 
 		<?php
-			if($sent){
+			if(isset($sent) && $sent){
 				echo "confirmCloseBtn.addEventListener('click', () => {
 					document.querySelector('.confirm-submit').style.display = 'none';
+				});";
+			}
+			if(isset($notsend) && $notsend){
+				echo "nonConfirmCloseBtn.addEventListener('click', () => {
+					document.querySelector('.non-confirm-submit').style.display = 'none';
 				});";
 			}
 		?>

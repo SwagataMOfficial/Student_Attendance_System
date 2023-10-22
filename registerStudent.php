@@ -28,7 +28,7 @@ function sendMail($email, $newOTP)
         $mail->Port = 465; //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
         //Recipients
-        $mail->setFrom('attendancesystem365@gmail.com', 'Student Attendance');
+        $mail->setFrom('attendancesystem24x7@gmail.com', 'Student Attendance');
         $mail->addAddress($email); // receiver's email address
 
         //Content
@@ -57,13 +57,18 @@ if (isset($_POST["register"]) && $_POST["register"] == "register") {
         // generating otp here
         $otp = new OTP();
         $newOTP = $otp->generateOTP();
+
+        // sending mail and further work
         if(sendMail($email, $newOTP)){
             session_start();
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-            $_SESSION['validation_email'] = $email;
-            $_SESSION['validation_password'] = $hashedPassword;
-            $_SESSION['validation_otp'] = $newOTP;
+            $_SESSION['st_validation_email'] = $email;
+            $_SESSION['st_validation_password'] = $hashedPassword;
+            $_SESSION['st_validation_otp'] = $newOTP;
             $validate = true;
+        }
+        else{
+            $otpNotSent = true;
         }
     }
     else{
@@ -157,6 +162,9 @@ if (isset($_POST["register"]) && $_POST["register"] == "register") {
             }
             if(isset($passNotMatched) && $passNotMatched) {
                 echo 'alert("Passwords Do Not Matched!");';
+            }
+            if(isset($otpNotSent) && $otpNotSent) {
+                echo 'alert("Failed to send OTP! Try Again...");';
             }
         ?>
 
