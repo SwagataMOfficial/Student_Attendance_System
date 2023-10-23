@@ -117,7 +117,7 @@ if (isset($_POST["teacherLogin"]) && $_POST["teacherLogin"] == "teacherLogin") {
                 ';
             }
             if(isset($passNotMatched) && $passNotMatched){
-                echo 'alert("Invalid Password!");';
+                echo 'alert("Wrong Password!");';
             }
             if(isset($userNotExist) && $userNotExist){
                 echo 'alert("Email not Registered!");';

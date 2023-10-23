@@ -104,7 +104,7 @@ if (isset($_POST["register"]) && $_POST["register"] == "register") {
                     <label for="password">Password</label>
                     <i class='bx bxs-lock-alt'></i>
                 </div>
-                <button type="submit" name="login" value="login" class="btn animation"
+                <button type="submit" name="teacherLogin" value="teacherLogin" class="btn animation"
                     style="--i:3; --j:24;">Login</button>
                 <div class="logreg-link animation" style="--i:4; --j:25;">
                     <p>Don't have an account? <span class="register-link" title="Click Here to Sign Up">Sign

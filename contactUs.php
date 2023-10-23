@@ -61,7 +61,6 @@ if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
 	$phone = filter_var($_POST["phone"], FILTER_SANITIZE_SPECIAL_CHARS);
 	$email = filter_var($_POST["email"], FILTER_SANITIZE_SPECIAL_CHARS);
 	$message = filter_var($_POST["message"], FILTER_SANITIZE_SPECIAL_CHARS);
-
 	if(sendQuery($name, $phone, $email, $message)){
 		$sql = "INSERT INTO `contact_us` (`name`, `phone_number`, `email`, `user_concern`) VALUES ('$name', '$phone', '$email', '$message')";
 		$query = $pdo->prepare($sql);
@@ -144,16 +143,22 @@ if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
 					</div>
 					<?php
 					if(isset($sent) && $sent) {
-						echo '<p class="confirm-submit">
-						<span class="confirm-text">Your Concern has been submitted</span>
-						<span role="button" class="material-symbols-outlined" id="confirmCloseBtn">close</span>
-					</p>';
+						echo 
+						'
+							<p class="confirm-submit">
+							<span class="confirm-text">Your Concern has been submitted</span>
+							<span role="button" class="material-symbols-outlined" id="confirmCloseBtn">close</span>
+							</p>
+						';
 					}
 					if(isset($notsend) && $notsend) {
-						echo '<p class="non-confirm-submit">
-						<span class="confirm-text">Failed to submit your concern! Please Try Again</span>
-						<span role="button" class="material-symbols-outlined" id="nonConfirmCloseBtn">close</span>
-					</p>';
+						echo 
+						'
+							<p class="non-confirm-submit">
+							<span class="confirm-text">Failed to submit your concern! Please Try Again</span>
+							<span role="button" class="material-symbols-outlined" id="nonConfirmCloseBtn">close</span>
+							</p>
+						';
 					}
 					?>
 				</form>
@@ -178,11 +183,13 @@ if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
 				});";
 			}
 			if(isset($notsend) && $notsend){
-				echo "nonConfirmCloseBtn.addEventListener('click', () => {
+				echo "
+				nonConfirmCloseBtn.addEventListener('click', () => {
 					document.querySelector('.non-confirm-submit').style.display = 'none';
-				});";
+				});
+				";
 			}
-		?>
+		?>		
 
 		loginBtn.addEventListener('click', () => {
 			document.querySelector('.login-signup .signup-options').style.display = 'none';

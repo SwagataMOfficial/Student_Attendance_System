@@ -76,7 +76,7 @@ if (isset($_POST["createAccount"]) && $_POST["createAccount"] == "createAccount"
                 $query = $pdo->prepare($sql);
                 $result = $query->execute();
                 if ($result) {
-                    $sql = "INSERT INTO `student_attendance` (`student_id`,`student_name`, `remarks`, `grade`) VALUES ('$sid', '$student_name', 'Initial', 'None');";
+                    $sql = "INSERT INTO `student_attendance` (`student_id`,`student_name`, `student_stream`, `remarks`, `grade`) VALUES ('$sid', '$student_name', $stream, 'Initial', 'None');";
                     // $result = mysqli_query($conn, $sql);
                     $query = $pdo->prepare($sql);
                     $result = $query->execute();

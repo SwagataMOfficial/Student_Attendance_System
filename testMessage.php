@@ -21,7 +21,7 @@ $result = $query->execute();
 if (isset($_SESSION["student_id"]) && !isset($_SESSION["teacher_id"])) {
     if (isset($_POST["messagebtn"]) && $_POST["messagebtn"] === "messagebtn") {
         $id = $_SESSION["student_id"];
-        $message = $_POST['message'];
+        $message = filter_var($_POST['message'], FILTER_SANITIZE_SPECIAL_CHARS);
         $sendMessage = "INSERT INTO `messages` (`student_id`,`student_message`) VALUES ('$id','$message')";
         // $result = mysqli_query($conn, $sendMessage);
         $query = $pdo->prepare($sendMessage);
@@ -42,7 +42,7 @@ if (isset($_SESSION["teacher_id"]) && !isset($_SESSION["student_id"])) {
         $query = $pdo->prepare($sendMessage);
         $result = $query->execute();
         if ($result) {
-            header("Location: message.php");
+            header("Location: testMessage.php");
         }
     }
 }
@@ -106,17 +106,15 @@ if (isset($_SESSION["teacher_id"]) && !isset($_SESSION["student_id"])) {
             border-radius: 15px;
         }
 
-        .messageContainer p {
+        .messageContainer .alert-text {
             width: 35%;
             margin: auto;
             padding: 4px 0px;
             border-radius: 15px;
             color: #ffd600;
             background: #22273c;
-        }
-
-        .alert-text {
             text-align: center;
+            user-select: none;
         }
 
         .messageContainer::-webkit-scrollbar {
@@ -129,6 +127,7 @@ if (isset($_SESSION["teacher_id"]) && !isset($_SESSION["student_id"])) {
         }
 
         .messageContainer h3 {
+            color: var(--clr-btn-text-logo);
             text-align: center;
             font-size: 3rem;
             margin-top: 3rem;
@@ -145,6 +144,10 @@ if (isset($_SESSION["teacher_id"]) && !isset($_SESSION["student_id"])) {
             font-family: sans-serif;
         }
 
+        .message .sender-name {
+            margin-bottom: 3px;
+        }
+
         .left span {
             margin-left: 5px;
             font-size: 1.03rem;
@@ -153,6 +156,7 @@ if (isset($_SESSION["teacher_id"]) && !isset($_SESSION["student_id"])) {
         .right span {
             margin-left: 5px;
             font-size: 1.03rem;
+            font-family: cursive;
         }
 
         .left {
@@ -163,7 +167,7 @@ if (isset($_SESSION["teacher_id"]) && !isset($_SESSION["student_id"])) {
         .left b {
             color: #00e5ff;
             font-size: 1.05rem;
-            padding-left: 10px;
+            /* padding-left: 10px; */
             font-family: sans-serif;
             letter-spacing: 1px;
         }
@@ -174,7 +178,7 @@ if (isset($_SESSION["teacher_id"]) && !isset($_SESSION["student_id"])) {
         }
 
         .right b {
-            padding-left: 10px;
+            /* padding-left: 10px; */
             color: darkorange;
             letter-spacing: 1px;
         }
@@ -265,12 +269,26 @@ if (isset($_SESSION["teacher_id"]) && !isset($_SESSION["student_id"])) {
                             $messageExists = true;
                             // print_r($row);
                             if (isset($row["student_message"])) {
-                                // echo 'yes';
-                                echo '<div class="message right"><b>Student: </b><span>' . $row["student_message"] . '</span></div>';
+                                $student = "SELECT `student_name` FROM `student_profile` WHERE `student_id`='$row[student_id]'";
+                                $gettingStudent = $pdo->prepare($student);
+                                $gettingStudent->execute();
+                                $student_data = $gettingStudent->fetch(PDO::FETCH_ASSOC);
+                                echo '  <div class="message right">
+                                            <p class="sender-name"><b>' . $student_data["student_name"] . '</b></p>
+                                            <span>' . $row["student_message"] . '</span>
+                                        </div>';
                             }
                             if (isset($row["teacher_message"])) {
-                                // echo 'no';
-                                echo '<div class="message left"><b>Teacher: </b><span>' . $row["teacher_message"] . '</span></div>';
+                                $teacher = "SELECT `teacher_name` FROM `teacher_profile` WHERE `teacher_id`='$row[teacher_id]'";
+                                $gettingTeacher = $pdo->prepare($teacher);
+                                $gettingTeacher->execute();
+                                $teacher_data = $gettingTeacher->fetch(PDO::FETCH_ASSOC);
+                                echo '  <div class="message left">
+                                            <p class="sender-name">
+                                            <b>' . $teacher_data["teacher_name"] . '</b>
+                                            </p>
+                                            <span>' . $row["teacher_message"] . '</span>
+                                        </div>';
                             }
                         }
                         // var_dump($messageExists);

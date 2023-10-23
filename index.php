@@ -16,9 +16,93 @@ session_destroy();
     <title>Welcome to Classified.in</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
     <style>
         body::-webkit-scrollbar {
             width: 0px;
+        }
+
+        /* pre-loader css */
+
+        .my_loader {
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #011015;
+            transition: 0.8s;
+        }
+
+        .my_loader-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 1s;
+        }
+
+        .my_ring {
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            border: 0px solid #011015;
+            border-radius: 50%;
+        }
+
+        .my_ring:nth-child(1) {
+            border-bottom-width: 8px;
+            border-color: rgb(255, 0, 255);
+            animation: rotate1 2s linear infinite;
+        }
+
+        .my_ring:nth-child(2) {
+            border-right-width: 8px;
+            border-color: rgb(0, 247, 255);
+            animation: rotate2 2s linear infinite;
+        }
+
+        .my_ring:nth-child(3) {
+            border-top-width: 8px;
+            border-color: rgb(0, 255, 13);
+            animation: rotate3 2s linear infinite;
+        }
+
+        .my_loading {
+            color: white;
+        }
+
+
+        @keyframes rotate1 {
+            0% {
+                transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+            }
+
+            100% {
+                transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+
+            }
+        }
+
+        @keyframes rotate2 {
+            0% {
+                transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+            }
+
+            100% {
+                transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+            }
+        }
+
+        @keyframes rotate3 {
+            0% {
+                transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+            }
+
+            100% {
+                transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+            }
         }
 
         #features .card {
@@ -62,9 +146,18 @@ session_destroy();
             text-decoration-color: currentcolor !important;
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 
 <body class="bg-dark">
+    <div class="my_loader">
+        <div class="my_loader-container">
+            <div class="my_ring"></div>
+            <div class="my_ring"></div>
+            <div class="my_ring"></div>
+            <span class="my_loading">Loading...</span>
+        </div>
+    </div>
     <!-- <nav class="navbar navbar-expand-lg bg-body-tertiary"> -->
     <nav class="navbar navbar-expand-lg fixed-top" data-bs-theme="dark">
         <div class="container-fluid">
@@ -203,7 +296,7 @@ session_destroy();
                     <div class="card-footer text-light text-center">
                         <span>
                             <a class="link-light link-offset-0 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
-                                href="#">
+                                href="#qr_scanner">
                                 Read More
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-arrow-right" viewBox="0 0 16 16">
@@ -376,9 +469,49 @@ session_destroy();
         </div>
     </section>
 
+    <!-- detailed card 1 -->
+    <div class="container p-5 min-vh-100 d-flex justify-content-center align-items-center" id="qr_scanner">
+        <div class="card text-bg-dark text-center w-75">
+            <div class="card-header text-uppercase">
+                Feature 1
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">QR Code Scanner</h5>
+                <p class="card-text">
+                <ul class="list-group list-group-flush" data-bs-theme="dark">
+                    <li class="list-group-item">Highly Secure QR Code Scanner</li>
+                    <li class="list-group-item">Accurate Scanning System</li>
+                    <li class="list-group-item">Very Efficient Scanning System</li>
+                    <li class="list-group-item">Bounded with-in time limit</li>
+                    <li class="list-group-item">Works on every device</li>
+                    <li class="list-group-item">Attendance taking made very easy</li>
+                </ul>
+                </p>
+            </div>
+            <div class="card-footer text-body-secondary">
+                <a class="link-light link-offset-0 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                    href="#features">
+                    Back to features
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+    <script>
+        $(window).on('load', function () {
+            $('.my_loader').css("z-index", "1100");
+            $('.my_loader').fadeOut(1500);
+            $('body').fadeIn(1700);
+        });
+    </script>
 </body>
 
 </html>

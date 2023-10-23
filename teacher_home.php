@@ -18,7 +18,10 @@ if (isset($_SESSION['teacher_loggedin']) && $_SESSION['teacher_loggedin'] == tru
         $teacher = $query->fetch(PDO::FETCH_ASSOC);
         $_SESSION["teacher_id"] = $teacher['teacher_id'];
         $_SESSION["teacher_name"] = $teacher['teacher_name'];
-        if($teacher['profile_picture'] != null){
+        if (isset($teacher['hod_department'])) {
+            $_SESSION["teacher_dept"] = $teacher['hod_department'];
+        }
+        if (isset($teacher['profile_picture'])) {
             $_SESSION["teacher_picture"] = $teacher['profile_picture'];
         }
     }
@@ -29,23 +32,29 @@ if (isset($_SESSION['teacher_loggedin']) && $_SESSION['teacher_loggedin'] == tru
     }
 
     // checking for deletion request
-    if(isset($_POST['d_id']) && isset($_POST['d_email'])){
+    if (isset($_POST['d_id']) && isset($_POST['d_email'])) {
         $delete_id = $_POST['d_id'];
         $delete_email = $_POST['d_email'];
-        $delete_query1 = "DELETE FROM `student_registration` WHERE `student_email` = '" . $delete_email . "'";
+        $delete_query1 = "DELETE FROM `student_registration` WHERE `student_email` = '$delete_email'";
         // $deletion = mysqli_query($conn, $delete_query1);
         $query = $pdo->prepare($delete_query1);
         $deletion = $query->execute();
         if ($deletion) {
-            $delete_query2 = "DELETE FROM `student_attendance` WHERE `student_id` = '" . $delete_id . "'";
+            $delete_query2 = "DELETE FROM `student_attendance` WHERE `student_id` = '$delete_id'";
             // $deletion = mysqli_query($conn, $delete_query2);
             $query = $pdo->prepare($delete_query2);
             $deletion = $query->execute();
             if ($deletion) {
-                $delete_query3 = "DELETE FROM `student_profile` WHERE `student_id` = '" . $delete_id . "'";
+                $delete_query3 = "DELETE FROM `student_profile` WHERE `student_id` = '$delete_id'";
                 // $deletion = mysqli_query($conn, $delete_query3);
                 $query = $pdo->prepare($delete_query3);
                 $deletion = $query->execute();
+                if($deletion){
+                    $delete_query4 = "DELETE FROM `messages` WHERE `student_id` = '$delete_id'";
+                    // $deletion = mysqli_query($conn, $delete_query3);
+                    $query = $pdo->prepare($delete_query4);
+                    $deletion = $query->execute();
+                }
             }
         }
     }
@@ -152,7 +161,11 @@ else {
             padding-bottom: 3vh;
         }
 
-        .dataTables_wrapper .dataTables_filter input {
+        .more-students-data .dataTables_wrapper .dataTables_length label select option{
+            color: black;
+        }
+
+        .more-students-data .dataTables_wrapper .dataTables_filter input {
             border: 1px solid white;
             margin-left: 10px;
             border-radius: 10px;
@@ -202,7 +215,7 @@ else {
             color: var(--clr-btn-text-logo);
         }
 
-        .contact-container {
+        .edit-modal-container {
             position: fixed;
             width: 98.8vw;
             height: 100vh;
@@ -215,7 +228,7 @@ else {
             transition: 0.6s;
         }
 
-        .contact-container .wrapper {
+        .edit-modal-container .edit-modal-wrapper {
             width: 40%;
             height: 80%;
             background: white;
@@ -230,7 +243,7 @@ else {
             transform: scale(0);
         }
 
-        .contact-form {
+        .modal-edit {
             width: 80%;
             height: 95%;
             display: flex;
@@ -240,13 +253,13 @@ else {
             color: black;
         }
 
-        .contact-form h2 {
+        .modal-edit h2 {
             font-size: 2rem;
             font-family: 'Roboto', sans-serif;
             margin-bottom: 15px;
         }
 
-        .contact-form form {
+        .modal-edit form {
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -254,7 +267,7 @@ else {
             width: 100%;
         }
 
-        .contact-form form label {
+        .modal-edit form label {
             font-size: 1.5rem;
             font-family: 'Roboto', sans-serif;
             ;
@@ -262,7 +275,7 @@ else {
             margin-bottom: 6px;
         }
 
-        .contact-form .inputs {
+        .modal-edit .inputs {
             width: 100%;
             height: 35px;
             margin-bottom: 20px;
@@ -306,30 +319,31 @@ else {
 </head>
 
 <body>
-    <!-- contact container starts here -->
-    <div class="contact-container">
-        <div class="wrapper">
-            <div class="contact-form">
-                <h2>Edit Modal</h2>
+    <!-- edit modal structure starts here -->
+    <div class="edit-modal-container">
+        <div class="edit-modal-wrapper">
+            <div class="modal-edit">
+                <h2>Edit Student Details</h2>
                 <form action="#" autocomplete="off">
                     <label for="name">Student Name</label>
-                    <input class="inputs" type="text" name="name" id="name" placeholder="Enter Your Name">
+                    <input class="inputs" type="text" name="name" id="name" placeholder="Student Name" required>
                     <label for="email">Student Email</label>
-                    <input class="inputs" type="email" name="email" id="email" placeholder="Enter Your Email" required>
+                    <input class="inputs" type="email" name="email" id="email" placeholder="Student Email" required>
                     <label for="phone">Student Phone</label>
-                    <input class="inputs" type="tel" name="phone" id="phone" placeholder="Enter Your Phone Number"
+                    <input class="inputs" type="tel" name="phone" id="phone" placeholder="Student Phone Number"
                         required>
-                    <label for="message">Student Message</label>
-                    <input type="text" class="inputs" name="message" id="message" placeholder="Enter Your Message">
+                    <label for="message">Student Attendance</label>
+                    <input type="number" class="inputs" name="attendance" id="attendance"
+                        placeholder="Student Attendance" required>
                     <div class="btn-container">
                         <button type="button" id="btn-close">Close</button>
-                        <button type="submit" id="btn-submit">Submit</button>
+                        <button type="submit" id="btn-submit">Save Changes</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <!-- contact container ends here -->
+    <!-- edit modal structure ends here -->
 
     <?php require("partitions/_headers.php") ?>
     <div class="container">
@@ -358,77 +372,73 @@ else {
                 <span class="warnings">No Unqualified Students</span>
                 <span class="unread-messages">No unread messages</span>
             </section>
-            <section class="essential_buttons">
-                <a class="essential-button" href="#more_students_table">
-                    <span class="material-symbols-outlined">
-                        edit_note
-                    </span>
-                    <span class="essential-btn-text">Edit Record</span>
-                </a>
-                <a class="essential-button" href="#set_attendance_goal">
-                    <span class="material-symbols-outlined">
-                        add_task
-                    </span>
-                    <span class="essential-btn-text">Set Goal</span>
-                </a>
-                <a class="essential-button">
-                    <span class="material-symbols-outlined">
-                        encrypted
-                    </span>
-                    <span class="essential-btn-text">Lock Attendance</span>
-                </a>
-                <a class="essential-button">
-                    <span class="material-symbols-outlined">
-                        edit_note
-                    </span>
-                    <span class="essential-btn-text">Edit Database</span>
-                </a>
-            </section>
+
+            <?php
+            // only admin gets access to the essential buttons
+            if (isset($_SESSION['teacher_dept'])) {
+                echo
+                    '
+                        <section class="essential_buttons">
+                            <a class="essential-button" href="#more_students_table">
+                                <span class="material-symbols-outlined">
+                                    edit_note
+                                </span>
+                                <span class="essential-btn-text">Edit Record</span>
+                            </a>
+                            <a class="essential-button" href="#set_attendance_goal">
+                                <span class="material-symbols-outlined">
+                                    add_task
+                                </span>
+                                <span class="essential-btn-text">Set Goal</span>
+                            </a>
+                            <a class="essential-button">
+                                <span class="material-symbols-outlined">
+                                    encrypted
+                                </span>
+                                <span class="essential-btn-text">Lock Attendance</span>
+                            </a>
+                            <a class="essential-button">
+                                <span class="material-symbols-outlined">
+                                    edit_note
+                                </span>
+                                <span class="essential-btn-text">Edit Database</span>
+                            </a>
+                        </section>
+                    ';
+            }
+            ?>
+
             <section class="top-students">
                 <p class="heading-text">Top Students in this Month</p>
                 <div class="students-container">
                     <?php
-                    // generating top student cards
-                    $topStudentsSql = "SELECT `student_name`, `october` FROM `student_attendance` ORDER BY `" . strtolower(date('F')) . "` DESC LIMIT 4";
+                    # TODO: fetch student profile pic
+                    if (isset($_SESSION['teacher_dept'])) {
+                        $topStudentsSql = "SELECT `student_id`, `student_name`, `" . strtolower(date('F')) . "` FROM `student_attendance` WHERE `student_stream`='$_SESSION[teacher_dept]' ORDER BY `" . strtolower(date('F')) . "` DESC LIMIT 4";
+                    }
+                    else {
+                        $topStudentsSql = "SELECT `student_id`, `student_name`, `" . strtolower(date('F')) . "` FROM `student_attendance` ORDER BY `" . strtolower(date('F')) . "` DESC LIMIT 4";
+                    }
                     // $top_students = mysqli_query($conn, $topStudentsSql);
                     $query = $pdo->prepare($topStudentsSql);
                     $top_students = $query->execute();
                     // while ($top = mysqli_fetch_assoc($top_students)) {
-                    while($top = $query->fetch(PDO::FETCH_ASSOC)){
-                        echo '  <div class="student">
-                                        <div class="profile-image">
-                                            <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg"
-                                                alt="profile image">
-                                        </div>
-                                        <p class="student-name">' . $top['student_name'] . '</p>
-                                        <p class="attendance-count">Attendance Count: <span>' . $top[strtolower(date('F'))] . '</span></p>
-                                    </div>';
+                    while ($top = $query->fetch(PDO::FETCH_ASSOC)) {
+                        $getStudentPic = "SELECT `profile_picture` FROM `student_profile` WHERE `student_id`='$top[student_id]'";
+                        $getPic = $pdo->prepare($getStudentPic);
+                        $getPic->execute();
+                        $picture = $getPic->fetch(PDO::FETCH_ASSOC);
+                        echo
+                            '  <div class="student">
+                                    <div class="profile-image">
+                                        <img src="../profile_pictures/'.$picture['profile_picture'].'" alt="profile image">
+                                    </div>
+                                    <p class="student-name">' . $top['student_name'] . '</p>
+                                    <p class="attendance-count">Attendance Count: <span>' . $top[strtolower(date('F'))] . '</span></p>
+                                </div>
+                            ';
                     }
                     ?>
-                    <!-- <div class="student" id="student-2">
-                        <div class="profile-image">
-                            <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg"
-                                alt="profile image">
-                        </div>
-                        <p class="student-name">Swagata Mukherjee</p>
-                        <p class="attendance-count">Attendance Count: <span>10</span></p>
-                    </div>
-                    <div class="student" id="student-3">
-                        <div class="profile-image">
-                            <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg"
-                                alt="profile image">
-                        </div>
-                        <p class="student-name">Swagata Mukherjee</p>
-                        <p class="attendance-count">Attendance Count: <span>10</span></p>
-                    </div>
-                    <div class="student" id="student-4">
-                        <div class="profile-image">
-                            <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg"
-                                alt="profile image">
-                        </div>
-                        <p class="student-name">Swagata Mukherjee</p>
-                        <p class="attendance-count">Attendance Count: <span>10</span></p>
-                    </div> -->
                 </div>
             </section>
             <section class="more-students-data" id="more_students_table">
@@ -444,44 +454,72 @@ else {
                             <th>Attendance</th>
                             <th>Stream</th>
                             <th>Semester</th>
-                            <th>Actions</th>
+                            <?php
+                            if (isset($_SESSION['teacher_dept'])) {
+                                echo '<th>Actions</th>';
+                            }
+                            ?>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
+                        // generating top student table according to hod dept or regular teacher
+                        if (isset($_SESSION["teacher_dept"])) {
+                            $getStudentData = "SELECT * FROM `student_profile` WHERE `student_stream`='$_SESSION[teacher_dept]'";
+                        }
+                        else {
                             $getStudentData = "SELECT * FROM `student_profile`";
-                            // $getResult = mysqli_query($conn, $getStudentData);
-                            $query1 = $pdo->prepare($getStudentData);
-                            $getResult = $query1->execute();
-                            $serial_no = 1;
-                            $month = strtolower(date("F"));
-                            while ($student_profile = $query1->fetch(PDO::FETCH_ASSOC)) {
-                                $getStudentAttendance = "SELECT `$month` FROM `student_attendance` WHERE `student_id` = '" . $student_profile['student_id'] . "'";
-                                // $attendanceResult = mysqli_query($conn, $getStudentAttendance);
-                                $query2 = $pdo->prepare($getStudentAttendance);
-                                $attendanceResult = $query2->execute();
-                                // $attendanceData = mysqli_fetch_assoc($attendanceResult);
-                                $attendanceData = $query2->fetch(PDO::FETCH_ASSOC);
-                                echo "  <tr>
-                                                    <td>" . $serial_no . "</td>
-                                                    <td>" . $student_profile['student_id'] . "</td>
-                                                    <td>" . $student_profile['student_name'] . "</td>
-                                                    <td>" . $student_profile['student_phone'] . "</td>
-                                                    <td>" . $student_profile['student_email'] . "</td>
-                                                    <td>" . $attendanceData[$month] . "</td>
-                                                    <td>" . $student_profile['student_stream'] . "</td>
-                                                    <td>" . $student_profile['student_semester'] . "</td>
-                                                    <td id='action-td'>
-                                                        <button class='table-btn-edit' type='button' title='Edit'>
-                                                            Edit
-                                                        </button>
-                                                        <button class='table-btn-delete' type='button' title='Delete'>
-                                                            Delete
-                                                        </button>
-                                                    </td>
-                                                </tr>";
-                                $serial_no += 1;
+                        }
+                        // $getResult = mysqli_query($conn, $getStudentData);
+                        $query1 = $pdo->prepare($getStudentData);
+                        $getResult = $query1->execute();
+                        $serial_no = 1;
+                        $month = strtolower(date("F"));
+                        while ($student_profile = $query1->fetch(PDO::FETCH_ASSOC)) {
+                            $getStudentAttendance = "SELECT `$month` FROM `student_attendance` WHERE `student_id` = '" . $student_profile['student_id'] . "'";
+                            // $attendanceResult = mysqli_query($conn, $getStudentAttendance);
+                            $query2 = $pdo->prepare($getStudentAttendance);
+                            $attendanceResult = $query2->execute();
+                            // $attendanceData = mysqli_fetch_assoc($attendanceResult);
+                            $attendanceData = $query2->fetch(PDO::FETCH_ASSOC);
+                            if (isset($_SESSION["teacher_dept"])) {
+                                echo
+                                    "   <tr>
+                                            <td>" . $serial_no . "</td>
+                                            <td>" . $student_profile['student_id'] . "</td>
+                                            <td>" . $student_profile['student_name'] . "</td>
+                                            <td>" . $student_profile['student_phone'] . "</td>
+                                            <td>" . $student_profile['student_email'] . "</td>
+                                            <td>" . $attendanceData[$month] . "</td>
+                                            <td>" . $student_profile['student_stream'] . "</td>
+                                            <td>" . $student_profile['student_semester'] . "</td>
+                                            <td id='action-td'>
+                                                <button class='table-btn-edit' type='button' title='Edit'>
+                                                    Edit
+                                                </button>
+                                                <button class='table-btn-delete' type='button' title='Delete'>
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ";
                             }
+                            else {
+                                echo
+                                    "   <tr>
+                                            <td>" . $serial_no . "</td>
+                                            <td>" . $student_profile['student_id'] . "</td>
+                                            <td>" . $student_profile['student_name'] . "</td>
+                                            <td>" . $student_profile['student_phone'] . "</td>
+                                            <td>" . $student_profile['student_email'] . "</td>
+                                            <td>" . $attendanceData[$month] . "</td>
+                                            <td>" . $student_profile['student_stream'] . "</td>
+                                            <td>" . $student_profile['student_semester'] . "</td>
+                                        </tr>
+                                    ";
+                            }
+                            $serial_no += 1;
+                        }
                         ?>
                     </tbody>
                 </table>
@@ -523,10 +561,10 @@ else {
         const delete_buttons = document.querySelectorAll('.table-btn-delete');
         edit_buttons.forEach(element => {
             element.addEventListener('click', (e) => {
-                document.querySelector(".contact-container").style.position = "fixed";
-                document.querySelector(".contact-container").style.opacity = "1";
-                document.querySelector(".contact-container .wrapper").style.transform = "scale(1)";
-                document.querySelector(".contact-container").style.zIndex = "100";
+                document.querySelector(".edit-modal-container").style.position = "fixed";
+                document.querySelector(".edit-modal-container").style.opacity = "1";
+                document.querySelector(".edit-modal-container .edit-modal-wrapper").style.transform = "scale(1)";
+                document.querySelector(".edit-modal-container").style.zIndex = "100";
             });
         });
 
@@ -538,16 +576,15 @@ else {
                     const email = targetElement.getElementsByTagName('td')[4].innerText;
                     document.getElementById('delete_form').getElementsByTagName('input')[0].value = id;
                     document.getElementById('delete_form').getElementsByTagName('input')[1].value = email;
-                    console.log(id, email);
                     document.getElementById('delete_form').submit();
                 }
             });
         });
 
         document.getElementById("btn-close").addEventListener("click", () => {
-            document.querySelector(".contact-container .wrapper").style.transform = "scale(0)";
-            document.querySelector(".contact-container").style.opacity = "0";
-            document.querySelector(".contact-container").style.zIndex = "-100";
+            document.querySelector(".edit-modal-container .edit-modal-wrapper").style.transform = "scale(0)";
+            document.querySelector(".edit-modal-container").style.opacity = "0";
+            document.querySelector(".edit-modal-container").style.zIndex = "-100";
         });
 
     </script>

@@ -1,7 +1,19 @@
 <link rel="stylesheet" href="css/leftNav.css">
 <div class="container__leftNav">
     <div class="leftNav__contents">
-        <a href="student_home.php" class="contents__home">
+        <a 
+        <?php
+            if (isset($_SESSION['student_loggedin']) && $_SESSION['student_loggedin'] == true){
+                echo 'href="student_home.php"';
+            }
+            else if (isset($_SESSION['teacher_loggedin']) && $_SESSION['teacher_loggedin'] == true) {
+                echo 'href="teacher_home.php"';
+            }
+            else{
+                echo '/Minor_Project/Student_Attendance_System/';
+            }
+        ?> 
+        class="contents__home">
             <span class="material-symbols-outlined">
                 home
             </span>

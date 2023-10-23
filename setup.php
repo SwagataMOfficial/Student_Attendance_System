@@ -62,7 +62,7 @@ if ($result) {
 }
 
 // table 4 - Messages
-$sql = 'CREATE TABLE IF NOT EXISTS `messages` (`sno` INT(5) NOT NULL AUTO_INCREMENT , `student_id` INT(10) NULL DEFAULT NULL , `teacher_id` INT(5) NULL DEFAULT NULL , `student_message` TEXT NULL DEFAULT NULL , `teacher_message` TEXT NULL DEFAULT NULL , `message_time` DATETIME NOT NULL , PRIMARY KEY (`sno`)) ENGINE = InnoDB';
+$sql = 'CREATE TABLE IF NOT EXISTS `messages` (`sno` INT(5) NOT NULL AUTO_INCREMENT , `student_id` VARCHAR(20) NULL DEFAULT NULL , `teacher_id` VARCHAR(20) NULL DEFAULT NULL , `student_message` TEXT NULL DEFAULT NULL , `teacher_message` TEXT NULL DEFAULT NULL , `message_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`sno`)) ENGINE = InnoDB';
 $result = mysqli_query($conn, $sql);
 if ($result) {
     $tablecreated = true;
@@ -89,7 +89,7 @@ if ($result) {
 }
 
 // table 7 - student attendance
-$sql = "CREATE TABLE IF NOT EXISTS `student_attendance` (`sno` INT(5) NOT NULL AUTO_INCREMENT,`student_id` VARCHAR(20) NOT NULL , `student_name` VARCHAR(50) NOT NULL , `january` INT(2) NOT NULL DEFAULT '0' , `february` INT(2) NOT NULL DEFAULT '0' , `march` INT(2) NOT NULL DEFAULT '0' , `april` INT(2) NOT NULL DEFAULT '0' , `may` INT(2) NOT NULL DEFAULT '0' , `june` INT(2) NOT NULL DEFAULT '0' , `july` INT(2) NOT NULL DEFAULT '0' , `august` INT(2) NOT NULL DEFAULT '0' , `september` INT(2) NOT NULL DEFAULT '0' , `october` INT(2) NOT NULL DEFAULT '0' , `november` INT(2) NOT NULL DEFAULT '0' , `december` INT(2) NOT NULL DEFAULT '0' , `remarks` VARCHAR(10) NOT NULL , `grade` CHAR(1) NOT NULL , PRIMARY KEY (`student_id`), UNIQUE `sno_unique` (`sno`)) ENGINE = InnoDB";
+$sql = "CREATE TABLE IF NOT EXISTS `student_attendance` (`sno` INT(5) NOT NULL AUTO_INCREMENT,`student_id` VARCHAR(20) NOT NULL , `student_name` VARCHAR(50) NOT NULL , `student_stream` VARCHAR(5) NOT NULL, `january` INT(2) NOT NULL DEFAULT '0' , `february` INT(2) NOT NULL DEFAULT '0' , `march` INT(2) NOT NULL DEFAULT '0' , `april` INT(2) NOT NULL DEFAULT '0' , `may` INT(2) NOT NULL DEFAULT '0' , `june` INT(2) NOT NULL DEFAULT '0' , `july` INT(2) NOT NULL DEFAULT '0' , `august` INT(2) NOT NULL DEFAULT '0' , `september` INT(2) NOT NULL DEFAULT '0' , `october` INT(2) NOT NULL DEFAULT '0' , `november` INT(2) NOT NULL DEFAULT '0' , `december` INT(2) NOT NULL DEFAULT '0' , `remarks` VARCHAR(10) NOT NULL , `grade` CHAR(1) NOT NULL , PRIMARY KEY (`student_id`), UNIQUE `sno_unique` (`sno`)) ENGINE = InnoDB";
 $result = mysqli_query($conn, $sql);
 if ($result) {
     $tablecreated = true;
