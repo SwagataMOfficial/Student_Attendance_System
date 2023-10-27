@@ -25,10 +25,9 @@ html {
     background-color: var(--clr-bgcolor);
 }
 
-.container__rightMain {
-    /* background: rgb(86, 64, 64); */
+.right-main {
     width: calc(100vw - 16.5vw);
-    /* height: 100vh; */
+    transition: 0.4s;
 }
 
 .welcome-heading {
@@ -61,7 +60,7 @@ html {
     background-color: #d43e3e;
 }
 
-.container__rightMain .nofifications {
+.right-main .nofifications {
     /* background-color: red; */
     width: 100%;
     height: 12vh;
@@ -74,7 +73,7 @@ html {
     border-bottom: 1px solid var(--clr-border);
 }
 
-.container__rightMain .essential_buttons {
+.right-main .essential_buttons {
     /* background-color: red; */
     width: 100%;
     height: 12vh;

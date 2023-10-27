@@ -525,7 +525,7 @@ else {
     <?php require("partitions/_headers.php") ?>
     <div class="container">
         <?php require("partitions/_leftNavOptions.php") ?>
-        <div class="container__rightMain">
+        <div class="right-main">
             <div class="welcome-heading">
                 <span class="welcome-text">
                     Welcome <em>'<?php
