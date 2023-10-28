@@ -5,6 +5,22 @@ include('partitions/_dbconnect.php');
 // checking if a student has logged in
 if (isset($_SESSION['student_loggedin']) && $_SESSION['student_loggedin'] == true) {
     $student_email = $_SESSION["student_email"];
+
+    // template for chart
+    $attendanceDetails = array(
+        array("label" => "January"),
+        array("label" => "February"),
+        array("label" => "March"),
+        array("label" => "April"),
+        array("label" => "May"),
+        array("label" => "June"),
+        array("label" => "July"),
+        array("label" => "August"),
+        array("label" => "September"),
+        array("label" => "October"),
+        array("label" => "November"),
+        array("label" => "December"),
+    );
     $getStudentData = "SELECT * FROM `student_profile` WHERE `student_email` ='$student_email'";
     // $result = mysqli_query($conn, $getStudentData);
     $query = $pdo->prepare($getStudentData);
@@ -37,6 +53,11 @@ if (isset($_SESSION['student_loggedin']) && $_SESSION['student_loggedin'] == tru
     $student_name = $studentData['student_name'];
     $attendance = $studentData["$month"];
     $_SESSION['is_locked'] = $studentData['is_locked'];
+    $i = 0;
+    while ($i < 12) {
+        $attendanceDetails[$i]['y'] = $studentData[strtolower($attendanceDetails[$i]['label'])];
+        $i += 1;
+    }
 
     // post request handle
     if (isset($_POST["scan"]) && $_POST["scan"] == "scan") {
@@ -72,41 +93,39 @@ else {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page (Student)</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <link rel="stylesheet" href="css/index.css">
-    <style>
-        .arrow-rotate {
-            transform: rotate(180deg) !important;
-        }
+    <link rel="stylesheet" href="css/student_home.css">
+    <script>
+        window.onload = function() {
 
-        .nav-active {
-            width: 4.5vw !important;
-        }
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                // exportEnabled: true,
+                // theme: "light1", // "light1", "light2", "dark1", "dark2"
+                // theme: "light2", // "light1", "light2", "dark1", "dark2"
+                theme: "dark1", // "light1", "light2", "dark1", "dark2"
+                // theme: "dark2", // "light1", "light2", "dark1", "dark2"
+                backgroundColor: "transparent",
+                title: {
+                    text: "Attendance"
+                },
+                axisY: {
+                    title: "Attendance Count (in days)",
+                    includeZero: true
+                },
+                data: [{
+                    type: "column", //change type to bar, line, area, pie, etc
+                    //indexLabel: "{y}", //Shows y value on all Data Points
+                    // indexLabelFontColor: "#5A5757",
+                    indexLabelFontColor: "#5A5757",
+                    indexLabelPlacement: "outside",
+                    bevelEnabled: true,
+                    dataPoints: <?php echo json_encode($attendanceDetails, JSON_NUMERIC_CHECK); ?>
+                }]
+            });
+            chart.render();
 
-        .main-stretch {
-            width: calc(100vw - 4.5vw) !important;
         }
-
-        .btn-collapse {
-            display: none !important;
-            pointer-events: none !important;
-        }
-
-        .collapsed-sm {
-            opacity: 0 !important;
-            pointer-events: none !important;
-        }
-
-        .headings-no-link {
-            margin: 8px 0px !important;
-            width: 4vw !important;
-            height: 6vh !important;
-        }
-
-        .link-paras {
-            padding-left: 0 !important;
-            text-align: center !important;
-        }
-    </style>
+    </script>
 </head>
 
 <body>
@@ -118,14 +137,13 @@ else {
         <div class="right-main">
             <div class="welcome-heading">
                 <span class="welcome-text">
-                    Welcome <i>'<?php
-                                if (isset($_SESSION["student_name"])) {
-                                    echo $_SESSION["student_name"];
-                                } else {
-                                    echo "[Student Name]";
-                                }
-                                ?>'
-                    </i>
+                    <?php
+                    if (isset($_SESSION["student_name"])) {
+                        echo "Welcome <i>'$_SESSION[student_name]'</i>";
+                    } else {
+                        echo "Welcome <i>'[Student Name]'</i>";
+                    }
+                    ?>
                 </span>
                 <a href="logout.php" class="logout" id="logout">
                     <span class="material-symbols-outlined">
@@ -151,21 +169,17 @@ else {
                 <span class="unread-messages">No unread messages</span>
             </section>
             <section class="charts" id="progress">
+                <p class="bar-chart-heading">Your Monthly Attendance Report</p>
                 <div class="chart">
-                    <p class="bar-chart-heading">Your Monthly Attendance Report</p>
-                    <img src="https://www.pngall.com/wp-content/uploads/10/Bar-Chart-Vector-PNG-Photos.png" alt="bar chart">
-                </div>
-                <div class="chart">
-                    <p class="pie-chart-heading">Your Progress</p>
-                    <img src="assets/progress.png" alt="pie chart">
-                    <span class="result">80%</span>
+                    <div id="chartContainer" style=" width: 95%;"></div>
                 </div>
             </section>
         </div>
     </div>
     <!-- including footer for our html -->
     <?php require("partitions/_footers.php") ?>
-    <script src="js/index.js"></script>
+
+    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
     <?php
     if (isset($_POST["scan"]) && $_POST["scan"] == "scan") {
         echo '<script>
@@ -174,25 +188,7 @@ else {
     }
     ?>
 
-    <script>
-        const collapse_btn = document.getElementById('collapse-btn');
-
-        collapse_btn.addEventListener('click', () => {
-            document.querySelector('#collapse-btn .material-symbols-outlined').classList.toggle('arrow-rotate');
-            document.querySelector('.container .left-nav').classList.toggle('nav-active');
-            document.querySelector('.container .right-main').classList.toggle('main-stretch');
-            document.querySelector('#collapse-btn .collapse-name').classList.toggle('btn-collapse');
-            document.querySelectorAll('.links p').forEach(e => {
-                e.classList.toggle('collapsed-sm');
-            });
-            document.querySelectorAll('.contents .links').forEach(e => {
-                e.classList.toggle('headings-no-link');
-            });
-            document.querySelectorAll('.link-heading').forEach(e => {
-                e.classList.toggle('link-paras');
-            });
-        });
-    </script>
+    <script src="js/collapse.js"></script>
 
 </body>
 

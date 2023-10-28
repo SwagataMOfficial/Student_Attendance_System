@@ -6,15 +6,12 @@ include('partitions/_dbconnect.php');
 if (isset($_SESSION['teacher_loggedin']) && $_SESSION['teacher_loggedin'] == true) {
     $teacher_email = $_SESSION["teacher_email"];
     $getTeacherData = "SELECT * FROM `teacher_profile` WHERE `teacher_email`='$teacher_email'";
-    // $result = mysqli_query($conn, $getTeacherData);
     $query = $pdo->prepare($getTeacherData);
     $result = $query->execute();
 
-    // checking if teacher has created a profile or not
-    // $numRows = mysqli_num_rows($result);
+    // checking if teacher has created a profile or not.
     $numRows = $query->rowCount();
     if ($numRows == 1) {
-        // $teacher = mysqli_fetch_assoc($result);
         $teacher = $query->fetch(PDO::FETCH_ASSOC);
         $_SESSION["teacher_id"] = $teacher['teacher_id'];
         $_SESSION["teacher_name"] = $teacher['teacher_name'];
@@ -30,7 +27,7 @@ if (isset($_SESSION['teacher_loggedin']) && $_SESSION['teacher_loggedin'] == tru
         header("Location: /Minor_Project/Student_Attendance_System/teacherProfile.php");
     }
 
-    // handling student record edit request
+    // handling student record edit request.
     if (isset($_POST['save_changes']) && $_POST['save_changes'] == "save_changes") {
         $id = $_POST['s_id'];
         $name = $_POST['s_name'];
@@ -50,27 +47,23 @@ if (isset($_SESSION['teacher_loggedin']) && $_SESSION['teacher_loggedin'] == tru
         }
     }
 
-    // checking for deletion request
+    // checking for deletion request.
     if (isset($_POST['d_id']) && isset($_POST['d_email'])) {
         $delete_id = $_POST['d_id'];
         $delete_email = $_POST['d_email'];
         $delete_query1 = "DELETE FROM `student_registration` WHERE `student_email` = '$delete_email'";
-        // $deletion = mysqli_query($conn, $delete_query1);
         $query = $pdo->prepare($delete_query1);
         $deletion = $query->execute();
         if ($deletion) {
             $delete_query2 = "DELETE FROM `student_attendance` WHERE `student_id` = '$delete_id'";
-            // $deletion = mysqli_query($conn, $delete_query2);
             $query = $pdo->prepare($delete_query2);
             $deletion = $query->execute();
             if ($deletion) {
                 $delete_query3 = "DELETE FROM `student_profile` WHERE `student_id` = '$delete_id'";
-                // $deletion = mysqli_query($conn, $delete_query3);
                 $query = $pdo->prepare($delete_query3);
                 $deletion = $query->execute();
                 if ($deletion) {
                     $delete_query4 = "DELETE FROM `messages` WHERE `student_id` = '$delete_id'";
-                    // $deletion = mysqli_query($conn, $delete_query3);
                     $query = $pdo->prepare($delete_query4);
                     $deletion = $query->execute();
                 }
@@ -78,18 +71,25 @@ if (isset($_SESSION['teacher_loggedin']) && $_SESSION['teacher_loggedin'] == tru
         }
     }
 
+    // handling attendance goal setting request.
+    if(isset($_POST['goal_set']) && $_POST['goal_set'] == 'goal_set'){
+        $goal = $_POST['attendance_goal'];
+        $attendance_goal_query = "UPDATE `student_attendance` SET `attendance_goal` = '$goal';";
+        $goalSetting = $pdo->prepare($attendance_goal_query);
+        $goalSet = $goalSetting->execute();
+    }
+
+    // handling student's scanner locking-unlocking request.
     if (isset($_POST['lock_unlock_id'])) {
         $id = $_POST['lock_unlock_id'];
         if ($_POST['lock_unlock'] == 'lock') {
             $query = "UPDATE `student_attendance` SET `is_locked` = '1' WHERE `student_id` = '$id'";
             $stmt = $pdo->prepare($query);
             $locked = $stmt->execute();
-            // header("Location: /Minor_Project/Student_Attendance_System/teacher_home.php");
         } else if ($_POST['lock_unlock'] == 'unlock') {
             $query = "UPDATE `student_attendance` SET `is_locked` = '0' WHERE `student_id` = '$id'";
             $stmt = $pdo->prepare($query);
             $unlocked = $stmt->execute();
-            // header("Location: /Minor_Project/Student_Attendance_System/teacher_home.php");
         }
     }
 }
@@ -108,388 +108,6 @@ else {
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="css/teacher_home.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-
-        .top-students {
-            padding-bottom: 30px;
-            border-bottom: 1px solid var(--clr-border);
-        }
-
-        .top-students .heading-text {
-            margin: 15px;
-            text-align: center;
-            font-size: 1.5rem;
-            color: var(--clr-btn-text-logo);
-        }
-
-        .top-students .students-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 3.5rem;
-            padding-top: 5px;
-        }
-
-        .top-students .student {
-            width: 16vw;
-            height: 36vh;
-            border-radius: 1.3rem;
-            border: 3px solid var(--clr-border);
-            box-shadow: 0 0 8px 1px var(--clr-border);
-            /* background-color: red; */
-        }
-
-        .top-students .student .profile-image {
-            width: 100px;
-            height: 100px;
-            margin: auto;
-            margin-top: 20px;
-            border-radius: 50%;
-            overflow: hidden;
-            background-color: red;
-        }
-
-        .top-students .student .profile-image img {
-            width: 100%;
-        }
-
-        .top-students .student .student-name {
-            color: var(--clr-btn-text-logo);
-            font-size: 1.5rem;
-            text-align: center;
-            margin-top: 1rem;
-        }
-
-        .top-students .student .attendance-count {
-            color: var(--clr-btn-text-logo);
-            font-size: 1.5rem;
-            text-align: center;
-            margin-top: 1rem;
-        }
-
-        .more-students-data {
-            color: white;
-            border-bottom: 1px solid var(--clr-border);
-            /* background: #b49f9f; */
-            /* display: flex;
-            justify-content: center;
-            align-items: center; */
-            /* margin-top: 1%; */
-            /* padding-bottom: 1%; */
-        }
-
-        .more-students-data .more-data-heading {
-            margin: 15px;
-            text-align: center;
-            font-size: 1.5rem;
-            color: var(--clr-btn-text-logo);
-        }
-
-        .more-students-data .dataTables_wrapper {
-            position: relative;
-            clear: both;
-            width: 90%;
-            margin: auto;
-            padding-bottom: 3vh;
-        }
-
-        .more-students-data .dataTables_wrapper .dataTables_length label select option {
-            color: black;
-        }
-
-        .more-students-data .dataTables_wrapper .dataTables_filter input {
-            border: 1px solid white;
-            margin-left: 10px;
-            border-radius: 10px;
-            padding-left: 10px;
-        }
-
-        .more-students-data #action-td {
-            display: flex;
-            align-items: center;
-        }
-
-        .more-students-data #students_table .table-btn-edit,
-        #students_table .table-btn-delete {
-            border-radius: 10px;
-            font-size: 16px;
-            margin-left: 10px;
-            padding: 5px 8px;
-            outline: none;
-            border: 2px solid var(--clr-border);
-            background: transparent;
-            color: var(--clr-btn-text-logo);
-            cursor: pointer;
-            transition: 0.3s ease-in;
-            overflow: hidden;
-        }
-
-        #students_table .table-btn-edit:hover,
-        #students_table .table-btn-delete:hover {
-            color: white;
-            background: var(--clr-hover-color);
-            box-shadow: 0 0 8px 0px var(--clr-border);
-        }
-
-        #students_table .table-btn-edit:active,
-        #students_table .table-btn-delete:active {
-            transform: scale(0.8);
-        }
-
-        table.dataTable.no-footer {
-            border-bottom: 1px solid var(--clr-border);
-        }
-
-        .edit-modal-container {
-            position: fixed;
-            width: 98.8vw;
-            height: 100vh;
-            background: #000000c2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: -100;
-            opacity: 0;
-            transition: 0.6s;
-        }
-
-        .edit-modal-container .edit-modal-wrapper {
-            width: 40%;
-            height: 80%;
-            background: white;
-            border: 2px solid rgba(255, 255, 255, .5);
-            border-radius: 40px;
-            border: 2px solid black;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            transition: 0.5s;
-            transform: scale(0);
-        }
-
-        .edit-modal-container .edit-modal-wrapper::-webkit-scrollbar {
-            width: 5px;
-        }
-
-        .modal-edit {
-            width: 80%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-edit h2 {
-            font-size: 2rem;
-            font-family: 'Roboto', sans-serif;
-            margin-bottom: 7px;
-        }
-
-        .modal-edit form {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            width: 100%;
-        }
-
-        .modal-edit form label {
-            font-size: 1.5rem;
-            font-family: 'Roboto', sans-serif;
-            ;
-            margin-left: 1vw;
-            margin-bottom: 7px;
-        }
-
-        .modal-edit .inputs {
-            width: 100%;
-            height: 30px;
-            margin-bottom: 5px;
-            outline: none;
-            font-size: 1.3rem;
-            border: 1px solid black;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .btn-container {
-            width: 100%;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-
-        #btn-submit,
-        #btn-close {
-            margin: 10px 0px;
-            width: 45%;
-            height: 45px;
-            background-color: #003e70;
-            border: none;
-            outline: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1.4rem;
-            color: #fff;
-            font-weight: 500;
-            transition: 0.5s;
-        }
-
-
-        #btn-submit:hover,
-        #btn-close:hover {
-            background-color: #00325a;
-        }
-
-        .set-goal-section {
-            border-bottom: 1px solid var(--clr-border);
-        }
-
-        .set-goal-text {
-            margin: 15px;
-            text-align: center;
-            font-size: 1.5rem;
-            color: var(--clr-btn-text-logo);
-        }
-
-        .set-goal-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 3vh;
-        }
-
-        .set-goal-input {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1.2rem;
-        }
-
-        .set-goal-input input {
-            width: 17vw;
-            height: 8vh;
-            border: 3px solid var(--clr-border);
-            border-radius: 15px;
-            color: var(--clr-btn-text-logo);
-            outline: none;
-            font-size: 1.7em;
-            text-align: center;
-            background: transparent;
-        }
-
-        .set-goal-input input::-webkit-outer-spin-button,
-        .set-goal-input input::-webkit-inner-spin-button {
-            appearance: none;
-            -webkit-appearance: none;
-        }
-
-        .set-goal-input button {
-            background: transparent;
-            outline: none;
-            border: 2px solid var(--clr-border);
-            color: var(--clr-btn-text-logo);
-            width: 4vw;
-            height: 6vh;
-            border-radius: 1rem;
-            cursor: pointer;
-        }
-
-        .set-goal-input button:hover {
-            background-color: var(--clr-hover-color);
-            color: white;
-            box-shadow: 0 0 8px 0px var(--clr-border);
-        }
-
-        .set-goal-input button:active {
-            transform: scale(0.95);
-        }
-
-        .set-goal-input span {
-            font-size: 2rem;
-        }
-
-        .search-input {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1.2rem;
-        }
-
-        .search-input input {
-            width: 17vw;
-            height: 8vh;
-            border: 3px solid var(--clr-border);
-            border-radius: 15px;
-            color: var(--clr-btn-text-logo);
-            outline: none;
-            font-size: 1.7em;
-            text-align: center;
-            background: transparent;
-        }
-
-        .search-input button {
-            background: transparent;
-            outline: none;
-            border: 2px solid var(--clr-border);
-            font-size: 1.2rem;
-            color: var(--clr-btn-text-logo);
-            width: 8vw;
-            height: 6vh;
-            border-radius: 1rem;
-            cursor: pointer;
-        }
-
-        .search-input button:hover {
-            background-color: var(--clr-hover-color);
-            color: white;
-            box-shadow: 0 0 8px 0px var(--clr-border);
-        }
-
-        .search-input button:active {
-            transform: scale(0.95);
-        }
-
-        #search_result_length,
-        #search_result_filter,
-        #search_result_paginate {
-            display: none;
-        }
-
-        #lock-unlock {
-            display: flex;
-            align-items: center;
-        }
-
-        #lock-unlock .table-btn-lock,
-        #lock-unlock .table-btn-unlock {
-            border-radius: 10px;
-            font-size: 16px;
-            margin-left: 10px;
-            padding: 5px 8px;
-            outline: none;
-            border: 2px solid var(--clr-border);
-            background: transparent;
-            color: var(--clr-btn-text-logo);
-            cursor: pointer;
-            transition: 0.3s ease-in;
-            overflow: hidden;
-        }
-
-        #lock-unlock .table-btn-lock:hover,
-        #lock-unlock .table-btn-unlock:hover {
-            color: white;
-            background: var(--clr-hover-color);
-            box-shadow: 0 0 8px 0px var(--clr-border);
-        }
-
-        #lock-unlock .table-btn-lock:active,
-        #lock-unlock .table-btn-unlock:active {
-            transform: scale(0.8);
-        }
-    </style>
 </head>
 
 <body>
@@ -707,7 +325,7 @@ else {
                     <div class="set-goal-container">
                         <div class="set-goal">
                             <form method="post" class="set-goal-input">
-                                <input type="number" name="attendance_goal" placeholder="Enter Goal (%)" required>
+                                <input type="number" name="attendance_goal" placeholder="Enter Goal (in numbers)" required>
                                 <button type="submit" name="goal_set" value="goal_set">
                                     <span class="material-symbols-outlined">done</span>
                                 </button>
@@ -861,6 +479,10 @@ else {
             echo 'alert("Attendance Unlocked Successfully!");
             window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
         }
+        if(isset($goalSet) && $goalSet){
+            echo 'alert("Attendance Goal Set Successfully!");
+            window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+        }
         ?>
 
         edit_buttons.forEach(element => {
@@ -932,6 +554,7 @@ else {
             document.querySelector(".edit-modal-container").style.zIndex = "-100";
         });
     </script>
+    <script src="js/collapse.js"></script>
 </body>
 
 </html>

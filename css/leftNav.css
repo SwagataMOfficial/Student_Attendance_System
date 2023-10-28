@@ -98,3 +98,36 @@
 #collapse-btn:hover {
     background-color: var(--clr-hover-color);
 }
+
+.arrow-rotate {
+    transform: rotate(180deg) !important;
+}
+
+.nav-active {
+    width: 4.5vw !important;
+}
+
+.main-stretch {
+    width: calc(100vw - 4.5vw) !important;
+}
+
+.btn-collapse {
+    display: none !important;
+    pointer-events: none !important;
+}
+
+.collapsed-sm {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+.headings-no-link {
+    margin: 8px 0px !important;
+    width: 4vw !important;
+    height: 6vh !important;
+}
+
+.link-paras {
+    padding-left: 0 !important;
+    text-align: center !important;
+}
