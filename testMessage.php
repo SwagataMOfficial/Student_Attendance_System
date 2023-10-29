@@ -243,8 +243,7 @@ if (isset($_SESSION["teacher_id"]) && !isset($_SESSION["student_id"])) {
         }
     </style>
 </head>
-<link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 <body>
     <?php require("partitions/_headers.php") ?>
@@ -255,8 +254,7 @@ if (isset($_SESSION["teacher_id"]) && !isset($_SESSION["student_id"])) {
 
             <div class="mainContainer">
                 <nav>
-                    <img class="logo" src="https://i.pinimg.com/474x/96/04/48/96044861e221c692bd6d29ecc360bbca.jpg"
-                        alt="chat logo">
+                    <img class="logo" src="https://i.pinimg.com/474x/96/04/48/96044861e221c692bd6d29ecc360bbca.jpg" alt="chat logo">
                     <h1>Messages</h1>
                 </nav>
                 <div class="messageContainer">
@@ -312,11 +310,17 @@ if (isset($_SESSION["teacher_id"]) && !isset($_SESSION["student_id"])) {
         </div>
     </div>
     <?php require("partitions/_footers.php") ?>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script>
         document.getElementById('messageipt').focus();
-        document.getElementById('messagebtn').addEventListener("click",()=>{
+        document.getElementById('messagebtn').addEventListener("click", () => {
             document.getElementById('messageipt').focus();
         });
+    </script>
+    <script>
+        let position = $(".messageContainer").children().length;
+        $('.messageContainer').scrollTop(10**position);
     </script>
 </body>
 

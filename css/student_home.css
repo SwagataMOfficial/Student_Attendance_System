@@ -107,8 +107,9 @@
 }
 
 .right-main .charts {
-    /* background-color: red; */
-    color: var(--clr-btn-text-logo);;
+    height: 68vh;
+    color: var(--clr-btn-text-logo);
+    border-bottom: 1px solid var(--clr-border);
 }
 
 .charts .chart {
@@ -119,7 +120,7 @@
 .charts .bar-chart-heading {
     font-size: 1.5rem;
     text-align: center;
-    margin: 15px 0;
+    padding: 15px 0;
 }
 
 .canvasjs-chart-credit {
