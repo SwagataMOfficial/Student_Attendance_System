@@ -1,83 +1,24 @@
 <?php
-session_start();
 include('partitions/_dbconnect.php');
+include('classes/StudentClass.php');
+session_start();
 
 // checking if a student has logged in
 if (isset($_SESSION['student_loggedin']) && $_SESSION['student_loggedin'] == true) {
-    $student_email = $_SESSION["student_email"];
-
-    // template for chart
-    $attendanceDetails = array(
-        array("label" => "January"),
-        array("label" => "February"),
-        array("label" => "March"),
-        array("label" => "April"),
-        array("label" => "May"),
-        array("label" => "June"),
-        array("label" => "July"),
-        array("label" => "August"),
-        array("label" => "September"),
-        array("label" => "October"),
-        array("label" => "November"),
-        array("label" => "December"),
-    );
-    $getStudentData = "SELECT * FROM `student_profile` WHERE `student_email` ='$student_email'";
-    // $result = mysqli_query($conn, $getStudentData);
-    $query = $pdo->prepare($getStudentData);
-    $result = $query->execute();
-
-    // checking if student has created a profile or not
-    // $numRows = mysqli_num_rows($result);
-    $numRows = $query->rowCount();
-    if ($numRows == 1) {
-        // $student = mysqli_fetch_assoc($result);
-        $student = $query->fetch(PDO::FETCH_ASSOC);
-        $_SESSION["student_id"] = $student['student_id'];
-        $_SESSION["student_name"] = $student['student_name'];
-        if ($student['profile_picture'] != null) {
-            $_SESSION["student_picture"] = $student['profile_picture'];
-        }
-    } else {
-        unset($_SESSION['student_loggedin']);
-        $_SESSION['student_profile_email'] = $student_email;
-        header("Location: /Minor_Project/Student_Attendance_System/studentProfile.php");
-    }
-
-    $month = strtolower(date("F")); # this line of code gets current month
-
-    $getStudent = "SELECT * FROM `student_attendance` WHERE student_id='$_SESSION[student_id]'";
-    $query = $pdo->prepare($getStudent);
-    $result = $query->execute();
-    $studentData = $query->fetch(PDO::FETCH_ASSOC);
-    $student_id = $studentData['student_id'];
-    $student_name = $studentData['student_name'];
-    $attendance = $studentData["$month"];
-    $_SESSION['is_locked'] = $studentData['is_locked'];
-    $i = 0;
-    while ($i < 12) {
-        $attendanceDetails[$i]['y'] = $studentData[strtolower($attendanceDetails[$i]['label'])];
-        $i += 1;
-    }
-
+    $student = $_SESSION['student_obj']->getStudentDetails();
+    $attendanceDetails = $_SESSION['student_obj']->getAttendanceDetails();
+    
     // post request handle
     if (isset($_POST["scan"]) && $_POST["scan"] == "scan") {
-
-        // checking if correct qr code is scanned or not
-        if ($_POST["secret_key"] == '$2y$10$b1PT6x2LheA3sS7UJjOUEeU1vHp/r1RRFdo/6PqM1ZJooCxHF4lvK') {
-            $student_id = $_POST["student_id"];
-            $attendanceUpdate = (int) $_POST["student_attendance"];
-            $updateQuery = "UPDATE `student_attendance` SET `$month` = $attendanceUpdate WHERE `student_id` = '$student_id'";
-            // $result = mysqli_query($conn, $updateQuery);
-            $query = $pdo->prepare($updateQuery);
-            $result = $query->execute();
-            header("refresh: 1; url=student_home.php");
-        } else {
-            header("Location: ScannerSystem.php");
-        }
+        $scanResult = $_SESSION['student_obj']->getAttendance($pdo, $_POST);
+        $_SESSION['student_obj']->setAttendanceDetails();
+        $attendanceDetails = $_SESSION['student_obj']->getAttendanceDetails();
     }
 
     # TODO: add grading system and remarks calculation
     # TODO: write sql query to update the remarks and grade
+    // $results = $_SESSION['student_obj']->get_grade_remarks();
+    // $_SESSION['student_obj']->update_grade_remarks($pdo, $results);
 }
 // if no one has logged in then don't allow anyone to enter the student home page
 else {
@@ -94,38 +35,9 @@ else {
     <title>Home Page (Student)</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="css/student_home.css">
-    <script>
-        window.onload = function() {
-
-            var chart = new CanvasJS.Chart("chartContainer", {
-                animationEnabled: true,
-                // exportEnabled: true,
-                // theme: "light1", // "light1", "light2", "dark1", "dark2"
-                // theme: "light2", // "light1", "light2", "dark1", "dark2"
-                theme: "dark1", // "light1", "light2", "dark1", "dark2"
-                // theme: "dark2", // "light1", "light2", "dark1", "dark2"
-                backgroundColor: "transparent",
-                title: {
-                    text: "Attendance"
-                },
-                axisY: {
-                    title: "Attendance Count (in days)",
-                    includeZero: true
-                },
-                data: [{
-                    type: "column", //change type to bar, line, area, pie, etc
-                    //indexLabel: "{y}", //Shows y value on all Data Points
-                    // indexLabelFontColor: "#5A5757",
-                    indexLabelFontColor: "#5A5757",
-                    indexLabelPlacement: "outside",
-                    bevelEnabled: true,
-                    dataPoints: <?php echo json_encode($attendanceDetails, JSON_NUMERIC_CHECK); ?>
-                }]
-            });
-            chart.render();
-
-        }
-    </script>
+    <?php
+    require('js/chart_generate.php');
+    ?>
 </head>
 
 <body>
@@ -138,8 +50,8 @@ else {
             <div class="welcome-heading">
                 <span class="welcome-text">
                     <?php
-                    if (isset($_SESSION["student_name"])) {
-                        echo "Welcome <i>'$_SESSION[student_name]'</i>";
+                    if (isset($student["name"])) {
+                        echo "Welcome <i>'$student[name]'</i>";
                     } else {
                         echo "Welcome <i>'[Student Name]'</i>";
                     }
@@ -155,7 +67,7 @@ else {
             <section class="nofifications">
                 <span class="warnings">
                     <?php
-                    if (isset($_SESSION['is_locked']) && $_SESSION['is_locked']) {
+                    if (isset($student["is_locked"]) && $student["is_locked"]) {
                         echo '<b style="font-size: 0.9em; color: #ffff20;">Your Scanner is Locked!</b>';
                     } else {
                         echo '0 Warnings';
@@ -180,15 +92,49 @@ else {
     <?php require("partitions/_footers.php") ?>
 
     <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
-    <?php
-    if (isset($_POST["scan"]) && $_POST["scan"] == "scan") {
-        echo '<script>
-        alert("Name : ' . $student_name . '\nAttendance Count : ' . $_POST["student_attendance"] . '");
-    </script>';
-    }
-    ?>
 
-    <script src="js/collapse.js"></script>
+    <script>
+        <?php
+        if (isset($scanResult)) {
+            switch ($scanResult) {
+                case '1':
+                    echo "alert('Wrong QR Code is Scanned!');
+                            document.location.href='/Minor_Project/Student_Attendance_System/ScannerSystem.php'";
+                    break;
+                case '2':
+                    echo "alert('Scanning Succesful!');";
+                    break;
+                default:
+                    break;
+            }
+        }
+        ?>
+    </script>
+
+    <script>
+        const collapse_btn = document.getElementById("collapse-btn");
+
+        collapse_btn.addEventListener("click", () => {
+            document.querySelector("#collapse-btn .material-symbols-outlined").classList.toggle("arrow-rotate");
+            document.querySelector(".container .left-nav").classList.toggle("nav-active");
+            document.querySelector(".container .right-main").classList.toggle("main-stretch");
+            document.querySelector("#collapse-btn .collapse-name").classList.toggle("btn-collapse");
+            document.querySelectorAll(".links p").forEach((e) => {
+                e.classList.toggle("collapsed-sm");
+            });
+            document.querySelectorAll(".contents .links").forEach((e) => {
+                e.classList.toggle("headings-no-link");
+            });
+            document.querySelectorAll(".link-heading").forEach((e) => {
+                e.classList.toggle("link-paras");
+            });
+            setTimeout(() => {
+                generateChart();
+            }, 610);            
+        });
+    </script>
+
+    <script src="js/st_themeToggle.js"></script>
 
 </body>
 

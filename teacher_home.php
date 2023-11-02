@@ -1,96 +1,30 @@
 <?php
-session_start();
 include('partitions/_dbconnect.php');
+include('classes/TeacherClass.php');
+session_start();
 
 // checking if a teacher has logged in
 if (isset($_SESSION['teacher_loggedin']) && $_SESSION['teacher_loggedin'] == true) {
-    $teacher_email = $_SESSION["teacher_email"];
-    $getTeacherData = "SELECT * FROM `teacher_profile` WHERE `teacher_email`='$teacher_email'";
-    $query = $pdo->prepare($getTeacherData);
-    $result = $query->execute();
-
-    // checking if teacher has created a profile or not.
-    $numRows = $query->rowCount();
-    if ($numRows == 1) {
-        $teacher = $query->fetch(PDO::FETCH_ASSOC);
-        $_SESSION["teacher_id"] = $teacher['teacher_id'];
-        $_SESSION["teacher_name"] = $teacher['teacher_name'];
-        if (isset($teacher['hod_department'])) {
-            $_SESSION["teacher_dept"] = $teacher['hod_department'];
-        }
-        if (isset($teacher['profile_picture'])) {
-            $_SESSION["teacher_picture"] = $teacher['profile_picture'];
-        }
-    } else {
-        unset($_SESSION['teacher_loggedin']);
-        $_SESSION['teacher_profile_email'] = $teacher_email;
-        header("Location: /Minor_Project/Student_Attendance_System/teacherProfile.php");
-    }
+    $teacher = $_SESSION['teacher_obj']->getTeacherDetails();
 
     // handling student record edit request.
     if (isset($_POST['save_changes']) && $_POST['save_changes'] == "save_changes") {
-        $id = $_POST['s_id'];
-        $name = $_POST['s_name'];
-        $email = $_POST['s_email'];
-        $phone = $_POST['s_phone'];
-        $attendance = $_POST['s_attendance'];
-        $stream = $_POST['s_stream'];
-        $sem = $_POST['s_sem'];
-        $month = strtolower(date('F'));
-        $profileUpdate = "UPDATE `student_profile` SET `student_name`='$name',`student_phone`='$phone',`student_email`='$email',`student_stream`='$stream',`student_semester`='$sem' WHERE `student_id`='$id'";
-        $update = $pdo->prepare($profileUpdate);
-        $result = $update->execute();
-        if ($result) {
-            $attendanceUpdate = "UPDATE `student_attendance` SET `student_name`='$name',`student_stream`='$stream',`$month`='$attendance' WHERE `student_id`='$id'";
-            $updatation = $pdo->prepare($attendanceUpdate);
-            $updated = $updatation->execute();
-        }
+        $editing = $_SESSION['teacher_obj']->editStudent($pdo, $_POST);
     }
 
     // checking for deletion request.
     if (isset($_POST['d_id']) && isset($_POST['d_email'])) {
-        $delete_id = $_POST['d_id'];
-        $delete_email = $_POST['d_email'];
-        $delete_query1 = "DELETE FROM `student_registration` WHERE `student_email` = '$delete_email'";
-        $query = $pdo->prepare($delete_query1);
-        $deletion = $query->execute();
-        if ($deletion) {
-            $delete_query2 = "DELETE FROM `student_attendance` WHERE `student_id` = '$delete_id'";
-            $query = $pdo->prepare($delete_query2);
-            $deletion = $query->execute();
-            if ($deletion) {
-                $delete_query3 = "DELETE FROM `student_profile` WHERE `student_id` = '$delete_id'";
-                $query = $pdo->prepare($delete_query3);
-                $deletion = $query->execute();
-                if ($deletion) {
-                    $delete_query4 = "DELETE FROM `messages` WHERE `student_id` = '$delete_id'";
-                    $query = $pdo->prepare($delete_query4);
-                    $deletion = $query->execute();
-                }
-            }
-        }
+        $deletion = $_SESSION['teacher_obj']->deleteStudent($pdo, $_POST);
     }
 
     // handling attendance goal setting request.
-    if(isset($_POST['goal_set']) && $_POST['goal_set'] == 'goal_set'){
-        $goal = $_POST['attendance_goal'];
-        $attendance_goal_query = "UPDATE `student_attendance` SET `attendance_goal` = '$goal';";
-        $goalSetting = $pdo->prepare($attendance_goal_query);
-        $goalSet = $goalSetting->execute();
+    if (isset($_POST['goal_set']) && $_POST['goal_set'] == 'goal_set') {
+        $goalSetting = $_SESSION['teacher_obj']->setAttendanceGoal($pdo, $_POST);
     }
 
     // handling student's scanner locking-unlocking request.
     if (isset($_POST['lock_unlock_id'])) {
-        $id = $_POST['lock_unlock_id'];
-        if ($_POST['lock_unlock'] == 'lock') {
-            $query = "UPDATE `student_attendance` SET `is_locked` = '1' WHERE `student_id` = '$id'";
-            $stmt = $pdo->prepare($query);
-            $locked = $stmt->execute();
-        } else if ($_POST['lock_unlock'] == 'unlock') {
-            $query = "UPDATE `student_attendance` SET `is_locked` = '0' WHERE `student_id` = '$id'";
-            $stmt = $pdo->prepare($query);
-            $unlocked = $stmt->execute();
-        }
+        $locking_unlocking = $_SESSION['teacher_obj']->lock_unlock_scanner($pdo, $_POST);
     }
 }
 // if no one has logged in then don't allow anyone to enter the student home page
@@ -146,14 +80,13 @@ else {
         <div class="right-main">
             <div class="welcome-heading">
                 <span class="welcome-text">
-                    Welcome <em>'<?php
-                                    if (isset($_SESSION["teacher_name"])) {
-                                        echo $_SESSION["teacher_name"];
-                                    } else {
-                                        echo "[Teacher Name]";
-                                    }
-                                    ?>'
-                    </em>
+                    <?php
+                    if (isset($teacher['name'])) {
+                        echo "Welcome <em>'$teacher[name]'</em>";
+                    } else {
+                        echo "Welcome <em>'[Teacher Name]'</em>";
+                    }
+                    ?>
                 </span>
                 <a href="logout.php" class="logout" id="logout">
                     <span class="material-symbols-outlined">
@@ -169,7 +102,7 @@ else {
 
             <?php
             // only admin gets access to the essential buttons
-            if (isset($_SESSION['teacher_dept'])) {
+            if (isset($teacher['hod'])) {
                 echo
                 '
                         <section class="essential_buttons">
@@ -206,18 +139,14 @@ else {
                 <p class="heading-text">Top Students in this Month</p>
                 <div class="students-container">
                     <?php
-                    if (isset($_SESSION['teacher_dept'])) {
-                        $topStudentsSql = "SELECT `student_id`, `student_name`, `" . strtolower(date('F')) . "` FROM `student_attendance` WHERE `student_stream`='$_SESSION[teacher_dept]' ORDER BY `" . strtolower(date('F')) . "` DESC LIMIT 4";
+                    if (isset($teacher['hod'])) {
+                        $query = $_SESSION['teacher_obj']->getStudentByHodDepartment($pdo, $teacher['hod'])['attendance'];
                     } else {
-                        $topStudentsSql = "SELECT `student_id`, `student_name`, `" . strtolower(date('F')) . "` FROM `student_attendance` ORDER BY `" . strtolower(date('F')) . "` DESC LIMIT 4";
+                        $query = $_SESSION['teacher_obj']->getStudentAttendanceData($pdo);
                     }
-                    // $top_students = mysqli_query($conn, $topStudentsSql);
-                    $query = $pdo->prepare($topStudentsSql);
                     $top_students = $query->execute();
-                    // while ($top = mysqli_fetch_assoc($top_students)) {
                     while ($top = $query->fetch(PDO::FETCH_ASSOC)) {
-                        $getStudentPic = "SELECT `profile_picture` FROM `student_profile` WHERE `student_id`='$top[student_id]'";
-                        $getPic = $pdo->prepare($getStudentPic);
+                        $getPic = $_SESSION['teacher_obj']->getStudentWithID($pdo, $top['student_id'])['profile'];
                         $getPic->execute();
                         $picture = $getPic->fetch(PDO::FETCH_ASSOC);
                         echo
@@ -247,7 +176,7 @@ else {
                             <th>Stream</th>
                             <th>Semester</th>
                             <?php
-                            if (isset($_SESSION['teacher_dept'])) {
+                            if (isset($teacher['hod'])) {
                                 echo '<th>Actions</th>';
                             }
                             ?>
@@ -256,22 +185,20 @@ else {
                     <tbody>
                         <?php
                         // generating top student table according to hod dept or regular teacher
-                        if (isset($_SESSION["teacher_dept"])) {
-                            $getStudentData = "SELECT * FROM `student_profile` WHERE `student_stream`='$_SESSION[teacher_dept]'";
+                        if (isset($teacher['hod'])) {
+                            $query1 = $_SESSION['teacher_obj']->getStudentByHodDepartment($pdo, $teacher['hod'])['profile'];
                         } else {
-                            $getStudentData = "SELECT * FROM `student_profile`";
+                            $query1 = $_SESSION['teacher_obj']->getStudentAllData($pdo);
                         }
-                        // $getResult = mysqli_query($conn, $getStudentData);
-                        $query1 = $pdo->prepare($getStudentData);
                         $getResult = $query1->execute();
                         $serial_no = 1;
                         $month = strtolower(date("F"));
                         while ($student_profile = $query1->fetch(PDO::FETCH_ASSOC)) {
-                            $getStudentAttendance = "SELECT `$month` FROM `student_attendance` WHERE `student_id` = '$student_profile[student_id]'";
-                            $query2 = $pdo->prepare($getStudentAttendance);
-                            $attendanceResult = $query2->execute();
-                            $attendanceData = $query2->fetch(PDO::FETCH_ASSOC);
-                            if (isset($_SESSION["teacher_dept"])) {
+
+                            $query2 = $_SESSION['teacher_obj']->getStudentWithID($pdo, $student_profile['student_id']);
+                            $attendanceResult = $query2['attendance']->execute();
+                            $attendanceData = $query2['attendance']->fetch(PDO::FETCH_ASSOC);
+                            if (isset($teacher['hod'])) {
                                 echo
                                 "   <tr>
                                             <td>" . $serial_no . "</td>
@@ -317,7 +244,7 @@ else {
                 </form>
             </section>
             <?php
-            if (isset($_SESSION['teacher_dept'])) {
+            if (isset($teacher['hod'])) {
                 echo
                 '
                 <section class="set-goal-section" id="set_attendance_goal">
@@ -338,10 +265,10 @@ else {
             ?>
 
             <?php
-            if (isset($_SESSION['teacher_dept'])) {
+            if (isset($teacher['hod'])) {
                 echo
                 '
-                    <section class="set-goal-section" id="lock_attendance">
+                    <section class="lock_unlock_attendance_section" id="lock_attendance">
                 <p class="set-goal-text">Lock Attendance of a Student</p>
                 <div class="set-goal-container">
                     <div class="set-goal">
@@ -356,7 +283,7 @@ else {
                         </form>
                     </div>
                 </div>
-                <div class="search-result-container" style="width: 90%; margin: auto; margin-bottom: 1rem; color: white;">';
+                <div class="search-result-container">';
 
                 if (isset($_GET["lock_student_search"])) {
                     echo
@@ -377,14 +304,12 @@ else {
                                 <tbody>
                         ";
 
-                    $search = $_GET['lock_student_id'];
-                    $getStudent = "SELECT * FROM `student_profile` WHERE `student_id` LIKE '%$search%' AND `student_stream` = '$_SESSION[teacher_dept]'";
-                    $stmt = $pdo->prepare($getStudent);
+                    $stmt = $_SESSION['teacher_obj']->getStudentByLikelyId($pdo, $_GET['lock_student_id'], $teacher['hod']);
                     $stmt->execute();
                     $month = strtolower(date("F"));
                     while ($student = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                        $getAttendance = "SELECT `$month`,`is_locked` FROM `student_attendance` WHERE `student_id` = '$student[student_id]'";
-                        $attendance = $pdo->prepare($getAttendance);
+
+                        $attendance = $_SESSION['teacher_obj']->getStudentWithID($pdo, $student['student_id'])['attendance'];
                         $attendanceResult = $attendance->execute();
                         $attendanceRecord = $attendance->fetch(PDO::FETCH_ASSOC);
                         if ($attendanceRecord['is_locked']) {
@@ -466,25 +391,6 @@ else {
         const unlock_buttons = document.querySelectorAll('.table-btn-unlock');
         const editForm = document.getElementById("edit-form");
 
-        <?php
-        if (isset($updated) && $updated) {
-            echo 'alert("Profile Updated Successfully!");
-                window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
-        }
-        if (isset($locked) && $locked) {
-            echo 'alert("Attendance Locked Successfully!");
-            window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
-        }
-        if (isset($unlocked) && $unlocked) {
-            echo 'alert("Attendance Unlocked Successfully!");
-            window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
-        }
-        if(isset($goalSet) && $goalSet){
-            echo 'alert("Attendance Goal Set Successfully!");
-            window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
-        }
-        ?>
-
         edit_buttons.forEach(element => {
             element.addEventListener('click', (e) => {
                 document.querySelector(".edit-modal-container").style.position = "fixed";
@@ -555,6 +461,93 @@ else {
         });
     </script>
     <script src="js/collapse.js"></script>
+    <script src="js/t_themeToggle.js"></script>
+
+    <script>
+        <?php
+        if (isset($editing)) {
+            switch ($editing) {
+                case 1:
+                    echo 'alert("Profile Updated Successfully!");
+                    window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                    break;
+                case 2:
+                    echo 'alert("Failed to Edit Student Attendance!");';
+                    break;
+                case 3:
+                    echo 'alert("Failed to Edit Student Profile!");';
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (isset($deletion)) {
+            switch ($deletion) {
+                case 1:
+                    echo 'alert("Student Deleted Successfully!");
+                        window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                    break;
+                case 2:
+                    echo 'alert("Failed to Delete Student\'s Messages!");
+                        window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                    break;
+
+                case 3:
+                    echo 'alert("Failed to Delete Student\'s Profile!");
+                        window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                    break;
+
+                case 4:
+                    echo 'alert("Failed to Delete Student\'s Attendance Details!");
+                        window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                    break;
+                case 5:
+                    echo 'alert("Failed to Delete Student\'s Registration Details!");
+                        window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (isset($goalSetting)) {
+            switch ($goalSetting) {
+                case 1:
+                    echo 'alert("Attendance Goal Set Successfully!");
+                window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                    break;
+                case -1:
+                    echo 'alert("Failed to Set Attendance Goal!");
+                window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (isset($locking_unlocking)) {
+            switch ($locking_unlocking) {
+                case 1:
+                    echo 'alert("Scanner Locked Successfully!");
+                window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                    break;
+                case 2:
+                    echo 'alert("Failed to Lock Scanner!");
+                window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                    break;
+                case 3:
+                    echo 'alert("Scanner Unlocked Successfully!");
+                window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                    break;
+                case 4:
+                    echo 'alert("Failed to Unlock Scanner!");
+                window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                    break;
+                default:
+                    break;
+            }
+        }
+        ?>
+    </script>
 </body>
 
 </html>

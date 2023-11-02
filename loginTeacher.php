@@ -1,31 +1,16 @@
 <?php
 include('partitions/_dbconnect.php');
+include('classes/Authenticate.php');
+include('classes/TeacherClass.php');
+session_start();
 
 if (isset($_POST["teacherLogin"]) && $_POST["teacherLogin"] == "teacherLogin") {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $sql = "SELECT * FROM `teacher_registration` WHERE `teacher_email`='$email'";
-
-    $query = $pdo->prepare($sql);
-    $result = $query->execute();
-
-    if($result){
-        $num = $query->rowCount();
-        if ($num == 1) {
-            $credentials = $query->fetch(PDO::FETCH_ASSOC);
-            if (password_verify($password, $credentials['teacher_password'])) {
-                $login = true;
-                session_start();
-                $_SESSION["teacher_loggedin"] = true;
-                $_SESSION["teacher_email"] = $email;
-            }
-            else{
-                $passNotMatched = true;
-            }
-        }
-        else {
-            $userNotExist = true;
-        }
+    $login = new Login($_POST);
+    $verifyResult = $login->verify_teacher($pdo);
+    if($verifyResult == 1){
+        $teacher = new Teacher($pdo, $_POST['email']);
+        $_SESSION['teacher_loggedin'] = true;
+        $_SESSION['teacher_obj'] = $teacher;
     }
 }
 ?>
@@ -110,20 +95,6 @@ if (isset($_POST["teacherLogin"]) && $_POST["teacherLogin"] == "teacherLogin") {
         const registerLink = document.querySelector('.register-link');
         const loginLink = document.querySelector('.login-link');
 
-        <?php
-            if(isset($login) && $login){
-                echo 'alert("You are successfully loggedin! Click ok to continue....");
-                    window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";
-                ';
-            }
-            if(isset($passNotMatched) && $passNotMatched){
-                echo 'alert("Wrong Password!");';
-            }
-            if(isset($userNotExist) && $userNotExist){
-                echo 'alert("Email not Registered!");';
-            }
-        ?>
-
         registerLink.addEventListener('click', () => {
             wrapper.classList.add('active');
         });
@@ -131,6 +102,27 @@ if (isset($_POST["teacherLogin"]) && $_POST["teacherLogin"] == "teacherLogin") {
         loginLink.addEventListener('click', () => {
             wrapper.classList.remove('active');
         });
+    </script>
+
+    <script>
+        <?php
+            if(isset($verifyResult)){
+                switch ($verifyResult) {
+                    case 1:
+                        echo 'alert("You are successfully loggedin! Click ok to continue....");
+                            window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                        break;
+                    case 2:
+                        echo 'alert("Wrong Password!");';
+                        break;
+                    case 3:
+                        echo 'alert("Email not Registered!");';
+                        break;                    
+                    default:
+                        break;
+                }
+            }
+        ?>
     </script>
 
 </body>

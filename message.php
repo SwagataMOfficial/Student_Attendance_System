@@ -1,49 +1,51 @@
 <?php
 require("partitions/_dbconnect.php");
+require('classes/StudentClass.php');
+require('classes/TeacherClass.php');
+require('classes/MessageClass.php');
 session_start();
 
 // checking if a student or teacher has logged in
 // if not then redirect to index page
 if (!isset($_SESSION['student_loggedin']) && !isset($_SESSION['teacher_loggedin'])) {
-    // var_dump($_SESSION['student_loggedin']);
-    // var_dump($_SESSION['teacher_loggedin']);
-    // echo "yes";
     header("Location: /Minor_Project/Student_Attendance_System/");
 }
 
 // getting all the messages
-$getMessages = "SELECT * FROM `messages`";
-// $result = mysqli_query($conn, $getMessages);
-$query = $pdo->prepare($getMessages);
-$result = $query->execute();
+$message = new Message();
+$query = $message->getMessages($pdo);
+$query->execute();
+
 
 // handling message posting request for student
-if (isset($_SESSION["student_id"]) && !isset($_SESSION["teacher_id"])) {
+if (isset($_SESSION['student_obj']) && !isset($_SESSION['teacher_obj'])) {
+    $student = $_SESSION['student_obj']->getStudentDetails();
     if (isset($_POST["messagebtn"]) && $_POST["messagebtn"] === "messagebtn") {
-        $id = $_SESSION["student_id"];
-        $message = $_POST['message'];
-        $sendMessage = "INSERT INTO `messages` (`student_id`,`student_message`) VALUES ('$id','$message')";
-        // $result = mysqli_query($conn, $sendMessage);
-        $query = $pdo->prepare($sendMessage);
-        $result = $query->execute();
-        if ($result) {
-            header("Location: message.php");
-        }
+        // $id = $_SESSION["student_id"];
+        // $message = filter_var($_POST['message'], FILTER_SANITIZE_SPECIAL_CHARS);
+        // $sendMessage = "INSERT INTO `messages` (`student_id`,`student_message`) VALUES ('$id','$message')";
+        // $query = $pdo->prepare($sendMessage);
+        // $result = $query->execute();
+        // if ($result) {
+        //     header("Location: message.php");
+        // }
+        $sent = $_SESSION['student_obj']->sendMessage($pdo, $_POST);
     }
 }
 
 // handling message posting request for teacher
-if (isset($_SESSION["teacher_id"]) && !isset($_SESSION["student_id"])) {
+if (isset($_SESSION['teacher_obj']) && !isset($_SESSION['student_obj'])) {
+    $teacher = $_SESSION['teacher_obj']->getTeacherDetails();
     if (isset($_POST["messagebtn"]) && $_POST["messagebtn"] === "messagebtn") {
-        $id = $_SESSION["teacher_id"];
-        $message = $_POST['message'];
-        $sendMessage = "INSERT INTO `messages` (`teacher_id`,`teacher_message`) VALUES ('$id','$message')";
-        // $result = mysqli_query($conn, $sendMessage);
-        $query = $pdo->prepare($sendMessage);
-        $result = $query->execute();
-        if ($result) {
-            header("Location: message.php");
-        }
+        // $id = $_SESSION["teacher_id"];
+        // $message = $_POST['message'];
+        // $sendMessage = "INSERT INTO `messages` (`teacher_id`,`teacher_message`) VALUES ('$id','$message')";
+        // $query = $pdo->prepare($sendMessage);
+        // $result = $query->execute();
+        // if ($result) {
+        //     header("Location: message.php");
+        // }
+        $sent = $_SESSION['teacher_obj']->sendMessage($pdo, $_POST);
     }
 }
 ?>
@@ -53,67 +55,109 @@ if (isset($_SESSION["teacher_id"]) && !isset($_SESSION["student_id"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Message Portal</title>
+    <link rel="stylesheet" href="css/message.css">
 </head>
-<link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-<link rel="stylesheet" href="css/message.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 <body>
-    <div class="mainContainer">
-        <nav>
-            <img class="logo" src="https://i.pinimg.com/474x/96/04/48/96044861e221c692bd6d29ecc360bbca.jpg"
-                alt="chat logo">
-            <h1>Messages</h1>
-        </nav>
-        <div class="container">
-            <!-- <div class="message right"><b>Rahul:</b> How are you ??</div>
-            <div class="message left"><b>Voda:</b> I am fine.</div>
-            <div class="message right"><b>Rahul:</b> How are you ??</div>
-            <div class="message left"><b>Voda:</b> I am fine.</div>
-            <div class="message right"><b>Rahul:</b> How are you ??</div>
-            <div class="message left"><b>Voda:</b> I am fine.</div>
-            <div class="message right"><b>Rahul:</b> How are you ??</div>
-            <div class="message left"><b>Voda:</b> I am fine.</div> -->
-            <?php
-            if ($result) {
-                // initial variable that checks if messages exists or not
-                $messageExists = false;
-                while($row = $query->fetch(PDO::FETCH_ASSOC)){
-                    $messageExists = true;
-                    // print_r($row);
-                    if (isset($row["student_message"])) {
-                        // echo 'yes';
-                        echo '<div class="message right"><b>Student: </b>' . $row["student_message"] . '</div>';
+    <?php require("partitions/_headers.php") ?>
+    <div class="container">
+        <?php require("partitions/_leftNavOptions.php") ?>
+        <div class="right-main">
+            <div class="mainContainer">
+                <nav>
+                    <img class="logo" src="https://i.pinimg.com/474x/96/04/48/96044861e221c692bd6d29ecc360bbca.jpg" alt="chat logo">
+                    <h1 style="transition: 0.3s ease-in;">Messages</h1>
+                </nav>
+                <div class="messageContainer">
+                    <p class="alert-text">Welcome to Student_Attendance_System Chat Portal</p>
+                    <?php
+                    if (isset($query)) {
+                        // initial variable that checks if messages exists or not
+                        $messageExists = false;
+                        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                            $messageExists = true;
+                            if (isset($row["student_message"])) {
+
+                                $msg = $message->getStudentMessage($pdo, $row['student_id'], $row["student_message"]);
+                                echo $msg;
+
+                                // delete this part
+                                // $student = "SELECT `student_name` FROM `student_profile` WHERE `student_id`='$row[student_id]'";
+                                // $gettingStudent = $pdo->prepare($student);
+                                // $gettingStudent->execute();
+                                // $student_data = $gettingStudent->fetch(PDO::FETCH_ASSOC);
+                                // echo '  <div class="message right">
+                                //             <p class="sender-name"><b style="transition: 0.3s ease-in;">' . $student_data["student_name"] . '</b></p>
+                                //             <span>' . $row["student_message"] . '</span>
+                                //         </div>';
+                            }
+                            if (isset($row["teacher_message"])) {
+                                $msg2 = $message->getTeacherMessage($pdo, $row['teacher_id'], $row["teacher_message"]);
+                                echo $msg2;
+                                // $teacher = "SELECT `teacher_name` FROM `teacher_profile` WHERE `teacher_id`='$row[teacher_id]'";
+                                // $gettingTeacher = $pdo->prepare($teacher);
+                                // $gettingTeacher->execute();
+                                // $teacher_data = $gettingTeacher->fetch(PDO::FETCH_ASSOC);
+                                // echo '  <div class="message left">
+                                //             <p class="sender-name">
+                                //             <b style="transition: 0.3s ease-in;">' . $teacher_data["teacher_name"] . '</b>
+                                //             </p>
+                                //             <span>' . $row["teacher_message"] . '</span>
+                                //         </div>';
+                            }
+                        }
+                        // var_dump($messageExists);
+                        if (!$messageExists) {
+                            echo "<h3>No Messages Found!</h3>";
+                        }
                     }
-                    if (isset($row["teacher_message"])) {
-                        // echo 'no';
-                        echo '<div class="message left"><b>Teacher: </b>' . $row["teacher_message"] . '</div>';
-                    }
-                }
-                // var_dump($messageExists);
-                if(!$messageExists){
-                    echo "<h3>No Messages Found!</h3>";
-                }
-            }
-            ?>
-        </div>
-        <div class="send">
-            <form id="sendcontainer" method="post">
-                <input type="text" name="message" id="messageipt" placeholder="Type a message">
-                <button class="btn" type="submit" name="messagebtn" id="messagebtn" value="messagebtn">
-                    <span class="material-symbols-outlined">
-                        send
-                    </span>
-                </button>
-            </form>
+                    ?>
+                </div>
+                <div class="send">
+                    <form id="sendcontainer" method="post">
+                        <input type="text" name="message" id="messageipt" placeholder="Type a message" required>
+                        <button class="btn" type="submit" name="messagebtn" id="messagebtn" value="messagebtn">
+                            <span class="material-symbols-outlined">
+                                send
+                            </span>
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
+    <?php require("partitions/_footers.php") ?>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script>
         document.getElementById('messageipt').focus();
-        document.getElementById('messagebtn').addEventListener("click",()=>{
+        document.getElementById('messagebtn').addEventListener("click", () => {
             document.getElementById('messageipt').focus();
         });
+    </script>
+    <script>
+        let position = $(".messageContainer").children().length;
+        $('.messageContainer').scrollTop(10 ** position);
+    </script>
+    <script src="js/msg_themeToggle.js"></script>
+    <script src="js/collapse.js"></script>
+    <script>
+        <?php
+        if (isset($sent)) {
+            switch ($sent) {
+                case 1:
+                    echo 'window.location.href="/Minor_Project/Student_Attendance_System/message.php"';
+                    break;
+                case -1:
+                    echo "alert('Failed to Send Message');
+                        window.location.href='/Minor_Project/Student_Attendance_System/message.php'";
+                default:
+                    break;
+            }
+        }
+        ?>
     </script>
 </body>
 

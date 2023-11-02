@@ -49,7 +49,7 @@
 }
 
 .contents .links:hover span {
-    color: white;
+    color: var(--clr-hover-p-color);
 }
 
 .links p {
@@ -61,9 +61,8 @@
 }
 
 .contents .links:hover p {
-    color: white;
+    color: var(--clr-hover-p-color);
 }
-
 
 .link-heading {
     color: var(--clr-heading-mark);
@@ -84,15 +83,12 @@
     font-size: 1.2rem;
     margin: 2px;
     background: transparent;
-    color: white;
+    color: var(--clr-hover-p-color);
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 8px;
-}
-
-#collapse-btn .material-symbols-outlined {
-    transition: 0.5s;
+    transition: 0.6s;
 }
 
 #collapse-btn:hover {

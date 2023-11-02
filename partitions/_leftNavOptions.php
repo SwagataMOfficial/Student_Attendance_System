@@ -7,7 +7,7 @@
             } else if (isset($_SESSION['teacher_loggedin']) && $_SESSION['teacher_loggedin'] == true) {
                 echo 'href="teacher_home.php"';
             } else {
-                echo '/Minor_Project/Student_Attendance_System/';
+                echo 'href=/Minor_Project/Student_Attendance_System/';
             }
             ?> class="links" style="margin-top: 12px;">
             <span class="material-symbols-outlined">
@@ -47,7 +47,7 @@
         </div>
         <div class="link-wrapper">
             <p class="link-heading">Message</p>
-            <a href="testMessage.php" class="links">
+            <a href="message.php" class="links">
                 <span class="material-symbols-outlined">
                     forum
                 </span>

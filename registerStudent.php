@@ -1,77 +1,16 @@
 <?php
 include('partitions/_dbconnect.php');
-require('partitions/_otp_generator.php');
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-
-// function to send a mail
-function sendMail($email, $newOTP)
-{
-    // including all necessary files
-    require("PHPMailer/PHPMailer.php");
-    require("PHPMailer/SMTP.php");
-    require("PHPMailer/Exception.php");
-
-    $mail = new PHPMailer(true);
-
-    // setting the mail
-    try {
-        //Server settings
-        $mail->isSMTP(); //Send using SMTP
-        $mail->Host = 'smtp.gmail.com'; //Set the SMTP server to send through
-        $mail->SMTPAuth = true; //Enable SMTP authentication
-        $mail->Username = ''; //SMTP username
-        $mail->Password = ''; //SMTP password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; //Enable implicit TLS encryption
-        $mail->Port = 465; //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-
-        //Recipients
-        $mail->setFrom('attendancesystem24x7@gmail.com', 'Student Attendance');
-        $mail->addAddress($email); // receiver's email address
-
-        //Content
-        $mail->isHTML(true); //Set email format to HTML
-        $mail->Subject = 'OTP for verification for Student Attendance';
-        $mail->Body = ' Thanks for registering in our website<br>
-                        Your OTP is ' . $newOTP . '<br>
-                        <strong>Do not share OTP with Anyone else.</strong>';
-
-        $mail->send();
-        return true;
-    } catch (Exception $e) {
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-        return false;
-    }
-}
-
-
+include('classes/Authenticate.php');
 
 if (isset($_POST["register"]) && $_POST["register"] == "register") {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $cpassword = $_POST['cpassword'];
-    if ($password == $cpassword) {
+    $registration = new Register();
+    session_start();
+    $_SESSION['student_obj'] = $registration;
+    $result = $registration->validate_student($_POST);
 
-        // generating otp here
-        $otp = new OTP();
-        $newOTP = $otp->generateOTP();
-
-        // sending mail and further work
-        if(sendMail($email, $newOTP)){
-            session_start();
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-            $_SESSION['st_validation_email'] = $email;
-            $_SESSION['st_validation_password'] = $hashedPassword;
-            $_SESSION['st_validation_otp'] = $newOTP;
-            $validate = true;
-        }
-        else{
-            $otpNotSent = true;
-        }
-    }
-    else{
+    if ($result == 2) {
+        $otpNotSent = true;
+    } elseif ($result == 1) {
         $passNotMatched = true;
     }
 }
@@ -106,8 +45,7 @@ if (isset($_POST["register"]) && $_POST["register"] == "register") {
                     <label for="password">Password</label>
                     <i class='bx bxs-lock-alt'></i>
                 </div>
-                <button type="submit" name="login" value="login" class="btn animation"
-                    style="--i:3; --j:24;">Login</button>
+                <button type="submit" name="login" value="login" class="btn animation" style="--i:3; --j:24;">Login</button>
                 <div class="logreg-link animation" style="--i:4; --j:25;">
                     <p>Don't have an account? <span class="register-link" title="Click Here to Sign Up">Sign
                             Up</span></p>
@@ -124,17 +62,32 @@ if (isset($_POST["register"]) && $_POST["register"] == "register") {
             <h2 class="animation" style="--i:17; --j:0;">Sign Up</h2>
             <form method="post" autocomplete="off" onsubmit="showAnimation()">
                 <div class="input-box animation" style="--i:19; --j:2;">
-                    <input type="email" name="email" required>
+                    <input type="email" name="email" required 
+                    <?php
+                    if (isset($_POST["register"])) {
+                        echo "value=$_POST[email]";
+                    }
+                    ?>>
                     <label for="email">Email</label>
                     <i class='bx bxs-envelope'></i>
                 </div>
                 <div class="input-box animation" style="--i:20; --j:3;">
-                    <input type="password" name="password" required>
+                    <input type="password" name="password" required 
+                    <?php
+                    if (isset($_POST["register"])) {
+                        echo "value=$_POST[password]";
+                    }
+                    ?>>
                     <label for="password">Password</label>
                     <i class='bx bxs-lock-alt'></i>
                 </div>
                 <div class="input-box animation" style="--i:20; --j:3;">
-                    <input type="password" name="cpassword" required>
+                    <input type="password" name="cpassword" required 
+                    <?php
+                    if (isset($_POST["register"])) {
+                        echo "value=$_POST[cpassword]";
+                    }
+                    ?>>
                     <label for="password">Confirm Password</label>
                     <i class='bx bxs-lock'></i>
                 </div>
@@ -156,16 +109,12 @@ if (isset($_POST["register"]) && $_POST["register"] == "register") {
         const loginLink = document.querySelector('.login-link');
 
         <?php
-            if(isset($validate) && $validate){
-                echo '  alert("Click Ok to Validate OTP and Register....");
-                        window.location.href = "/Minor_Project/Student_Attendance_System/verify_OTP.php";';
-            }
-            if(isset($passNotMatched) && $passNotMatched) {
-                echo 'alert("Passwords Do Not Matched!");';
-            }
-            if(isset($otpNotSent) && $otpNotSent) {
-                echo 'alert("Failed to send OTP! Try Again...");';
-            }
+        if (isset($passNotMatched) && $passNotMatched) {
+            echo 'alert("Passwords Do Not Matched!");';
+        }
+        if (isset($otpNotSent) && $otpNotSent) {
+            echo 'alert("Failed to send OTP! Try Again...");';
+        }
         ?>
 
         registerLink.addEventListener('click', () => {

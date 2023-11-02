@@ -1,74 +1,9 @@
 <?php
-require("partitions/_dbconnect.php");
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-
-// function to send a mail
-function sendQuery($name, $phone, $email, $message)
-{
-    // including all necessary files
-    require("PHPMailer/PHPMailer.php");
-    require("PHPMailer/SMTP.php");
-    require("PHPMailer/Exception.php");
-
-    $mail = new PHPMailer(true);
-
-	$current_date = (string)date('d-M-Y');
-
-    // setting the mail
-    try {
-        //Server settings
-        $mail->isSMTP(); //Send using SMTP
-        $mail->Host = 'smtp.gmail.com'; //Set the SMTP server to send through
-        $mail->SMTPAuth = true; //Enable SMTP authentication
-        $mail->Username = ''; //SMTP username
-        $mail->Password = ''; //SMTP password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; //Enable implicit TLS encryption
-        $mail->Port = 465; //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-
-        //Recipients
-        $mail->setFrom('attendancesystem24x7@gmail.com', 'Student Attendance');
-        $mail->addAddress('attendancesystem24x7@gmail.com'); // receiver's email address
-
-        //Content
-        $mail->isHTML(true); //Set email format to HTML
-        $mail->Subject = 'Concern from ' . $name . ' | ' . $current_date;
-        $mail->Body = 
-		"
-			<h4>Date: $current_date</h4>
-			<h4>Dear Student Attendance Team,</h4>
-			<p style='padding-left: 20px;'>One of your user, who's name is $name, phone number is $phone and email is $email submitted a concern. That is, </p>
-			<p style='padding-left: 20px;'>$message</p>
-			<h4 style='padding-left: 20px;'>Kindly respond to this email and solve user's problem as soon as possible.</h4>
-			<p>With Regards,</p>
-			<p>$name</p>
-			<p>$phone</p>
-			<p>$email</p>
-		";
-
-        $mail->send();
-        return true;
-    } catch (Exception $e) {
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-        return false;
-    }
-}
+require('classes/ContactUsClass.php');
+$contact = new ContactUs();
 
 if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
-	$name = filter_var($_POST["name"], FILTER_SANITIZE_SPECIAL_CHARS);
-	$phone = filter_var($_POST["phone"], FILTER_SANITIZE_SPECIAL_CHARS);
-	$email = filter_var($_POST["email"], FILTER_SANITIZE_SPECIAL_CHARS);
-	$message = filter_var($_POST["message"], FILTER_SANITIZE_SPECIAL_CHARS);
-	if(sendQuery($name, $phone, $email, $message)){
-		$sql = "INSERT INTO `contact_us` (`name`, `phone_number`, `email`, `user_concern`) VALUES ('$name', '$phone', '$email', '$message')";
-		$query = $pdo->prepare($sql);
-		$sent = $query->execute();
-	}
-	else{
-		$notsend = true;
-	}
+	$sent = $contact->submitQuery($pdo, $_POST);
 }
 ?>
 
@@ -81,8 +16,7 @@ if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Contact Us</title>
 	<link rel="stylesheet" href="css/contact_us.css" />
-	<link rel="stylesheet"
-		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 
 <body>
@@ -142,23 +76,29 @@ if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
 						<button type="submit" name="sent" value="sent">Submit</button>
 					</div>
 					<?php
-					if(isset($sent) && $sent) {
-						echo 
-						'
-							<p class="confirm-submit">
-							<span class="confirm-text">Your Concern has been submitted</span>
-							<span role="button" class="material-symbols-outlined" id="confirmCloseBtn">close</span>
-							</p>
-						';
-					}
-					if(isset($notsend) && $notsend) {
-						echo 
-						'
-							<p class="non-confirm-submit">
-							<span class="confirm-text">Failed to submit your concern! Please Try Again</span>
-							<span role="button" class="material-symbols-outlined" id="nonConfirmCloseBtn">close</span>
-							</p>
-						';
+					if (isset($sent)) {
+						switch ($sent) {
+							case 1:
+								echo
+								'
+									<p class="confirm-submit">
+									<span class="confirm-text">Your Concern has been submitted</span>
+									<span role="button" class="material-symbols-outlined" id="confirmCloseBtn">close</span>
+									</p>
+								';
+								break;
+							case -1:
+								echo
+								'
+									<p class="non-confirm-submit">
+									<span class="confirm-text">Failed to submit your concern! Please Try Again</span>
+									<span role="button" class="material-symbols-outlined" id="nonConfirmCloseBtn">close</span>
+									</p>
+								';
+								break;
+							default:
+								break;
+						}
 					}
 					?>
 				</form>
@@ -176,21 +116,6 @@ if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
 			document.querySelector('.login-signup').style.display = 'none';
 		});
 
-		<?php
-			if(isset($sent) && $sent){
-				echo "confirmCloseBtn.addEventListener('click', () => {
-					document.querySelector('.confirm-submit').style.display = 'none';
-				});";
-			}
-			if(isset($notsend) && $notsend){
-				echo "
-				nonConfirmCloseBtn.addEventListener('click', () => {
-					document.querySelector('.non-confirm-submit').style.display = 'none';
-				});
-				";
-			}
-		?>		
-
 		loginBtn.addEventListener('click', () => {
 			document.querySelector('.login-signup .signup-options').style.display = 'none';
 			document.querySelector('.login-signup').style.display = 'block';
@@ -203,6 +128,29 @@ if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
 			document.querySelector('.login-signup').style.display = 'block';
 			document.querySelector('.login-signup .signup-options').style.display = 'flex';
 		});
+	</script>
+
+	<script>
+		<?php
+		if (isset($sent)) {
+			switch ($sent) {
+				case 1:
+					echo "confirmCloseBtn.addEventListener('click', () => {
+							document.querySelector('.confirm-submit').style.display = 'none';
+						});";
+					break;
+				case -1:
+					echo "
+						nonConfirmCloseBtn.addEventListener('click', () => {
+							document.querySelector('.non-confirm-submit').style.display = 'none';
+						});
+						";
+					break;
+				default:
+					break;
+			}
+		}
+		?>
 	</script>
 </body>
 

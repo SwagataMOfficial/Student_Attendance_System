@@ -1,37 +1,11 @@
 <?php
-session_start();
 include('partitions/_dbconnect.php');
+include('classes/StudentClass.php');
+session_start();
+
 // checking if a student has logged in
 if (isset($_SESSION['student_loggedin']) && $_SESSION['student_loggedin'] == true) {
-    if ($_SESSION['is_locked']) {
-        $locked = true;
-    } else {
-        $getStudentData = "SELECT * FROM `student_profile` WHERE `student_email` ='$_SESSION[student_email]'";
-        $query = $pdo->prepare($getStudentData);
-        $profileExist = $query->execute();
-
-        // checking if student has created a profile or not
-        $numRows = $query->rowCount();
-        if ($numRows == 1) {
-            $student = $query->fetch(PDO::FETCH_ASSOC);
-
-            // setting up session variables
-            $_SESSION["student_id"] = $student['student_id'];
-            $_SESSION["student_name"] = $student['student_name'];
-
-            // getting student's attendance count
-            $getStudent = "SELECT * FROM `student_attendance` WHERE student_id='" . $_SESSION["student_id"] . "'";
-            // $result = mysqli_query($conn, $getStudent);
-            $query = $pdo->prepare($getStudent);
-            $result = $query->execute();
-            $studentData = $query->fetch(PDO::FETCH_ASSOC);
-            $_SESSION["student_attendance"] = $studentData[strtolower(date('F'))];
-        } else {
-            unset($_SESSION['student_loggedin']);
-            $_SESSION['student_profile_email'] = $_SESSION['student_email'];
-            header("Location: /Minor_Project/Student_Attendance_System/studentProfile.php");
-        }
-    }
+    $student = $_SESSION['student_obj']->getStudentDetails();
 }
 // if no one has logged in then don't allow anyone to enter the student home page
 else {
@@ -51,8 +25,42 @@ else {
             font-size: unset;
         }
 
+        body {
+            color: var(--clr-btn-text-logo);
+            background-color: var(--clr-bgcolor);
+            transition: 0.6s;
+        }
+
         .container {
             margin-top: 2rem;
+        }
+
+        .table-bordered {
+            border: 1px solid var(--clr-border);
+        }
+
+        .table-bordered>tbody>tr>td,
+        .table-bordered>tbody>tr>th,
+        .table-bordered>tfoot>tr>td,
+        .table-bordered>tfoot>tr>th,
+        .table-bordered>thead>tr>td,
+        .table-bordered>thead>tr>th {
+            border: 1px solid var(--clr-border);
+        }
+
+        .table-bordered>tbody>tr>td,
+        .table-bordered>tbody>tr>th,
+        .table-bordered>tfoot>tr>td,
+        .table-bordered>tfoot>tr>th,
+        .table-bordered>thead>tr>td,
+        .table-bordered>thead>tr>th {
+            border: 1px solid var(--clr-border);
+        }
+
+        #videoContainer {
+            padding: 10px !important;
+            border: 5px solid var(--clr-border);
+            border-radius: 1rem;
         }
     </style>
 </head>
@@ -62,7 +70,7 @@ else {
     <div class="container">
 
         <div class="row mt-3">
-            <div class="col-md-6">
+            <div class="col-md-6" id="videoContainer">
                 <video id="preview" width="100%"></video>
 
             </div>
@@ -71,22 +79,11 @@ else {
                 <form action="student_home.php" id="attendanceUpdate" method="post" class="form-horizontal">
                     <label>SCAN QR CODE</label>
                     <input type="hidden" name="secret_key" id="secret_key" readonly placeholder="scan qrcode" class="form-control">
-                    <input type="hidden" name="student_id" <?php
-                                                            if (isset($_SESSION["student_id"])) {
-                                                                echo "Value = " . $_SESSION["student_id"];
-                                                            }
-                                                            ?>>
-                    <input type="hidden" name="student_attendance" <?php
-                                                                    if (isset($_SESSION["student_attendance"])) {
-                                                                        echo "Value = " . $_SESSION["student_attendance"] + 1;
-                                                                    }
-                                                                    ?>>
                     <input type="hidden" name="scan" value="scan">
                 </form>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <td>STUDENT ID</td>
                             <td>STUDENT Name</td>
                             <td>STUDENT ATTENDANCE COUNT</td>
                         </tr>
@@ -94,26 +91,18 @@ else {
                     <tbody>
                         <tr>
                             <td>
-                                <!-- Student ID -->
-                                <?php
-                                if (isset($_SESSION['student_id'])) {
-                                    echo $_SESSION['student_id'];
-                                }
-                                ?>
-                            </td>
-                            <td>
                                 <!-- Student Name -->
                                 <?php
-                                if (isset($_SESSION['student_name'])) {
-                                    echo $_SESSION['student_name'];
+                                if (isset($student['name'])) {
+                                    echo $student['name'];
                                 }
                                 ?>
                             </td>
                             <td>
                                 <!-- Student Attendance -->
                                 <?php
-                                if (isset($_SESSION["student_attendance"])) {
-                                    echo $_SESSION["student_attendance"];
+                                if (isset($student["attendance"])) {
+                                    echo $student["attendance"];
                                 }
                                 ?>
                             </td>
@@ -125,10 +114,10 @@ else {
     </div>
     <script>
         <?php
-if(isset($locked) && $locked){
-    echo 'alert("Cannot Scan! Your HOD has locked your scanner!!");
+        if (isset($student['is_locked']) && $student['is_locked']) {
+            echo 'alert("Cannot Scan! Your HOD has locked your scanner!!");
     document.location.href = "/Minor_Project/Student_Attendance_System/student_home.php";';
-}
+        }
         ?>
         let scanner = new Instascan.Scanner({
             video: document.getElementById('preview')
@@ -149,6 +138,8 @@ if(isset($locked) && $locked){
             document.getElementById('attendanceUpdate').submit(); // this line can submit a form without any submit button click.
         });
     </script>
+
+    <script src="js/sc_themeToggle.js"></script>
 </body>
 
 </html>

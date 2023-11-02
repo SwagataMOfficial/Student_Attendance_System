@@ -1,42 +1,33 @@
 <?php
-    include('partitions/_dbconnect.php');
-    session_start();
+include('partitions/_dbconnect.php');
+include('classes/Authenticate.php');
+session_start();
 
-    // student otp validation.
-    if(isset($_SESSION['st_validation_email']) && isset($_SESSION['st_validation_otp']) && isset($_SESSION['st_validation_password'])){
-        if(isset($_POST['otp_btn']) && $_POST['otp_btn'] == "otp_btn"){
-            $userOTP = $_POST['otp'][0] . $_POST['otp'][1] . $_POST['otp'][2] . $_POST['otp'][3] . $_POST['otp'][4] . $_POST['otp'][5];
-            if($userOTP == $_SESSION['st_validation_otp']){
-                $email = $_SESSION['st_validation_email'];
-                $password = $_SESSION['st_validation_password'];
-                $sql = "INSERT INTO `student_registration` (`student_email`, `student_password`) VALUES ('$email', '$password')";
-                $query = $pdo->prepare($sql);
-                $st_registered = $query->execute();
-            }
-            else{
-                $otpNotMatched = true;
-            }
+// student otp validation.
+if (isset($_SESSION['student_obj'])) {
+    if (isset($_POST['otp_btn']) && $_POST['otp_btn'] == "otp_btn") {
+        $userOTP = $_POST['otp'][0] . $_POST['otp'][1] . $_POST['otp'][2] . $_POST['otp'][3] . $_POST['otp'][4] . $_POST['otp'][5];
+        if ($_SESSION['student_obj']->registerStudent($pdo, $userOTP)) {
+            $st_registered = true;
+        } else {
+            $otpNotMatched = true;
         }
     }
-    // teacher otp validation
-    elseif(isset($_SESSION['t_validation_email']) && isset($_SESSION['t_validation_otp']) && isset($_SESSION['t_validation_password'])) {
-        if(isset($_POST['otp_btn']) && $_POST['otp_btn'] == "otp_btn"){
-            $userOTP = $_POST['otp'][0] . $_POST['otp'][1] . $_POST['otp'][2] . $_POST['otp'][3] . $_POST['otp'][4] . $_POST['otp'][5];
-            if($userOTP == $_SESSION['t_validation_otp']){
-                $email = $_SESSION['t_validation_email'];
-                $password = $_SESSION['t_validation_password'];
-                $sql = "INSERT INTO `teacher_registration` (`teacher_email`, `teacher_password`) VALUES ('$email', '$password')";
-                $query = $pdo->prepare($sql);
-                $t_registered = $query->execute();
-            }
-            else{
-                $otpNotMatched = true;
-            }
+}
+
+// teacher otp validation
+elseif (isset($_SESSION['teacher_obj'])) {
+    if (isset($_POST['otp_btn']) && $_POST['otp_btn'] == "otp_btn") {
+        $userOTP = $_POST['otp'][0] . $_POST['otp'][1] . $_POST['otp'][2] . $_POST['otp'][3] . $_POST['otp'][4] . $_POST['otp'][5];
+        if ($_SESSION['teacher_obj']->registerTeacher($pdo, $userOTP)) {
+            $t_registered = true;
+        } else {
+            $otpNotMatched = true;
         }
     }
-    else{
-        header("Location: /Minor_Project/Student_Attendance_System/");
-    }
+} else {
+    header("Location: /Minor_Project/Student_Attendance_System/");
+}
 ?>
 
 <!DOCTYPE html>
@@ -72,21 +63,19 @@
     </div>
     <script>
         <?php
-            if(isset($st_registered) && $st_registered){
-                $_SESSION["student_profile_email"] = $_SESSION['st_validation_email'];
-                echo 'alert("Registration Successful! Click Ok to Create Your Profile...");
+        if (isset($st_registered) && $st_registered) {
+            echo 'alert("Registration Successful! Click Ok to Create Your Profile...");
                         window.location.href = "/Minor_Project/Student_Attendance_System/studentProfile.php";
                 ';
-            }
-            if(isset($t_registered) && $t_registered){
-                $_SESSION["teacher_profile_email"] = $_SESSION['t_validation_email'];
-                echo 'alert("Registration Successful! Click Ok to Create Your Profile...");
+        }
+        if (isset($t_registered) && $t_registered) {
+            echo 'alert("Registration Successful! Click Ok to Create Your Profile...");
                         window.location.href = "/Minor_Project/Student_Attendance_System/teacherProfile.php";
                 ';
-            }
-            if(isset($otpNotMatched) && $otpNotMatched){
-                echo 'alert("OTP did not matched! try again....");';
-            }
+        }
+        if (isset($otpNotMatched) && $otpNotMatched) {
+            echo 'alert("OTP did not matched! try again....");';
+        }
         ?>
     </script>
     <script>
@@ -99,8 +88,7 @@
                 if (e.key >= 0 && e.key <= 9) {
                     codes[idx].value = '';
                     setTimeout(() => codes[idx + 1].focus(), 10);
-                }
-                else if (e.key === 'Backspace') {
+                } else if (e.key === 'Backspace') {
                     setTimeout(() => codes[idx - 1].focus(), 10);
                 }
             });

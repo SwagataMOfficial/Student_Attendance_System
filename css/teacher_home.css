@@ -19,12 +19,17 @@ html {
     scroll-behavior: smooth;
 }
 
+header {
+    color: var(--clr-hover-p-color);
+}
+
 /* main container styling */
 .container {
     display: flex;
     min-height: 100vh;
     max-width: 100vw;
     background-color: var(--clr-bgcolor);
+    transition: 0.6s;
 }
 
 .right-main {
@@ -108,9 +113,10 @@ html {
 }
 
 .essential_buttons .essential-button:hover {
-    background: #1e2436;
+    background: var(--clr-essential-btn);
     color: white;
 }
+
 .essential_buttons .essential-button:active {
     transition: none;
     transform: scale(0.90);
@@ -144,8 +150,8 @@ html {
     width: 16vw;
     height: 36vh;
     border-radius: 1.3rem;
-    border: 3px solid var(--clr-border);
-    box-shadow: 0 0 8px 1px var(--clr-border);
+    border: 2px solid var(--clr-border);
+    box-shadow: 0 0 8px 1px var(--clr-essential-btn);
 }
 
 .top-students .student .profile-image {
@@ -153,13 +159,14 @@ html {
     height: 100px;
     margin: auto;
     margin-top: 20px;
+    border: 2px solid var(--clr-border);
     border-radius: 50%;
     overflow: hidden;
-    background-color: red;
 }
 
 .top-students .student .profile-image img {
     width: 100%;
+    height: 100%;
 }
 
 .top-students .student .student-name {
@@ -189,6 +196,7 @@ html {
 }
 
 .more-students-data .dataTables_wrapper {
+    color: var(--clr-hover-p-color);
     position: relative;
     clear: both;
     width: 90%;
@@ -196,12 +204,12 @@ html {
     padding-bottom: 3vh;
 }
 
-.more-students-data .dataTables_wrapper .dataTables_length label select option {
+/* .more-students-data .dataTables_wrapper .dataTables_length label select option {
     color: black;
-}
+} */
 
 .more-students-data .dataTables_wrapper .dataTables_filter input {
-    border: 1px solid white;
+    /* border: 1px solid white; */
     margin-left: 10px;
     border-radius: 10px;
     padding-left: 10px;
@@ -229,7 +237,7 @@ html {
 
 #students_table .table-btn-edit:hover,
 #students_table .table-btn-delete:hover {
-    color: white;
+    color: var(--clr-hover-p-color);
     background: var(--clr-hover-color);
     box-shadow: 0 0 8px 0px var(--clr-border);
 }
@@ -397,11 +405,12 @@ table.dataTable.no-footer {
     height: 6vh;
     border-radius: 1rem;
     cursor: pointer;
+    transition: 0.3s ease-in;
 }
 
 .set-goal-input button:hover {
     background-color: var(--clr-hover-color);
-    color: white;
+    color: var(--clr-hover-p-color);
     box-shadow: 0 0 8px 0px var(--clr-border);
 }
 
@@ -411,6 +420,13 @@ table.dataTable.no-footer {
 
 .set-goal-input span {
     font-size: 2rem;
+}
+
+#lock_attendance .search-result-container {
+    width: 90%;
+    margin: auto;
+    margin-bottom: 1rem;
+    color: var(--clr-hover-p-color);
 }
 
 .search-input {
@@ -423,6 +439,7 @@ table.dataTable.no-footer {
 .search-input input {
     width: 17vw;
     height: 8vh;
+    padding-inline: 5px;
     border: 3px solid var(--clr-border);
     border-radius: 15px;
     color: var(--clr-btn-text-logo);
@@ -442,11 +459,12 @@ table.dataTable.no-footer {
     height: 6vh;
     border-radius: 1rem;
     cursor: pointer;
+    transition: 0.3s ease-in;
 }
 
 .search-input button:hover {
     background-color: var(--clr-hover-color);
-    color: white;
+    color: var(--clr-hover-p-color);
     box-shadow: 0 0 8px 0px var(--clr-border);
 }
 
@@ -482,7 +500,7 @@ table.dataTable.no-footer {
 
 #lock-unlock .table-btn-lock:hover,
 #lock-unlock .table-btn-unlock:hover {
-    color: white;
+    color: var(--clr-hover-p-color);
     background: var(--clr-hover-color);
     box-shadow: 0 0 8px 0px var(--clr-border);
 }

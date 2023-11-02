@@ -2,12 +2,6 @@
 <header>
     <nav class="header__navbar">
         <div class="nav__left">Dashboard</div>
-        <div class="nav__search">
-            <span class="material-symbols-outlined search-icon">
-                search
-            </span>
-            <input type="text" name="search" id="search" placeholder="Search...">
-        </div>
         <div class="nav__right">
             <!-- title is used to show a pop up message like below -->
             <span class="right__themeToggle util-icons" title="Switch the theme.">
@@ -27,12 +21,12 @@
             </span>
             <div class="right__imageLogo" title="Your profile">
                 <?php
-                if (isset($_SESSION["teacher_picture"])) {
-                    $image = $_SESSION["teacher_picture"];
+                if (isset($teacher['profile_picture'])) {
+                    $image = $teacher['profile_picture'];
                     echo '<img src="../profile_pictures/' . $image . '" alt="profile_image">';
                 }
-                else if (isset($_SESSION["student_picture"])) {
-                    $image = $_SESSION["student_picture"];
+                else if (isset($student['profile_picture'])) {
+                    $image = $student['profile_picture'];
                     echo '<img src="../profile_pictures/' . $image . '" alt="profile_image">';
                 }
                 else {

@@ -1,31 +1,16 @@
 <?php
 include('partitions/_dbconnect.php');
+include('classes/Authenticate.php');
+include('classes/StudentClass.php');
+session_start();
 
 if (isset($_POST["login"]) && $_POST["login"] == "login") {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $sql = "SELECT * FROM `student_registration` WHERE `student_email`='$email'";
-
-    $query = $pdo->prepare($sql);
-    $result = $query->execute();
-    
-    if ($result) {
-        $num = $query->rowCount();
-        if ($num == 1) {
-            $credentials = $query->fetch(PDO::FETCH_ASSOC);
-            if (password_verify($password, $credentials['student_password'])) {
-                $login = true;
-                session_start();
-                $_SESSION["student_email"] = $email;
-                $_SESSION["student_loggedin"] = true;
-            }
-            else {
-                $passNotMatched = true;
-            }
-        }
-        else {
-            $userNotExist = true;
-        }
+    $login = new Login($_POST);
+    $verifyResult = $login->verify_student($pdo);
+    if($verifyResult == 1){
+        $student = new Student($pdo, $_POST['email']);
+        $_SESSION['student_loggedin'] = true;
+        $_SESSION['student_obj'] = $student;
     }
 }
 ?>
@@ -110,20 +95,6 @@ if (isset($_POST["login"]) && $_POST["login"] == "login") {
         const registerLink = document.querySelector('.register-link');
         const loginLink = document.querySelector('.login-link');
 
-        <?php
-        if (isset($login) && $login) {
-            echo 'alert("You are successfully loggedin! Click ok to continue....");
-                window.location.href = "/Minor_Project/Student_Attendance_System/student_home.php";
-                ';
-        }
-        if (isset($passNotMatched) && $passNotMatched) {
-            echo 'alert("Invalid Password!");';
-        }
-        if (isset($userNotExist) && $userNotExist) {
-            echo 'alert("Email not Registered!");';
-        }
-        ?>
-
         registerLink.addEventListener('click', () => {
             wrapper.classList.add('active');
         });
@@ -131,6 +102,27 @@ if (isset($_POST["login"]) && $_POST["login"] == "login") {
         loginLink.addEventListener('click', () => {
             wrapper.classList.remove('active');
         });
+    </script>
+
+    <script>
+        <?php
+            if(isset($verifyResult)){
+                switch ($verifyResult) {
+                    case 1:
+                        echo 'alert("You are successfully loggedin! Click ok to continue....");
+                            window.location.href = "/Minor_Project/Student_Attendance_System/student_home.php";';
+                        break;
+                    case 2:
+                        echo 'alert("Wrong Password!");';
+                        break;
+                    case 3:
+                        echo 'alert("Email not Registered!");';
+                        break;                    
+                    default:
+                        break;
+                }
+            }
+        ?>
     </script>
 
 </body>
