@@ -5,7 +5,7 @@ include('classes/Authenticate.php');
 if (isset($_POST["register"]) && $_POST["register"] == "register") {
     $registration = new Register();
     session_start();
-    $_SESSION['student_obj'] = $registration;
+    $_SESSION['student_register'] = $registration;
     $result = $registration->validate_student($_POST);
 
     if ($result == 2) {

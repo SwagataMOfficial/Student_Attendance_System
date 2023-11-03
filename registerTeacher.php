@@ -5,7 +5,7 @@ include('classes/Authenticate.php');
 if (isset($_POST["register"]) && $_POST["register"] == "register") {
     $registration = new Register();
     session_start();
-    $_SESSION['teacher_obj'] = $registration;
+    $_SESSION['teacher_register'] = $registration;
     $result = $registration->validate_teacher($_POST);
     if ($result == 2) {
         $otpNotSent = true;

@@ -4,10 +4,10 @@ include('classes/Authenticate.php');
 session_start();
 
 // student otp validation.
-if (isset($_SESSION['student_obj'])) {
+if (isset($_SESSION['student_register'])) {
     if (isset($_POST['otp_btn']) && $_POST['otp_btn'] == "otp_btn") {
         $userOTP = $_POST['otp'][0] . $_POST['otp'][1] . $_POST['otp'][2] . $_POST['otp'][3] . $_POST['otp'][4] . $_POST['otp'][5];
-        if ($_SESSION['student_obj']->registerStudent($pdo, $userOTP)) {
+        if ($_SESSION['student_register']->registerStudent($pdo, $userOTP)) {
             $st_registered = true;
         } else {
             $otpNotMatched = true;
@@ -16,10 +16,10 @@ if (isset($_SESSION['student_obj'])) {
 }
 
 // teacher otp validation
-elseif (isset($_SESSION['teacher_obj'])) {
+elseif (isset($_SESSION['teacher_register'])) {
     if (isset($_POST['otp_btn']) && $_POST['otp_btn'] == "otp_btn") {
         $userOTP = $_POST['otp'][0] . $_POST['otp'][1] . $_POST['otp'][2] . $_POST['otp'][3] . $_POST['otp'][4] . $_POST['otp'][5];
-        if ($_SESSION['teacher_obj']->registerTeacher($pdo, $userOTP)) {
+        if ($_SESSION['teacher_register']->registerTeacher($pdo, $userOTP)) {
             $t_registered = true;
         } else {
             $otpNotMatched = true;

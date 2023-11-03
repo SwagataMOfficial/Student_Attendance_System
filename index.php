@@ -22,8 +22,13 @@ session_destroy();
         }
 
         .text-warning {
-            color: yellow !important;
+            color: white !important;
             text-shadow: 1px 1px 5px black !important;
+        }
+
+        nav .text-light:hover {
+            text-decoration: underline !important;
+            text-underline-offset: 2px;
         }
 
         /* pre-loader css */
@@ -183,7 +188,7 @@ session_destroy();
         </div>
     </div>
     <!-- <nav class="navbar navbar-expand-lg bg-body-tertiary"> -->
-    <nav class="navbar navbar-expand-lg fixed-top" data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg fixed-top" data-bs-theme="dark" style="backdrop-filter: blur(7px); border-bottom: 1px solid cadetblue;">
         <div class="container-fluid">
             <a class="navbar-brand text-warning" href="/Minor_Project/Student_Attendance_System/">Classified.in</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

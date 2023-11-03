@@ -4,7 +4,7 @@ include('classes/Authenticate.php');
 session_start();
 // if account is created then
 if (isset($_POST["teacherAccount"]) && $_POST["teacherAccount"] == "teacherAccount") {
-    $result = $_SESSION['teacher_obj']->set_teacher_profile($pdo, $_POST);
+    $result = $_SESSION['teacher_register']->set_teacher_profile($pdo, $_POST);
 }
 ?>
 

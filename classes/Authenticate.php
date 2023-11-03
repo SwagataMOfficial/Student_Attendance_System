@@ -55,6 +55,89 @@ class Register extends Credentials {
             return false;
         }
     }
+    
+    private function sendStudentConfirmMail($id, $name, $phone, $stream, $sem){
+        // including all necessary files
+        require("PHPMailer/PHPMailer.php");
+        require("PHPMailer/SMTP.php");
+        require("PHPMailer/Exception.php");
+
+        $current_date = (string)date('d-M-Y');
+
+        $mail = new PHPMailer(true);
+
+        // setting the mail
+        try {
+            //Server settings
+            $mail->isSMTP(); //Send using SMTP
+            $mail->Host = 'smtp.gmail.com'; //Set the SMTP server to send through
+            $mail->SMTPAuth = true; //Enable SMTP authentication
+            $mail->Username = $this->getUser(); //SMTP username
+            $mail->Password = $this->getPassword(); //SMTP password
+
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; //Enable implicit TLS encryption
+            $mail->Port = 465; //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+            //Recipients
+            $mail->setFrom($this->getUser(), 'Student Attendance');
+            $mail->addAddress($this->email); // receiver's email address
+
+            //Content
+            $mail->isHTML(true); //Set email format to HTML
+            $mail->Subject = 'Thanks for the Registration | ' . $current_date;
+            $mail->Body = "Your Registration Details are:<br>ID: $id <br>Name: $name <br>Phone Number: $phone <br>Email ID: $this->email <br>Stream: $stream <br>Semester: $sem <br><strong>Your Account Password: $this->cpassword</strong><br><strong><em>Do not share your password with anyone</em>!!</strong>";
+
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            // echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            return false;
+        }
+    }
+
+    private function sendTeacherConfirmMail($id, $name, $phone, $dept){
+        // including all necessary files
+        require("PHPMailer/PHPMailer.php");
+        require("PHPMailer/SMTP.php");
+        require("PHPMailer/Exception.php");
+
+        $current_date = (string)date('d-M-Y');
+
+        $mail = new PHPMailer(true);
+
+        // setting the mail
+        try {
+            //Server settings
+            $mail->isSMTP(); //Send using SMTP
+            $mail->Host = 'smtp.gmail.com'; //Set the SMTP server to send through
+            $mail->SMTPAuth = true; //Enable SMTP authentication
+            $mail->Username = $this->getUser(); //SMTP username
+            $mail->Password = $this->getPassword(); //SMTP password
+
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; //Enable implicit TLS encryption
+            $mail->Port = 465; //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+            //Recipients
+            $mail->setFrom($this->getUser(), 'Student Attendance');
+            $mail->addAddress($this->email); // receiver's email address
+
+            //Content
+            $mail->isHTML(true); //Set email format to HTML
+            $mail->Subject = 'Thanks for the Registration | ' . $current_date;
+            if(isset($dept)){
+                $mail->Body = "Your Registration Details are:<br>ID: $id <br>Name: $name <br>Phone Number: $phone <br>Email ID: $this->email<br>Department: $dept<br><strong>Your Account Password: $this->cpassword</strong><br><strong><em>Do not share your password with anyone</em>!!</strong>";
+            }
+            else{
+                $mail->Body = "Your Registration Details are:<br>ID: $id <br>Name: $name <br>Phone Number: $phone <br>Email ID: $this->email<br><strong>Your Account Password: $this->cpassword</strong><br><strong><em>Do not share your password with anyone</em>!!</strong>";
+            }
+
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            // echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            return false;
+        }
+    }
 
     public function registerStudent($pdo, $userOTP) {
         if ($userOTP == $this->otp) {
@@ -178,6 +261,7 @@ class Register extends Credentials {
                         $sql = "INSERT INTO `student_attendance` (`student_id`,`student_name`, `student_stream`, `remarks`, `grade`) VALUES ('$sid', '$post[student_name]', '$post[stream]', 'Initial', 'None');";
                         $query = $pdo->prepare($sql);
                         $result = $query->execute();
+                        $this->sendStudentConfirmMail($sid, $post['student_name'], $post['student_phone'], $post['stream'], $post['student_semester']);
                     }
                 }
 
@@ -188,6 +272,8 @@ class Register extends Credentials {
     }
 
     public function set_teacher_profile($pdo, $post) {
+
+        // for hod teachers
         if ($post['hod_select'] == "yes") {
             // this if block handles profile pic uploading
             if (isset($_FILES['teacher_profile_pic']['name'])) {
@@ -236,6 +322,7 @@ class Register extends Credentials {
                         $sql = "UPDATE `teacher_profile` SET `teacher_id` = '$tid' WHERE `teacher_email` ='$this->email'";
                         $query = $pdo->prepare($sql);
                         $result = $query->execute();
+                        $this->sendTeacherConfirmMail($tid, $post['teacher_name'], $post['teacher_phone'], $post['department']);
                     }
 
                     move_uploaded_file($tmpName, '../profile_pictures/' . $newImageName);
@@ -243,6 +330,7 @@ class Register extends Credentials {
                 }
             }
         }
+        // for non hod teachers
         else {
             // this if block handles profile pic uploading
             if (isset($_FILES['teacher_profile_pic']['name'])) {
@@ -295,6 +383,7 @@ class Register extends Credentials {
                         $sql = "UPDATE `teacher_profile` SET `teacher_id` = '$tid' WHERE `teacher_email` ='$this->email'";
                         $query = $pdo->prepare($sql);
                         $result = $query->execute();
+                        $this->sendTeacherConfirmMail($tid, $post['teacher_name'], $post['teacher_phone'], null);
                     }
 
                     move_uploaded_file($tmpName, '../profile_pictures/' . $newImageName);
@@ -360,4 +449,3 @@ class Login {
         }
     }
 }
-?>
