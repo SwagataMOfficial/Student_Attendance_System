@@ -1,13 +1,13 @@
 <?php
 require("partitions/_dbconnect.php");
 require('classes/StudentClass.php');
-require('classes/TeacherClass.php');
+// require('classes/TeacherClass.php');
 require('classes/MessageClass.php');
 session_start();
 
 // checking if a student or teacher has logged in
 // if not then redirect to index page
-if (!isset($_SESSION['student_loggedin']) && !isset($_SESSION['teacher_loggedin'])) {
+if (!isset($_SESSION['student_loggedin']) && !isset($_SESSION['student_obj'])) {
     header("Location: /Minor_Project/Student_Attendance_System/");
 }
 
@@ -18,34 +18,10 @@ $query->execute();
 
 
 // handling message posting request for student
-if (isset($_SESSION['student_obj']) && !isset($_SESSION['teacher_obj'])) {
+if (isset($_SESSION['student_obj']) && isset($_SESSION['student_loggedin'])) {
     $student = $_SESSION['student_obj']->getStudentDetails();
     if (isset($_POST["messagebtn"]) && $_POST["messagebtn"] === "messagebtn") {
-        // $id = $_SESSION["student_id"];
-        // $message = filter_var($_POST['message'], FILTER_SANITIZE_SPECIAL_CHARS);
-        // $sendMessage = "INSERT INTO `messages` (`student_id`,`student_message`) VALUES ('$id','$message')";
-        // $query = $pdo->prepare($sendMessage);
-        // $result = $query->execute();
-        // if ($result) {
-        //     header("Location: message.php");
-        // }
         $sent = $_SESSION['student_obj']->sendMessage($pdo, $_POST);
-    }
-}
-
-// handling message posting request for teacher
-if (isset($_SESSION['teacher_obj']) && !isset($_SESSION['student_obj'])) {
-    $teacher = $_SESSION['teacher_obj']->getTeacherDetails();
-    if (isset($_POST["messagebtn"]) && $_POST["messagebtn"] === "messagebtn") {
-        // $id = $_SESSION["teacher_id"];
-        // $message = $_POST['message'];
-        // $sendMessage = "INSERT INTO `messages` (`teacher_id`,`teacher_message`) VALUES ('$id','$message')";
-        // $query = $pdo->prepare($sendMessage);
-        // $result = $query->execute();
-        // if ($result) {
-        //     header("Location: message.php");
-        // }
-        $sent = $_SESSION['teacher_obj']->sendMessage($pdo, $_POST);
     }
 }
 ?>
@@ -148,11 +124,11 @@ if (isset($_SESSION['teacher_obj']) && !isset($_SESSION['student_obj'])) {
         if (isset($sent)) {
             switch ($sent) {
                 case 1:
-                    echo 'window.location.href="/Minor_Project/Student_Attendance_System/message.php"';
+                    echo 'window.location.href="/Minor_Project/Student_Attendance_System/studentMessage.php"';
                     break;
                 case -1:
                     echo "alert('Failed to Send Message');
-                        window.location.href='/Minor_Project/Student_Attendance_System/message.php'";
+                        window.location.href='/Minor_Project/Student_Attendance_System/studentMessage.php'";
                 default:
                     break;
             }

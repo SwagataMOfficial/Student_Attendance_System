@@ -47,7 +47,14 @@
         </div>
         <div class="link-wrapper">
             <p class="link-heading">Message</p>
-            <a href="message.php" class="links">
+            <a <?php 
+            if(isset($_SESSION['student_obj'])){
+                echo 'href="studentMessage.php"';
+            }
+            if(isset($_SESSION['teacher_obj'])){
+                echo 'href="teacherMessage.php"';
+            }
+            ?> class="links">
                 <span class="material-symbols-outlined">
                     forum
                 </span>
