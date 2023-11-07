@@ -2,9 +2,15 @@
 require("partitions/_dbconnect.php");
 include('classes/Authenticate.php');
 session_start();
-// if account is created then
-if (isset($_POST["createAccount"]) && $_POST["createAccount"] == "createAccount") {
-    $result = $_SESSION['student_register']->set_student_profile($pdo, $_POST);
+
+if(isset($_SESSION['student_register'])){
+    // if account is created then
+    if (isset($_POST["createAccount"]) && $_POST["createAccount"] == "createAccount") {
+        $result = $_SESSION['student_register']->set_student_profile($pdo, $_POST);
+    }
+}
+else{
+    header("Location: /Minor_Project/Student_Attendance_System/");
 }
 ?>
 
@@ -24,60 +30,60 @@ if (isset($_POST["createAccount"]) && $_POST["createAccount"] == "createAccount"
         <form method="post" id="account_create" enctype="multipart/form-data">
             <div class="mb-4">
                 <label for="exampleInputEmail1" class="form-label">Student Name</label>
-                <input type="text" name="student_name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Your Name" required>
+                <input type="text" name="student_name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Your Name" required <?php if(isset($_POST["createAccount"])){echo "value=$_POST[student_name]";} ?> >
             </div>
             <div class="mb-4">
                 <label for="exampleInputEmail1" class="form-label">Student Phone</label>
-                <input type="tel" name="student_phone" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Your Phone" required>
+                <input type="tel" name="student_phone" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Your Phone" required <?php if(isset($_POST["createAccount"])){echo "value=$_POST[student_phone]";} ?> >
             </div>
             <div class="mb-2">
                 <label class="form-check-label mb-2" for="gender">Select Your Gender</label><br>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" id="male" value="M" required>
+                    <input class="form-check-input" type="radio" name="gender" id="male" value="M" required <?php if(isset($_POST["createAccount"])){if($_POST['gender'] == "M"){echo ' checked ';}} ?> >
                     <label class="form-check-label" for="male">Male</label>
                 </div>
                 <div class="form-check form-check-inline mb-2">
-                    <input class="form-check-input" type="radio" name="gender" id="female" value="F" required>
+                    <input class="form-check-input" type="radio" name="gender" id="female" value="F" required <?php if(isset($_POST["createAccount"])){if($_POST['gender'] == "F"){echo ' checked ';}} ?> >
                     <label class="form-check-label" for="female">Female</label>
                 </div>
                 <div class="form-check form-check-inline mb-2">
-                    <input class="form-check-input" type="radio" name="gender" id="other" value="O" required>
+                    <input class="form-check-input" type="radio" name="gender" id="other" value="O" required <?php if(isset($_POST["createAccount"])){if($_POST['gender'] == "O"){echo ' checked ';}} ?> >
                     <label class="form-check-label" for="other">Other</label>
                 </div>
             </div>
             <div class="mb-2">
                 <label class="form-check-label my-2" for="stream">Select Your Stream</label><br>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="stream" id="bca" value="BCA" required>
+                    <input class="form-check-input" type="radio" name="stream" id="bca" value="BCA" required <?php if(isset($_POST["createAccount"])){if($_POST['stream'] == "BCA"){echo ' checked ';}} ?> >
                     <label class="form-check-label" for="bca">BCA</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="stream" id="bba" value="BBA" required>
+                    <input class="form-check-input" type="radio" name="stream" id="bba" value="BBA" required <?php if(isset($_POST["createAccount"])){if($_POST['stream'] == "BBA"){echo ' checked ';}} ?> >
                     <label class="form-check-label" for="bba">BBA</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="stream" id="mca" value="MCA" required>
+                    <input class="form-check-input" type="radio" name="stream" id="mca" value="MCA" required <?php if(isset($_POST["createAccount"])){if($_POST['stream'] == "MCA"){echo ' checked ';}} ?> >
                     <label class="form-check-label" for="mca">MCA</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="stream" id="mba" value="MBA" required>
+                    <input class="form-check-input" type="radio" name="stream" id="mba" value="MBA" required <?php if(isset($_POST["createAccount"])){if($_POST['stream'] == "MBA"){echo ' checked ';}} ?> >
                     <label class="form-check-label" for="mba">MBA</label>
                 </div>
             </div>
             <div class="mb-3">
                 <select class="form-select mt-3" name="student_semester" aria-label="Default select example" required>
                     <option>Select Your Semester..</option>
-                    <option value="1">First</option>
-                    <option value="2">Second</option>
-                    <option value="3">Third</option>
-                    <option value="4">Fourth</option>
-                    <option value="5">Fifth</option>
-                    <option value="6">Sixth</option>
+                    <option value="1" <?php if(isset($_POST["createAccount"])){if($_POST['student_semester'] == "1"){echo ' selected ';}} ?> >First</option>
+                    <option value="2" <?php if(isset($_POST["createAccount"])){if($_POST['student_semester'] == "2"){echo ' selected ';}} ?> >Second</option>
+                    <option value="3" <?php if(isset($_POST["createAccount"])){if($_POST['student_semester'] == "3"){echo ' selected ';}} ?> >Third</option>
+                    <option value="4" <?php if(isset($_POST["createAccount"])){if($_POST['student_semester'] == "4"){echo ' selected ';}} ?> >Fourth</option>
+                    <option value="5" <?php if(isset($_POST["createAccount"])){if($_POST['student_semester'] == "5"){echo ' selected ';}} ?> >Fifth</option>
+                    <option value="6" <?php if(isset($_POST["createAccount"])){if($_POST['student_semester'] == "6"){echo ' selected ';}} ?> >Sixth</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label for="student_profile_pic" class="form-label">Upload Profile Picture</label>
-                <input class="form-control" type="file" name="student_profile_pic" id="student_profile_pic" accept=".jpg , .jpeg , .png">
+                <input class="form-control" type="file" name="student_profile_pic" id="student_profile_pic" accept=".jpg , .jpeg , .png" required>
             </div>
             <button type="submit" form="account_create" name="createAccount" value="createAccount" class="btn btn-primary">Create Account</button>
         </form>

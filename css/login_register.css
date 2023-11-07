@@ -144,8 +144,16 @@ body {
 }
 
 .input-box input:focus~i,
-.input-box input:focus~i {
+.input-box input:valid~i {
     color: #0ef;
+}
+
+.password::placeholder {
+    opacity: 0;
+}
+
+.password:focus::placeholder {
+    opacity: 1;
 }
 
 .btn {

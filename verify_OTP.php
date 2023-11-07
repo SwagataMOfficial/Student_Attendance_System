@@ -46,7 +46,7 @@ elseif (isset($_SESSION['teacher_register'])) {
         <p>We emailed you the six digit code to your personal@gmail.com<br>Enter the code below to confirm your email
             address</p>
 
-        <form class="code-container" id="otp_form" method="post">
+        <form action="verify_OTP.php" class="code-container" id="otp_form" method="post">
             <input type="number" class="code" name="otp[]" placeholder="0" min="0" max="9" required>
             <input type="number" class="code" name="otp[]" placeholder="0" min="0" max="9" required>
             <input type="number" class="code" name="otp[]" placeholder="0" min="0" max="9" required>
@@ -61,6 +61,7 @@ elseif (isset($_SESSION['teacher_register'])) {
             If you didn't receive a code! <strong> RESEND!!</strong>
         </small>
     </div>
+    
     <script>
         <?php
         if (isset($st_registered) && $st_registered) {

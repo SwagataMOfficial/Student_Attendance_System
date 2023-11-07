@@ -67,6 +67,7 @@
     margin: auto;
     padding: 4px 0px;
     border-radius: 15px;
+    font-size: 1.1vw;
     color: var(--clr-sender-right);
     background: var(--clr-hover-color);
     text-align: center;
@@ -92,7 +93,7 @@
 
 .message {
     background-color: var(--clr-message);
-    width: 26%;
+    width: 24vw;
     padding: 10px;
     margin: 10px;
     border-radius: 20px;
@@ -193,6 +194,7 @@
     font-size: 2rem;
     padding-left: 4px;
     color: var(--clr-btn-text-logo);
+    transition: inherit;
 }
 
 .mainContainer h1 {

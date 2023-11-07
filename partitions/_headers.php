@@ -1,6 +1,8 @@
-<link rel="stylesheet" href="css/headers.css">
 <header>
     <nav class="header__navbar">
+        <button type="button" class="nav__hamburger">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
         <div class="nav__left">Dashboard</div>
         <div class="nav__right">
             <!-- title is used to show a pop up message like below -->
@@ -24,12 +26,10 @@
                 if (isset($teacher['profile_picture'])) {
                     $image = $teacher['profile_picture'];
                     echo '<img src="../profile_pictures/' . $image . '" alt="profile_image">';
-                }
-                else if (isset($student['profile_picture'])) {
+                } else if (isset($student['profile_picture'])) {
                     $image = $student['profile_picture'];
                     echo '<img src="../profile_pictures/' . $image . '" alt="profile_image">';
-                }
-                else {
+                } else {
                     echo '<span class="material-symbols-outlined">account_circle</span>';
                 }
                 ?>

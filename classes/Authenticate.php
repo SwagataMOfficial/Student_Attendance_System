@@ -11,6 +11,10 @@ class Register extends Credentials {
     private $cpassword;
     private $otp;
 
+    function __construct($email) {
+        $this->email = $email;
+    }
+
     private function generateOTP() {
         $this->otp = rand(100000, 999999);
     }
@@ -166,46 +170,63 @@ class Register extends Credentials {
         }
     }
 
-    public function validate_student($post) {
-        $this->email = $post['email'];
+    public function validate_student($pdo, $post) {
+        // $this->email = $post['email'];
         $this->password = $post['password'];
         $this->cpassword = $post['cpassword'];
 
-        if ($this->password == $this->cpassword) {
-            // sending mail and further work
-            if ($this->sendMail()) {
-                $hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
-                $this->password = $hashedPassword;
-                header("Location: /Minor_Project/Student_Attendance_System/verify_OTP.php");
+        $sql = "SELECT * FROM `student_registration` WHERE `student_email`='$this->email'";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+
+        if($stmt->rowCount() != 1){
+            if ($this->password == $this->cpassword) {
+                // sending mail and further work
+                if ($this->sendMail()) {
+                    $hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
+                    $this->password = $hashedPassword;
+                    header("Location: /Minor_Project/Student_Attendance_System/verify_OTP.php");
+                }
+                else {
+                    return 2;   // if failed to sent otp
+                }
             }
             else {
-                return 2;
+                return 1;   // if password and confirm passwords don't match
             }
         }
-        else {
-            return 1;
+        else{
+            return 3;   // if email already exists
         }
     }
 
-    public function validate_teacher($post) {
-        $this->email = $post['email'];
+    public function validate_teacher($pdo, $post) {
+        // $this->email = $post['email'];
         $this->password = $post['password'];
         $this->cpassword = $post['cpassword'];
 
+        $sql = "SELECT * FROM `teacher_registration` WHERE `teacher_email`='$this->email'";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
 
-        if ($this->password == $this->cpassword) {
-            // sending mail and further work
-            if ($this->sendMail()) {
-                $hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
-                $this->password = $hashedPassword;
-                header("Location: /Minor_Project/Student_Attendance_System/verify_OTP.php");
+        if($stmt->rowCount() != 1){
+            if ($this->password == $this->cpassword) {
+                // sending mail and further work
+                if ($this->sendMail()) {
+                    $hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
+                    $this->password = $hashedPassword;
+                    header("Location: /Minor_Project/Student_Attendance_System/verify_OTP.php");
+                }
+                else {
+                    return 2;   // if failed to sent otp
+                }
             }
             else {
-                return 2;
+                return 1;   // if password and confirm passwords don't match
             }
         }
-        else {
-            return 1;
+        else{
+            return 3;   // if email already exists
         }
     }
 

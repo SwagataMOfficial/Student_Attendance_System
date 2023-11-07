@@ -23,11 +23,33 @@ header {
 }
 
 .header__navbar {
+    position: relative;
     height: 64.1px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--clr-border);
+}
+
+.header__navbar .nav__hamburger {
+    position: absolute;
+    top: 110%;
+    right: 10px;
+    background: var(--clr-essential-btn);
+    border: 2px solid var(--clr-border);
+    color: var(--clr-hover-p-color);
+    width: 30px;
+    height: 27px;
+    cursor: pointer;
+    display: none;
+}
+
+.header__navbar .nav__hamburger:hover {
+    background: var(--clr-hover-color);
+}
+
+.header__navbar .nav__hamburger:active {
+    transform: scale(0.85);
 }
 
 .header__navbar .nav__left {
@@ -46,8 +68,8 @@ header {
 
 .nav__right .right__themeToggle {
     background: var(--clr-theme-bg);
-    width: 2.3vw;
-    height: 2.3vw;
+    width: 28px;
+    aspect-ratio: 1;
     display: flex;
     justify-content: center;
     align-items: center;

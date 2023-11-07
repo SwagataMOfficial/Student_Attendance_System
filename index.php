@@ -1,10 +1,7 @@
 <?php
-
-// reseting the session here
-// because the only way a user will be in the index page when that user was not logged in
-session_start();
-session_destroy();
-
+    // users will get into that page only if they are exiting the website or redirected for some reason.
+    session_start();
+    session_destroy();
 ?>
 
 <!doctype html>
@@ -114,6 +111,16 @@ session_destroy();
             }
         }
 
+        .feature-link {
+            --bs-btn-bg: #7637b2 !important;
+            --bs-btn-border-color: #391b56 !important;
+            --bs-btn-hover-bg: #542680 !important;
+            --bs-btn-hover-border-color: #361952 !important;
+            --bs-btn-active-bg: #542680 !important;
+            --bs-btn-active-border-color: #361952 !important;
+            --bs-border-radius: 0.655rem !important;
+        }
+
         #features .card {
             width: 20rem;
             height: 16rem;
@@ -121,17 +128,43 @@ session_destroy();
             box-shadow: 0 0 5px 1px #088aa4;
         }
 
+        #intro {
+            color: #ffffff !important;
+            background-color: rgb(17 17 17 / 70%) !important;
+            box-shadow: 0 0 7px 1px #00ff8d !important;
+            border-radius: 25px !important;
+            width: 87% !important;
+        }
+
         #intro .card-title {
             font-size: 2.5rem !important;
             text-shadow: 2px 3px 5px black !important;
+            border-bottom: 2px solid cadetblue;
+            width: 58%;
+            margin: auto;
+            padding-bottom: 3px;
         }
 
         #intro .card-body {
             flex: 1 1 auto;
             padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
             color: var(--bs-card-color);
-            background: rgb(23 90 108 / 40%) !important;
-            border-radius: 2rem !important;
+        }
+
+        #intro .card-body .card-text {
+            font-size: 1.2em !important;
+            /* background: rgba(53, 137, 160, 0.56) !important;
+            border-radius: 0.8rem !important; */
+            text-shadow: 2px 3px 5px black !important;
+        }
+
+        #intro .card-body svg {
+            animation: arrowMove 1s ease-in 1s infinite;
+        }
+
+        #intro .card-body .link-light:hover {
+            color: #00d9ff !important;
+            text-decoration-color: currentcolor !important;
         }
 
         .card-body ul {
@@ -149,12 +182,6 @@ session_destroy();
             padding-left: 10px;
         }
 
-        #intro .card-body .card-text {
-            font-size: 1.5em !important;
-            background: rgba(53, 137, 160, 0.56) !important;
-            border-radius: 0.8rem !important;
-            text-shadow: 2px 3px 5px black !important;
-        }
 
         @keyframes arrowMove {
             0% {
@@ -174,7 +201,274 @@ session_destroy();
             color: #00d9ff !important;
             text-decoration-color: currentcolor !important;
         }
+
+        .list-group-flush>.list-group-item {
+            border-width: 0 0 var(--bs-list-group-border-width);
+            background: transparent !important;
+        }
     </style>
+
+    <style>
+        @media (max-width: 1200px) {
+            #intro .card-body .card-text {
+                font-size: 1em !important;
+            }
+
+            #intro .card-title {
+                text-shadow: 2px 3px 5px black !important;
+                width: 70%;
+            }
+        }
+
+        @media (max-width: 1025px) {
+            #intro .card-body .card-text {
+                font-size: 1em !important;
+            }
+
+            #intro .card-title {
+                font-size: 2.2rem !important;
+                width: 75%;
+            }
+
+            .mb-4 {
+                margin-bottom: 1.2rem !important;
+            }
+
+        }
+
+        @media (min-width: 426px) and (max-width: 769px) {
+
+            .container,
+            .container-fluid,
+            .container-lg,
+            .container-md,
+            .container-sm,
+            .container-xl,
+            .container-xxl {
+                padding-right: 5px;
+                padding-left: 5px;
+            }
+
+            #intro {
+                width: 98% !important;
+            }
+
+            #intro .card-body {
+                padding: 3px;
+            }
+
+            #intro .card-body .card-text {
+                font-size: 1em !important;
+                line-height: 1.25;
+            }
+
+            #intro .card-title {
+                font-size: 1.6rem !important;
+                width: 98%;
+            }
+
+            .mb-4 {
+                margin-bottom: 0.7rem !important;
+            }
+
+            .w-75 {
+                width: 100% !important;
+            }
+
+            .container,
+            .container-sm {
+                max-width: 685px;
+            }
+        }
+
+        @media (max-width: 1156px) {
+            video {
+                width: fit-content !important;
+            }
+
+            .container,
+            .container-fluid,
+            .container-lg,
+            .container-md,
+            .container-sm,
+            .container-xl,
+            .container-xxl {
+                padding-right: 5px;
+                padding-left: 5px;
+            }
+        }
+
+        @media (max-width: 769px) {}
+
+        @media (max-width: 426px) {
+            #intro .card-body .card-text {
+                font-size: 0.85em !important;
+                line-height: 1.35;
+            }
+
+            .container,
+            .container-fluid,
+            .container-lg,
+            .container-md,
+            .container-sm,
+            .container-xl,
+            .container-xxl {
+                padding-right: 5px;
+                padding-left: 5px;
+            }
+
+            #intro {
+                width: 98% !important;
+            }
+
+            #intro .card-body {
+                padding: 4px;
+            }
+
+            #intro .card-title {
+                font-size: 1.65rem !important;
+                width: 97.5%;
+            }
+
+            #intro p {
+                margin-top: 0;
+                margin-bottom: 0.5rem;
+            }
+
+            #features .card {
+                width: 24rem;
+            }
+
+            .mb-4 {
+                margin-bottom: 11px !important;
+            }
+
+            .w-75 {
+                width: 100% !important;
+            }
+
+            .p-5 {
+                padding: 10px !important;
+            }
+        }
+
+        @media (max-width: 376px) {
+            #intro .card-body .card-text {
+                font-size: 0.75em !important;
+            }
+
+            .container,
+            .container-fluid,
+            .container-lg,
+            .container-md,
+            .container-sm,
+            .container-xl,
+            .container-xxl {
+                padding-right: 5px;
+                padding-left: 5px;
+            }
+
+            #intro {
+                width: 98% !important;
+            }
+
+            #intro .card-body {
+                padding: 2px;
+            }
+
+            #intro p {
+                margin-top: 0;
+                margin-bottom: 0.5rem;
+            }
+
+            #intro .card-title {
+                font-size: 1.4rem !important;
+                width: 95%;
+            }
+
+            .mb-4 {
+                margin-bottom: 0.8rem !important;
+            }
+
+            .w-75 {
+                width: 100% !important;
+            }
+
+            .p-5 {
+                padding: 10px !important;
+            }
+
+        }
+
+        @media (max-width: 321px) {
+
+            .navbar-brand {
+                margin-left: 0.6rem;
+            }
+
+            .container,
+            .container-fluid,
+            .container-lg,
+            .container-md,
+            .container-sm,
+            .container-xl,
+            .container-xxl {
+
+                padding-right: 0px;
+                padding-left: 0;
+            }
+
+            /* all property copied must check */
+
+            #intro {
+                width: 95% !important;
+            }
+
+            #intro .card-title {
+                font-size: 1.2rem !important;
+                width: 100%;
+            }
+
+            #intro .card-body {
+                padding: 4px;
+            }
+
+            #intro .card-body .card-text {
+                font-size: 0.7em !important;
+            }
+
+            .gap-3 {
+                gap: 1rem !important;
+            }
+
+            .w-75 {
+                width: 100% !important;
+            }
+
+            .mb-4 {
+                margin-bottom: 0.6rem !important;
+            }
+
+            #features .card {
+                margin: 0 5px;
+                width: 100%;
+                height: 17rem;
+                background-color: rgba(17, 17, 17, 0.85);
+                box-shadow: 0 0 5px 1px #088aa4;
+            }
+
+            .card-body ul {
+                margin-top: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .p-5 {
+                padding: 5px !important;
+            }
+
+        }
+    </style>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 
@@ -278,25 +572,25 @@ session_destroy();
             <!-- others liked it -->
         </video>
 
-        <div class="container d-flex justify-content-center align-items-center" style="height: 90vh;">
-            <div class="card w-75 text-center bg-transparent" style="color: #b2ff00 !important;" id="intro">
-                <div class="card-header fs-3">Introducing</div>
+        <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+            <div class="card text-center bg-transparent" id="intro">
+                <div class="card-header fs-3 text-decoration-underline link-offset-2">Introducing</div>
                 <div class="card-body">
                     <h5 class="card-title mb-4">Student Attendance System</h5>
-                    <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Beatae voluptate
-                        animi ipsam possimus quaerat temporibus? Natus doloribus, enim ipsum, nulla veritatis autem
-                        dolorum excepturi modi tempore temporibus, id vero praesentium vel aliquid nisi sequi quia
-                        dignissimos nostrum amet. Quas autem nemo vero ipsum! Ipsam iusto voluptatum exercitationem
-                        ullam facilis nisi mollitia architecto dolores accusamus dolorem voluptates aspernatur quibusdam
-                        molestias, distinctio ab earum pariatur totam. Ad at saepe maxime doloremque esse necessitatibus
-                        corrupti unde sint ducimus?</p>
-                    <a href="#features" class="btn btn-warning py-2 px-4 mt-4 fw-bold">Features</a>
+                    <p class="card-text">Student Attendance System is the website in which students and teachers data is managed automatically. Student can scan specific QR code provided by their institution through this website to get attendance on daily basis. Teachers can view, search, analyze, edit, delete Students data and they can also lock/unlock student scanner for any reason. There is a message portal for both students and teachers. They can communicate through this message portal. Students can analyze there performance in their dashboard using different chart option, they can generate their performance report card and if they want to download their report card then they can click download report and the report card will be sent to their registered email. Teachers can set minimum attendance goal for students to achieve and low scoring students will get nofification to remind about their low performance. There is a contact page for user support. Register to explore more features. Thank You!</p>
+                    <!-- <a href="#features" class="btn btn-success py-2 px-4 mt-4 feature-link">Features</a> -->
+                    <a class="link-light link-offset-0 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#features">
+                        Features
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                        </svg>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
     <section class="container w-75 min-vh-100 d-flex justify-content-center align-items-center flex-column gap-3" id="features">
-        <h3 class="z-1 fw-bold" style="color: chartreuse; text-shadow: 4px 3px 4px black;">Top Features</h3>
+        <h3 class="z-1 fw-bold" style="color: lime !important; text-shadow: 4px 3px 4px black !important;">Top Features</h3>
         <div class="container gap-4 d-flex justify-content-center align-items-center flex-wrap">
             <!-- card-1 -->
             <div class="card text-light border-info rounded-4">
@@ -343,7 +637,7 @@ session_destroy();
                     </ul>
                     <div class="card-footer text-light text-center">
                         <span>
-                            <a class="link-light link-offset-0 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#">
+                            <a class="link-light link-offset-0 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#admin_dashboard">
                                 Read More
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
@@ -369,7 +663,7 @@ session_destroy();
                     </ul>
                     <div class="card-footer text-light text-center">
                         <span>
-                            <a class="link-light link-offset-0 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#">
+                            <a class="link-light link-offset-0 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#highly_secure">
                                 Read More
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
@@ -395,7 +689,7 @@ session_destroy();
                     </ul>
                     <div class="card-footer text-light text-center">
                         <span>
-                            <a class="link-light link-offset-0 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#">
+                            <a class="link-light link-offset-0 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#all_device_support">
                                 Read More
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
@@ -420,7 +714,7 @@ session_destroy();
                     </ul>
                     <div class="card-footer text-light text-center">
                         <span>
-                            <a class="link-light link-offset-0 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#">
+                            <a class="link-light link-offset-0 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#track_your_progress">
                                 Read More
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
@@ -446,7 +740,7 @@ session_destroy();
                     </ul>
                     <div class="card-footer text-light text-center">
                         <span>
-                            <a class="link-light link-offset-0 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#">
+                            <a class="link-light link-offset-0 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#message_portal">
                                 Read More
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
@@ -459,9 +753,14 @@ session_destroy();
         </div>
     </section>
 
-    <!-- detailed card 1 -->
+
+
+
+
+
+    <!-- detailed card 1 starts here-->
     <div class="container p-5 min-vh-100 d-flex justify-content-center align-items-center" id="qr_scanner">
-        <div class="card text-bg-dark text-center w-75">
+        <div class="card text-bg-dark text-center w-75" style="background-color: rgba(17, 17, 17, 0.85) !important; box-shadow: 0 0 5px 1px #088aa4 !important; color: white !important;">
             <div class="card-header text-uppercase">
                 Feature 1
             </div>
@@ -488,6 +787,162 @@ session_destroy();
             </div>
         </div>
     </div>
+    <!-- detailed card 1 ends here -->
+
+    <!-- detailed card 2 starts here-->
+    <div class="container p-5 min-vh-100 d-flex justify-content-center align-items-center" id="admin_dashboard">
+        <div class="card text-bg-dark text-center w-75" style="background-color: rgba(17, 17, 17, 0.85) !important; box-shadow: 0 0 5px 1px #088aa4 !important; color: white !important;">
+            <div class="card-header text-uppercase">
+                Feature 2
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Admin Dashboard</h5>
+                <p class="card-text">
+                <ul class="list-group list-group-flush" data-bs-theme="dark">
+                    <li class="list-group-item">Shortcut Buttons for easy actions</li>
+                    <li class="list-group-item">Crud Actions Simplified</li>
+                    <li class="list-group-item">Very Efficient Scanning System</li>
+                    <li class="list-group-item">Bounded with-in time limit</li>
+                    <li class="list-group-item">Works on every device</li>
+                    <li class="list-group-item">Attendance taking made very easy</li>
+                </ul>
+                </p>
+            </div>
+            <div class="card-footer text-body-secondary">
+                <a class="link-light link-offset-0 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#features">
+                    Back to features
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- detailed card 2 ends here -->
+
+    <!-- detailed card 3 starts here-->
+    <div class="container p-5 min-vh-100 d-flex justify-content-center align-items-center" id="highly_secure">
+        <div class="card text-bg-dark text-center w-75" style="background-color: rgba(17, 17, 17, 0.85) !important; box-shadow: 0 0 5px 1px #088aa4 !important; color: white !important;">
+            <div class="card-header text-uppercase">
+                Feature 3
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Highly Secure</h5>
+                <p class="card-text">
+                <ul class="list-group list-group-flush" data-bs-theme="dark">
+                    <li class="list-group-item">Unauthorized Access Blocked </li>
+                    <li class="list-group-item">Verified Login-Register System</li>
+                    <li class="list-group-item">Very Efficient Scanning System</li>
+                    <li class="list-group-item">Bounded with-in time limit</li>
+                    <li class="list-group-item">Works on every device</li>
+                    <li class="list-group-item">Attendance taking made very easy</li>
+                </ul>
+                </p>
+            </div>
+            <div class="card-footer text-body-secondary">
+                <a class="link-light link-offset-0 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#features">
+                    Back to features
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- detailed card 3 ends here -->
+
+    <!-- detailed card 4 starts here-->
+    <div class="container p-5 min-vh-100 d-flex justify-content-center align-items-center" id="all_device_support">
+        <div class="card text-bg-dark text-center w-75" style="background-color: rgba(17, 17, 17, 0.85) !important; box-shadow: 0 0 5px 1px #088aa4 !important; color: white !important;">
+            <div class="card-header text-uppercase">
+                Feature 4
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">All Device Support</h5>
+                <p class="card-text">
+                <ul class="list-group list-group-flush" data-bs-theme="dark">
+                    <li class="list-group-item">Fully Responsive for Every Device</li>
+                    <li class="list-group-item">Easy Layout Optimized</li>
+                    <li class="list-group-item">Very Efficient Scanning System</li>
+                    <li class="list-group-item">Bounded with-in time limit</li>
+                    <li class="list-group-item">Works on every device</li>
+                    <li class="list-group-item">Attendance taking made very easy</li>
+                </ul>
+                </p>
+            </div>
+            <div class="card-footer text-body-secondary">
+                <a class="link-light link-offset-0 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#features">
+                    Back to features
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- detailed card 4 ends here -->
+
+    <!-- detailed card 5 starts here-->
+    <div class="container p-5 min-vh-100 d-flex justify-content-center align-items-center" id="track_your_progress">
+        <div class="card text-bg-dark text-center w-75" style="background-color: rgba(17, 17, 17, 0.85) !important; box-shadow: 0 0 5px 1px #088aa4 !important; color: white !important;">
+            <div class="card-header text-uppercase">
+                Feature 5
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Track Your Progress</h5>
+                <p class="card-text">
+                <ul class="list-group list-group-flush" data-bs-theme="dark">
+                    <li class="list-group-item">Set Goal to Achieve </li>
+                    <li class="list-group-item">Generate Monthly Report Card </li>
+                    <li class="list-group-item">Very Efficient Scanning System</li>
+                    <li class="list-group-item">Bounded with-in time limit</li>
+                    <li class="list-group-item">Works on every device</li>
+                    <li class="list-group-item">Attendance taking made very easy</li>
+                </ul>
+                </p>
+            </div>
+            <div class="card-footer text-body-secondary">
+                <a class="link-light link-offset-0 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#features">
+                    Back to features
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- detailed card 5 ends here -->
+
+    <!-- detailed card 6 starts here-->
+    <div class="container p-5 min-vh-100 d-flex justify-content-center align-items-center" id="message_portal">
+        <div class="card text-bg-dark text-center w-75" style="background-color: rgba(17, 17, 17, 0.85) !important; box-shadow: 0 0 5px 1px #088aa4 !important; color: white !important;">
+            <div class="card-header text-uppercase">
+                Feature 6
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Message Portal</h5>
+                <p class="card-text">
+                <ul class="list-group list-group-flush" data-bs-theme="dark">
+                    <li class="list-group-item">Message to Everyone</li>
+                    <li class="list-group-item">Clean Chatting Interface</li>
+                    <li class="list-group-item">Very Efficient Scanning System</li>
+                    <li class="list-group-item">Bounded with-in time limit</li>
+                    <li class="list-group-item">Works on every device</li>
+                    <li class="list-group-item">Attendance taking made very easy</li>
+                </ul>
+                </p>
+            </div>
+            <div class="card-footer text-body-secondary">
+                <a class="link-light link-offset-0 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#features">
+                    Back to features
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- detailed card 6 ends here -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script>

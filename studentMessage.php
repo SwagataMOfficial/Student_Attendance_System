@@ -32,9 +32,55 @@ if (isset($_SESSION['student_obj']) && isset($_SESSION['student_loggedin'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Message Portal</title>
+    <script>
+        function darkTheme(){
+            document.querySelector(':root').style.setProperty('--clr-nav', '#141824');
+            document.querySelector(':root').style.setProperty('--clr-btn-text-logo', '#9fa6bc');
+            document.querySelector(':root').style.setProperty('--clr-heading-mark', '#6e7891');
+            document.querySelector(':root').style.setProperty('--clr-hover-color', '#31374a');
+            document.querySelector(':root').style.setProperty('--clr-hover-p-color', 'white');
+            document.querySelector(':root').style.setProperty('--clr-bgcolor', '#0f111a');
+            document.querySelector(':root').style.setProperty('--clr-theme-bg', '#131386');
+            document.querySelector(':root').style.setProperty('--clr-essential-btn', '#1e2436');
+            document.querySelector(':root').style.setProperty('--clr-input', '#0f121f');
+            document.querySelector(':root').style.setProperty('--clr-message', '#1e2436');
+            document.querySelector(':root').style.setProperty('--clr-sender-left', '#00ff8c');
+            document.querySelector(':root').style.setProperty('--clr-sender-right', '#ff6c00');
+        }
+        function lightTheme(){
+            document.querySelector(':root').style.setProperty('--clr-nav', '#f0f0f0');
+            document.querySelector(':root').style.setProperty('--clr-btn-text-logo', '#0b1b4c');
+            document.querySelector(':root').style.setProperty('--clr-heading-mark', '#6e6e6e');
+            document.querySelector(':root').style.setProperty('--clr-hover-color', '#cecece');
+            document.querySelector(':root').style.setProperty('--clr-hover-p-color', 'black');
+            document.querySelector(':root').style.setProperty('--clr-bgcolor', 'white');
+            document.querySelector(':root').style.setProperty('--clr-theme-bg', 'darkorange');
+            document.querySelector(':root').style.setProperty('--clr-essential-btn', '#a8a8a8');
+            document.querySelector(':root').style.setProperty('--clr-input', '#e8e8e8');
+            document.querySelector(':root').style.setProperty('--clr-message', '#e2e2e2');
+            document.querySelector(':root').style.setProperty('--clr-sender-left', '#0040ff');
+            document.querySelector(':root').style.setProperty('--clr-sender-right', '#e000d7');
+        }
+    </script>
+    <script>
+        let initializeTheme = () => {
+            if (localStorage.getItem('theme') === 'dark') {
+                darkTheme();
+            } else {
+                lightTheme();
+            }
+        };
+        </script>
+    <script>
+        initializeTheme();
+        </script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="css/headers.css">
+    <link rel="stylesheet" href="css/footers.css">
+    <link rel="stylesheet" href="css/leftNav.css">
     <link rel="stylesheet" href="css/message.css">
+    <link rel="stylesheet" href="css/responsive.css">
 </head>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 <body>
     <?php require("partitions/_headers.php") ?>
@@ -115,7 +161,7 @@ if (isset($_SESSION['student_obj']) && isset($_SESSION['student_loggedin'])) {
     </script>
     <script>
         let position = $(".messageContainer").children().length;
-        $('.messageContainer').scrollTop(10 ** position);
+        $('.messageContainer').scrollTop(1000 * position);
     </script>
     <script src="js/msg_themeToggle.js"></script>
     <script src="js/collapse.js"></script>
@@ -134,6 +180,21 @@ if (isset($_SESSION['student_obj']) && isset($_SESSION['student_loggedin'])) {
             }
         }
         ?>
+    </script>
+    <script>
+        document.querySelector('.header__navbar .nav__hamburger').addEventListener('click', ()=>{
+            console.log('clicked');
+            if(getComputedStyle(document.querySelector('.container .left-nav')).getPropertyValue('display') === "none"){
+                console.log('yes');
+                document.querySelector('.header__navbar .nav__hamburger span').innerText = "close";
+                document.querySelector('.container .left-nav').style.display = "flex";
+            }
+            else{
+                console.log('no');
+                document.querySelector('.header__navbar .nav__hamburger span').innerText = "menu";
+                document.querySelector('.container .left-nav').style.display = "none";
+            }
+        });
     </script>
 </body>
 

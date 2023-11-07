@@ -113,7 +113,7 @@ header {
 }
 
 .right-main .charts {
-    height: 68vh;
+    height: 72vh;
     color: var(--clr-btn-text-logo);
     border-bottom: 1px solid var(--clr-border);
 }

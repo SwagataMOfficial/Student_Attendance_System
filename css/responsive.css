@@ -1,0 +1,736 @@
+@media (max-width: 1025px) {
+    /* teacher home page responsiveness */
+    .set-goal-input input{
+        width: 28vw;
+    }
+
+    .search-input input {
+        width: 20vw;
+        font-size: 1.3em;
+    }
+
+    .nav-active {
+        width: 6.5vw !important;
+    }
+
+    .main-stretch {
+        width: calc(100vw - 6.5vw) !important;
+    }
+
+    .welcome-heading .welcome-text {
+        font-size: 2.7rem;
+    }
+
+    .right-main .nofifications {
+        font-size: 1.7rem;
+    }
+
+    .essential_buttons .essential-button .material-symbols-outlined {
+        font-size: 2.1rem;
+    }
+
+    .essential_buttons .essential-button {
+        height: 86%;
+        font-size: 12px;
+    }
+
+    .top-students .heading-text {
+        margin: 12px;
+    }
+
+    .top-students .students-container{
+        gap: 2rem;
+    }
+
+    .top-students .student {
+        width: 17vw;
+        height: 29vh;
+    }
+
+    .top-students .student .profile-image {
+        width: 80px;
+        height: 80px;
+        margin-top: 13px;
+    }
+
+    .top-students .student .student-name {
+        font-size: 1.2rem;
+        margin-top: 8px;
+    }
+
+    .top-students .student .attendance-count {
+        font-size: 1rem;
+        margin-top: 10px;
+    }
+
+}
+
+
+
+/* tablet responsiveness */
+@media (max-width: 769px) {
+
+    .nav-active {
+        width: 8.5vw !important;
+    }
+
+    .main-stretch {
+        width: 100vw !important;
+    }
+
+    .header__navbar .nav__hamburger {
+        display: inline-block;
+    }
+
+    .left-nav.nav-active~.nav__hamburger {
+        background-color: red !important;
+        left: 4.5rem !important;
+    }
+
+    .container .left-nav {
+        position: absolute;
+        display: none;
+        width: 20vw;
+        height: 80vh;
+        z-index: 1;
+    }
+
+    .links p {
+        font-size: 0.55rem;
+    }
+
+    .link-heading {
+        font-size: 0.65rem;
+    }
+
+    #collapse-btn {
+        font-size: 1rem;
+    }
+
+    #collapse-btn span:first-child {
+        font-size: 1.1rem;
+    }
+
+    .container .right-main {
+        width: 100vw;
+    }
+
+    .mainContainer h1 {
+        font-size: 1.5rem;
+    }
+
+    .logo {
+        width: 56px;
+        height: 49px;
+        border-radius: 12px 28px;
+    }
+
+    .messageContainer {
+        padding: 13px;
+    }
+
+    .messageContainer h3 {
+        font-size: calc(2.5rem - 1.1vw);
+    }
+
+    .messageContainer .alert-text {
+        width: 34vw;
+        font-size: 1.4vw;
+    }
+
+    .left b {
+        font-size: 1rem;
+    }
+
+    .right b {
+        font-size: 1rem;
+    }
+
+    .left span {
+        font-size: .9rem;
+    }
+
+    .right span {
+        font-size: .9rem;
+    }
+
+    #messageipt {
+        width: 65%;
+        height: 44px;
+    }
+
+    .message {
+        width: 40%;
+        margin: 10px 0px;
+    }
+
+    footer {
+        font-size: 0.8rem;
+    }
+
+    .right-main .nofifications {
+        font-size: 1.5rem;
+    }
+
+    .welcome-heading .welcome-text {
+        font-size: 2.5rem;
+    }
+
+    /* login-register part */
+
+    .wrapper {
+        width: 600px;
+        height: 380px;
+    }
+
+    .wrapper .bg-animate {
+        right: -6vw;
+        transform: rotate(13deg) skewY(42deg);
+    }
+
+    .wrapper .info-text.login {
+        padding: 0 20px 60px 80px;
+    }
+
+    .info-text h2 {
+        font-size: 30px;
+    }
+
+    .info-text p {
+        font-size: 13px;
+    }
+
+    .wrapper .form-box{
+        width: 54%;
+    }
+
+    .wrapper .form-box.login{
+        padding: 0 50px 0 25px;
+    }
+
+    .form-box .logreg-link {
+        font-size: 13px;
+    }
+
+    .wrapper .bg-animate2 {
+        left: 276px;
+    }
+
+    .wrapper.active .bg-animate2 {
+        transform: rotate(-17deg) skewY(-39deg);
+        /* transition-delay: 1.2s; */
+    }
+
+    .wrapper .info-text.register {
+        padding: 0 105px 60px 25px;
+    }
+
+    .wrapper .form-box.register {
+        padding: 0 25px 0 45px;
+    }
+
+    .form-box h2 {
+        font-size: 28px;
+    }
+
+    .form-box .input-box {
+        margin: 13.5px 0;
+    }
+
+    .form-box .logreg-link {
+        margin: 15px 0 23px;
+    }
+
+    /* teacher home page responsiveness */
+    .top-students .student {
+        width: 21vw;
+        height: 28vh;
+    }
+
+    .top-students .students-container {
+        gap: 1.5rem;
+    }
+
+    .set-goal-input input {
+        width: 30vw;
+        font-size: 1.1em;
+    }
+
+    .set-goal-input button {
+        width: 6vw;
+        height: 7vh;
+    }
+
+    .search-input input {
+        width: 25vw;
+        font-size: 1.1em;
+    }
+    
+    .search-input button {
+        font-size: 1em;
+        width: 9vw;
+    height: 6vh;
+    }
+
+}
+
+/* mobile large */
+@media (max-width: 426px) {
+    .container .left-nav {
+        width: 29vw;
+        z-index: 1;
+    }
+
+    .messageContainer h3 {
+        font-size: 2rem;
+    }
+
+    .nav-active {
+        width: 15.5vw !important;
+    }
+
+    .messageContainer .alert-text {
+        width: 58vw;
+        font-size: 2.5vw;
+    }
+
+    .message {
+        width: 55%;
+        margin: 5px 0px;
+    }
+
+    .left b {
+        font-size: 0.8rem;
+    }
+
+    .right b {
+        font-size: 0.8rem;
+    }
+
+    .right-main .nofifications {
+        font-size: 1.1rem;
+    }
+
+    .welcome-heading .welcome-text {
+        font-size: 1.8rem;
+    }    
+
+    .welcome-heading {
+        margin: 10px 45px 10px 15px;
+    }
+
+    .welcome-heading .logout {
+        font-size: 0.7rem;
+        padding: 5px 9px;
+    }
+
+    .nofifications .scanner-button {
+        width: 70px;
+        height: 64px;
+    }
+
+    .nofifications .scanner-button .material-symbols-outlined {
+        font-size: 2rem;
+    }
+
+    .nofifications .scanner-button .scanner-text {
+        font-size: 1rem;
+    }
+
+    .header__navbar .nav__right {
+        padding-right: 1.2rem;
+    }
+
+    .charts .bar-chart-heading {
+        font-size: 1.3rem;
+    }
+
+    /* login register responsiveness */
+
+    .wrapper {
+        width: 375px;
+        height: 280px;
+    }
+
+    .wrapper .bg-animate {
+        right: -44px;
+        transform: rotate(27deg) skewY(40deg);
+        background: linear-gradient(125deg, #081b29, #0ef);
+    }
+
+    .wrapper .form-box.login {
+        padding: 0 20px 0 12px;
+    }
+
+    .wrapper .info-text.login {
+        padding: 0 10px 30px 50px;
+    }
+
+    .form-box h2 {
+        font-size: 20px;
+    }
+
+    .info-text h2 {
+        font-size: 22px;
+    }
+
+    .info-text p {
+        font-size: 11px;
+    }
+
+    .btn {
+        height: 35px;
+        font-size: 14px;
+    }
+
+    .form-box .input-box {
+        height: 37px;
+        margin: 12px 0;
+    }
+
+    .input-box input {
+        font-size: 14px;
+    }
+
+    .input-box label {
+        font-size: 13px;
+    }
+
+    .form-box .logreg-link {
+        font-size: 10px;
+        margin: 7px 0 5px;
+    }
+
+    .wrapper .info-text.register {
+        padding: 0 50px 45px 15px;
+    }
+
+    .wrapper.active .bg-animate2 {
+        transform: rotate(-17deg) skewY(-50deg);
+    }
+
+    .wrapper .form-box.register {
+        padding: 0 8px 0 18px;
+    }
+
+    /* teacher home responsiveness */
+
+    .essential_buttons .essential-button {
+        font-size: 10px;
+    }
+
+    .essential_buttons .essential-button .material-symbols-outlined {
+        font-size: 1.8rem;
+    }
+
+
+    .more-students-data .dataTables_wrapper{
+        font-size: 0.755rem;
+    }
+
+    .top-students .students-container {
+        gap: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .top-students .student {
+        width: 35vw;
+        height: 24vh;
+    }
+
+    .top-students .student .profile-image {
+        width: 65px;
+        height: 65px;
+        margin-top: 8px;
+    }
+
+    .top-students .student .student-name {
+        font-size: 0.92rem;
+        margin-top: 7px;
+    }
+
+    .top-students .student .attendance-count {
+        font-size: 0.9rem;
+        margin-top: 10px;
+    }
+
+    .more-students-data #students_table .table-btn-edit, #students_table .table-btn-delete {
+        border-radius: 8px;
+        font-size: 12px;
+    }
+
+    .set-goal-input input {
+        width: 40vw;
+        font-size: 0.9em;
+    }
+
+    .set-goal-input span {
+        font-size: 1.5rem;
+    }
+
+    .set-goal-input button {
+        width: 10vw;
+        height: 6vh;
+        border-radius: 10px;
+    }
+
+    .search-input input {
+        width: 38vw;
+        font-size: 1em;
+    }
+
+    .search-input button {
+        font-size: 0.8em;
+        width: 17vw;
+        height: 6vh;
+        border-radius: 10px;
+    }
+
+}
+
+/* mobile medium */
+@media (max-width: 376px) {
+
+    .container .left-nav {
+        width: 27vw;
+        z-index: 1;
+    }
+
+    .links p {
+        font-size: 0.5rem;
+    }
+
+    .links span {
+        padding-left: 15px;
+        font-size: 18px;
+    }
+
+    .message {
+        width: 65%;
+        margin: 5px 0px;
+    }
+
+    .messageContainer h3 {
+        font-size: calc(2.5rem - 4.5vw);
+    }
+
+    .nav-active {
+        width: 17vw !important;
+    }
+
+    .header__navbar .nav__left {
+        font-size: 1.4rem;
+    }
+
+    .nav__right .right__imageLogo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .nav__right .util-icons span {
+        font-size: 1.2rem;
+    }
+
+    .right-main .nofifications {
+        font-size: 0.8rem;
+    }
+
+    .nofifications .scanner-button .material-symbols-outlined {
+        font-size: 1.7rem;
+    }
+
+    .header__navbar .nav__right {
+        gap: 0.7rem;
+        padding-right: 0.7rem;
+    }
+
+    /* teacher home responsiveness */
+
+    .welcome-heading .welcome-text {
+        font-size: 1.4rem;
+    }
+
+    .essential_buttons .essential-button {
+        font-size: 10px;
+        width: 65px;
+        height: 80%;
+    }
+
+    .essential_buttons .essential-button .material-symbols-outlined {
+        font-size: 1.6rem;
+    }
+
+    button[class="essential-button"]{
+        width: 85px !important;    /* width of the unlock semester change btn */
+    }
+
+    .set-goal-input input {
+        font-size: 0.8em;
+    }
+
+    .search-input input {
+        font-size: 0.9em;
+    }
+
+    footer {
+        font-size: 0.6rem;
+    }
+}
+
+/* mobile small */
+@media (max-width: 321px) {
+
+    .header__navbar .nav__left {
+        font-size: 1.3rem;
+    }
+
+    .nav__right .right__imageLogo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .nav__right .util-icons span {
+        font-size: 1.3rem;
+    }
+
+    .nav__right .right__themeToggle span {
+        font-size: 1rem !important;
+    }
+
+    #collapse-btn {
+        font-size: 0.8rem;
+    }
+
+    .link-heading {
+        padding-left: 10px;
+    }
+
+    .headings-no-link {
+        margin: 5px 0px !important;
+    }
+
+    .links span {
+        padding-left: 14px;
+        font-size: 16px;
+    }
+
+    #collapse-btn span:first-child {
+        font-size: 1rem;
+    }
+
+    .container .left-nav {
+        width: 31vw;
+        z-index: 1;
+    }
+
+    .mainContainer h1 {
+        font-size: 1.3rem;
+    }
+
+    .messageContainer .alert-text {
+        margin-bottom: 0.5rem;
+        width: 74vw;
+        font-size: 3vw;
+    }
+
+    .messageContainer h3 {
+        font-size: calc(2.5rem - 5vw);
+    }
+
+    .left b {
+        font-size: 0.75rem;
+    }
+
+    .right b {
+        font-size: 0.75rem;
+    }
+
+    .left span {
+        font-size: .7rem;
+    }
+
+    .right span {
+        font-size: .7rem;
+    }
+
+    .message .sender-name {
+        margin-bottom: 0px;
+    }
+
+    .logo {
+        width: 50px;
+        height: 43px;
+    }
+
+    #messageipt {
+        margin-right: 0.9rem;
+        font-size: 1.1rem;
+    }
+
+    /* teacher home responsiveness */
+
+    .welcome-heading .welcome-text {
+        font-size: 1.05rem;
+    }
+
+    .welcome-heading .logout {
+        font-size: 0.65rem;
+        padding: 6px 7px;
+    }
+
+    .logout .material-symbols-outlined {
+        font-size: 17px;
+    }
+
+    .more-students-data .dataTables_wrapper {
+        font-size: 0.65rem;
+    }
+
+    .more-students-data #students_table .table-btn-edit, #students_table .table-btn-delete {
+        font-size: 10px;
+    }
+
+    .essential_buttons .essential-button .material-symbols-outlined {
+        font-size: 1.35rem;
+    }
+
+    .top-students .student {
+        width: 40vw;
+        height: 22vh;
+    }
+
+    .top-students .student .profile-image {
+        width: 55px;
+        height: 55px;
+        margin-top: 10px;
+    }
+
+    .top-students .student .student-name {
+        font-size: 0.9rem;
+        margin-top: 8px;
+    }
+
+    .top-students .student .attendance-count {
+        font-size: 0.8rem;
+        margin-top: 8px;
+    }
+
+    .set-goal-input input {
+        width: 44vw;
+        font-size: 0.7em;
+    }
+
+    .set-goal-input button {
+        width: 11vw;
+        height: 5vh;
+    }
+
+    .search-input input {
+        font-size: 0.8em;
+        width: 39vw;
+    }
+
+    footer {
+        font-size: 0.6rem;
+    }
+}

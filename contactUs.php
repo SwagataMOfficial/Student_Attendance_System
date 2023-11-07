@@ -22,15 +22,7 @@ if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
 <body>
 	<header>
 		<nav>
-			<div><a href="/Minor_Project/Student_Attendance_System/" class="nav-logo">Classified.in</a></div>
-			<div class="nav-lists">
-				<ul>
-					<li><a href="/Minor_Project/Student_Attendance_System/">Home</a></li>
-					<li><a href="#">Docs</a></li>
-					<li><a href="#">Blog</a></li>
-					<li><a href="contactUs.php">Contact Us</a></li>
-				</ul>
-			</div>
+			<a href="/Minor_Project/Student_Attendance_System/" class="nav-logo">Classified.in</a>
 			<div class="buttons">
 				<button class="btn" id="loginBtn">Login</button>
 				<button class="btn" id="signUpBtn">Sign Up</button>
@@ -75,32 +67,6 @@ if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
 					<div class="input-box">
 						<button type="submit" name="sent" value="sent">Submit</button>
 					</div>
-					<?php
-					if (isset($sent)) {
-						switch ($sent) {
-							case 1:
-								echo
-								'
-									<p class="confirm-submit">
-									<span class="confirm-text">Your Concern has been submitted</span>
-									<span role="button" class="material-symbols-outlined" id="confirmCloseBtn">close</span>
-									</p>
-								';
-								break;
-							case -1:
-								echo
-								'
-									<p class="non-confirm-submit">
-									<span class="confirm-text">Failed to submit your concern! Please Try Again</span>
-									<span role="button" class="material-symbols-outlined" id="nonConfirmCloseBtn">close</span>
-									</p>
-								';
-								break;
-							default:
-								break;
-						}
-					}
-					?>
 				</form>
 			</div>
 		</div>
@@ -135,16 +101,10 @@ if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
 		if (isset($sent)) {
 			switch ($sent) {
 				case 1:
-					echo "confirmCloseBtn.addEventListener('click', () => {
-							document.querySelector('.confirm-submit').style.display = 'none';
-						});";
+					echo "alert('Your Concern has been submitted!');";
 					break;
-				case -1:
-					echo "
-						nonConfirmCloseBtn.addEventListener('click', () => {
-							document.querySelector('.non-confirm-submit').style.display = 'none';
-						});
-						";
+					case -1:
+						echo "alert('Failed to submit your concern!');";
 					break;
 				default:
 					break;

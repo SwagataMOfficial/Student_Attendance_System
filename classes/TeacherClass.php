@@ -29,6 +29,8 @@ class Teacher
         else{
         unset($_SESSION['teacher_loggedin']);
         // teacher has registered but never created the profile
+        $registration = new Register($this->email);
+        $_SESSION['teacher_register'] = $registration;
         header("Location: /Minor_Project/Student_Attendance_System/teacherProfile.php");
         }
     }

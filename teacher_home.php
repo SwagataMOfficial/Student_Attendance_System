@@ -40,8 +40,46 @@ else {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page (Teacher)</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <link rel="stylesheet" href="css/teacher_home.css">
+    <script>
+        function darkTheme(){
+            document.querySelector(':root').style.setProperty('--clr-nav', '#141824');
+            document.querySelector(':root').style.setProperty('--clr-btn-text-logo', '#9fa6bc');
+            document.querySelector(':root').style.setProperty('--clr-heading-mark', '#6e7891');
+            document.querySelector(':root').style.setProperty('--clr-hover-color', '#31374a');
+            document.querySelector(':root').style.setProperty('--clr-hover-p-color', 'white');
+            document.querySelector(':root').style.setProperty('--clr-bgcolor', '#0f111a');
+            document.querySelector(':root').style.setProperty('--clr-theme-bg', '#131386');
+            document.querySelector(':root').style.setProperty('--clr-essential-btn', '#1e2436');
+        }
+        function lightTheme(){
+            document.querySelector(':root').style.setProperty('--clr-nav', '#f0f0f0');
+            document.querySelector(':root').style.setProperty('--clr-btn-text-logo', '#0b1b4c');
+            document.querySelector(':root').style.setProperty('--clr-heading-mark', '#6e6e6e');
+            document.querySelector(':root').style.setProperty('--clr-hover-color', '#cecece');
+            document.querySelector(':root').style.setProperty('--clr-hover-p-color', 'black');
+            document.querySelector(':root').style.setProperty('--clr-bgcolor', 'white');
+            document.querySelector(':root').style.setProperty('--clr-theme-bg', 'darkorange');
+            document.querySelector(':root').style.setProperty('--clr-essential-btn', '#a8a8a8');
+        }
+    </script>
+    <script>
+        let initializeTheme = () => {
+            if (localStorage.getItem('theme') === 'dark') {
+                darkTheme();
+            } else {
+                lightTheme();
+            }
+        };
+        </script>
+    <script>
+        initializeTheme();
+    </script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+    <link rel="stylesheet" href="css/headers.css">
+    <link rel="stylesheet" href="css/footers.css">
+    <link rel="stylesheet" href="css/leftNav.css">
+    <link rel="stylesheet" href="css/teacher_home.css">
+    <link rel="stylesheet" href="css/responsive.css">
 </head>
 
 <body>
@@ -124,7 +162,7 @@ else {
                                 </span>
                                 <span class="essential-btn-text">Lock Attendance</span>
                             </a>
-                            <button class="essential-button" style="width: 120px;">
+                            <button class="essential-button">
                                 <span class="material-symbols-outlined">
                                     lock_open_right
                                 </span>
@@ -547,6 +585,21 @@ else {
             }
         }
         ?>
+    </script>
+    <script>
+        document.querySelector('.header__navbar .nav__hamburger').addEventListener('click', ()=>{
+            console.log('clicked');
+            if(getComputedStyle(document.querySelector('.container .left-nav')).getPropertyValue('display') === "none"){
+                console.log('yes');
+                document.querySelector('.header__navbar .nav__hamburger span').innerText = "close";
+                document.querySelector('.container .left-nav').style.display = "flex";
+            }
+            else{
+                console.log('no');
+                document.querySelector('.header__navbar .nav__hamburger span').innerText = "menu";
+                document.querySelector('.container .left-nav').style.display = "none";
+            }
+        });
     </script>
 </body>
 

@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="css/leftNav.css">
 <div class="left-nav">
     <div class="contents">
         <a <?php

@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="css/footers.css">
 <footer>
     <h3>
         Copyright &copy 2023 - All Rights Reserved.

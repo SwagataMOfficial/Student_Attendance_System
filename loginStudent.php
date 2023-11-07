@@ -24,6 +24,16 @@ if (isset($_POST["login"]) && $_POST["login"] == "login") {
     <title>Login to Classified Student Login</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="css/login_register.css" type="text/css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <script>
+        // handling mouse right clicks
+        window.addEventListener('mousedown', (e)=> {
+            // e.button returns a number where 2 means right clicks.
+            if(e.button === 2){
+                alert("Right click is disabled for security reasons!!!");
+            }
+        });
+    </script>
 </head>
 
 <body>
@@ -35,13 +45,14 @@ if (isset($_POST["login"]) && $_POST["login"] == "login") {
             <h2 class="animation" style="--i:0; --j:21;">Login</h2>
             <form method="post" autocomplete="off">
                 <div class="input-box animation" style="--i:1;  --j:22;">
-                    <input type="email" name="email" required>
+                    <input type="email" name="email" required <?php if(isset($_POST['login'])){echo "value=$_POST[email]";} ?> >
                     <label for="email">Email</label>
                     <i class='bx bxs-envelope'></i>
                 </div>
                 <div class="input-box animation" style="--i:2; --j:23;">
-                    <input type="password" name="password" required>
+                    <input type="password" name="password" required <?php if(isset($_POST['login'])){echo "value=$_POST[password]";} ?> >
                     <label for="password">Password</label>
+                    <i class='bx bx-show show-hide-btn' style="right: 23px; top: 54%; cursor: pointer;"></i>
                     <i class='bx bxs-lock-alt'></i>
                 </div>
                 <button type="submit" name="login" value="login" class="btn animation"
@@ -67,13 +78,15 @@ if (isset($_POST["login"]) && $_POST["login"] == "login") {
                     <i class='bx bxs-envelope'></i>
                 </div>
                 <div class="input-box animation" style="--i:20; --j:3;">
-                    <input type="password" name="password" required>
+                    <input type="password" name="password" placeholder="Mimimum 10 characters!" class="password" required>
                     <label for="password">Password</label>
+                    <i class='bx bx-show show-hide-btn' style="right: 23px; top: 54%; cursor: pointer;"></i>
                     <i class='bx bxs-lock-alt'></i>
                 </div>
                 <div class="input-box animation" style="--i:20; --j:3;">
                     <input type="password" name="cpassword" required>
                     <label for="password">Confirm Password</label>
+                    <i class='bx bx-show show-hide-btn' style="right: 23px; top: 54%; cursor: pointer;"></i>
                     <i class='bx bxs-lock'></i>
                 </div>
                 <button type="submit" name="register" value="register" class="btn animation" style="--i:21; --j:4;">Sign
@@ -94,6 +107,7 @@ if (isset($_POST["login"]) && $_POST["login"] == "login") {
         const wrapper = document.querySelector('.wrapper');
         const registerLink = document.querySelector('.register-link');
         const loginLink = document.querySelector('.login-link');
+        const show_hide_btn = document.querySelectorAll('.show-hide-btn');
 
         registerLink.addEventListener('click', () => {
             wrapper.classList.add('active');
@@ -101,6 +115,22 @@ if (isset($_POST["login"]) && $_POST["login"] == "login") {
 
         loginLink.addEventListener('click', () => {
             wrapper.classList.remove('active');
+        });
+
+        show_hide_btn.forEach(element => {
+            element.addEventListener('click', (e)=>{
+                let password = e.target.parentNode.getElementsByTagName('input')[0];
+                if(password.type === "text"){
+                    password.type = "password";
+                    element.classList.add('bx-show');
+                    element.classList.remove('bx-hide');
+                }
+                else{
+                    password.type = "text";
+                    element.classList.remove('bx-show');
+                    element.classList.add('bx-hide');
+                }
+            });
         });
     </script>
 
@@ -124,7 +154,6 @@ if (isset($_POST["login"]) && $_POST["login"] == "login") {
             }
         ?>
     </script>
-
 </body>
 
 </html>

@@ -63,6 +63,10 @@ else {
             border-radius: 1rem;
         }
     </style>
+    <link rel="stylesheet" href="css/headers.css">
+    <link rel="stylesheet" href="css/footers.css">
+    <link rel="stylesheet" href="css/leftNav.css">
+    <link rel="stylesheet" href="css/responsive.css">
 </head>
 
 <body>

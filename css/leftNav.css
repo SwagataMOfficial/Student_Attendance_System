@@ -10,8 +10,8 @@
 .container .left-nav {
     background-color: var(--clr-nav);
     width: 16.5vw;
-    /* height: 100vh; */
     border-right: 1px solid var(--clr-border);
+    border-bottom: 1px solid var(--clr-border);
     display: flex;
     justify-content: center;
     align-items: center;

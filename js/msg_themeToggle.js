@@ -13,8 +13,8 @@ function addLightMode() {
     document.querySelector(':root').style.setProperty('--clr-essential-btn', '#a8a8a8');
     document.querySelector(':root').style.setProperty('--clr-input', '#e8e8e8');
     document.querySelector(':root').style.setProperty('--clr-message', '#e2e2e2');
-    document.querySelector(':root').style.setProperty('--clr-sender-left', '#0040ff');  //TODO: add colors to it
-    document.querySelector(':root').style.setProperty('--clr-sender-right', '#e000d7'); //TODO: add colors to it
+    document.querySelector(':root').style.setProperty('--clr-sender-left', '#0040ff');
+    document.querySelector(':root').style.setProperty('--clr-sender-right', '#e000d7');
 }
 
 function addDarkMode() {
@@ -30,8 +30,8 @@ function addDarkMode() {
     document.querySelector(':root').style.setProperty('--clr-essential-btn', '#1e2436');
     document.querySelector(':root').style.setProperty('--clr-input', '#0f121f');
     document.querySelector(':root').style.setProperty('--clr-message', '#1e2436');
-    document.querySelector(':root').style.setProperty('--clr-sender-left', '#00ff8c');  //TODO: add colors to it
-    document.querySelector(':root').style.setProperty('--clr-sender-right', '#ff6c00'); //TODO: add colors to it
+    document.querySelector(':root').style.setProperty('--clr-sender-left', '#00ff8c');
+    document.querySelector(':root').style.setProperty('--clr-sender-right', '#ff6c00');
 }
 
 // automatic theme setting handler
