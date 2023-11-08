@@ -13,7 +13,14 @@
             </span>
             <span class="right__notification util-icons" title="Notifications">
                 <span class="material-symbols-outlined">
-                    notifications
+                    <?php
+                        if(isset($_SESSION['sem_unlocked']) && $_SESSION['sem_unlocked']){
+                            echo 'notification_important';
+                        }
+                        else{
+                            echo 'notifications';
+                        }
+                    ?>
                 </span>
                 <?php
                     if(isset($_SESSION['sem_unlocked']) && $_SESSION['sem_unlocked']){

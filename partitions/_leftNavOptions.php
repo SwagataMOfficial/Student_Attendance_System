@@ -14,36 +14,43 @@
             </span>
             <p>Home</p>
         </a>
-        <div class="link-wrapper">
-            <p class="link-heading">Progress</p>
-            <a href="#progress" class="links">
-                <span class="material-symbols-outlined">
-                    analytics
-                </span>
-                <p>Progress</p>
-            </a>
-            <a href="#charts" class="links">
-                <span class="material-symbols-outlined">
-                    monitoring
-                </span>
-                <p>Charts</p>
-            </a>
-        </div>
-        <div class="link-wrapper">
-            <p class="link-heading">Report</p>
-            <a href="#ecom" class="links">
-                <span class="material-symbols-outlined">
-                    lab_profile
-                </span>
-                <p>Report Card</p>
-            </a>
-            <a href="#crm" class="links">
-                <span class="material-symbols-outlined">
-                    downloading
-                </span>
-                <p>Download Report</p>
-            </a>
-        </div>
+        <?php
+            if(isset($_SESSION['student_obj']) && isset($_SESSION['student_loggedin'])){
+                echo 
+                '
+                <div class="link-wrapper">
+                <p class="link-heading">Progress</p>
+                <a href="#progress" class="links">
+                    <span class="material-symbols-outlined">
+                        analytics
+                    </span>
+                    <p>Progress</p>
+                </a>
+                <a href="#charts" class="links">
+                    <span class="material-symbols-outlined">
+                        monitoring
+                    </span>
+                    <p>Charts</p>
+                </a>
+            </div>
+            <div class="link-wrapper">
+                <p class="link-heading">Report</p>
+                <a href="#ecom" class="links">
+                    <span class="material-symbols-outlined">
+                        lab_profile
+                    </span>
+                    <p>Report Card</p>
+                </a>
+                <a href="#crm" class="links">
+                    <span class="material-symbols-outlined">
+                        downloading
+                    </span>
+                    <p>Download Report</p>
+                </a>
+            </div>
+                ';
+            }
+        ?>
         <div class="link-wrapper">
             <p class="link-heading">Message</p>
             <a <?php 

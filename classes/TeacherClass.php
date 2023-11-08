@@ -181,5 +181,21 @@ class Teacher
             return -1;
         }
     }
+
+    public function unlockSemester($pdo, $date){
+        if($date <= 15){
+            $unlockSem = "UPDATE `student_attendance` SET `sem_unlocked`='1';";
+            $stmt = $pdo->prepare($unlockSem);
+            if($stmt->execute()){
+                return 1;   // semester unlocked successfully
+            }
+            else{
+                return -1;  // failed to unlock semester
+            }
+        }
+        else{
+            return 2;  // can't unlock because date is over
+        }
+    }
 }
 ?>

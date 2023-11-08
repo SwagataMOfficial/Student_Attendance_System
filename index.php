@@ -1,7 +1,14 @@
 <?php
     // users will get into that page only if they are exiting the website or redirected for some reason.
+    require('partitions/_dbconnect.php');
     session_start();
     session_destroy();
+
+    if(date('d')>15){
+        $unlockSem = "UPDATE `student_attendance` SET `sem_unlocked`='0';";
+        $stmt = $pdo->prepare($unlockSem);
+        $stmt->execute();
+    }
 ?>
 
 <!doctype html>

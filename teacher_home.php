@@ -26,6 +26,11 @@ if (isset($_SESSION['teacher_loggedin']) && $_SESSION['teacher_loggedin'] == tru
     if (isset($_POST['lock_unlock_id'])) {
         $locking_unlocking = $_SESSION['teacher_obj']->lock_unlock_scanner($pdo, $_POST);
     }
+
+    // handling semester unlock request.
+    if(isset($_POST['unlock_semester'])){
+        $sem_unlocked = $_SESSION['teacher_obj']->unlockSemester($pdo, $_POST['unlock_semester']);
+    }    
 }
 // if no one has logged in then don't allow anyone to enter the student home page
 else {
@@ -141,8 +146,12 @@ else {
             <?php
             // only admin gets access to the essential buttons
             if (isset($teacher['hod'])) {
+                $now = date('d');
                 echo
-                '
+                    '
+                        <form action="teacher_home.php" id="unlock_sem" method="post" style="display: none;">
+                            <input type="hidden" name="unlock_semester" value="'.$now.'">
+                        </form>
                         <section class="essential_buttons">
                             <a class="essential-button" href="#more_students_table">
                                 <span class="material-symbols-outlined">
@@ -162,7 +171,7 @@ else {
                                 </span>
                                 <span class="essential-btn-text">Lock Attendance</span>
                             </a>
-                            <button class="essential-button">
+                            <button type="button" class="essential-button" id="sem_unlock" form="unlock_sem">
                                 <span class="material-symbols-outlined">
                                     lock_open_right
                                 </span>
@@ -428,6 +437,7 @@ else {
         const lock_buttons = document.querySelectorAll('.table-btn-lock');
         const unlock_buttons = document.querySelectorAll('.table-btn-unlock');
         const editForm = document.getElementById("edit-form");
+        const sem_unlock_btn = document.getElementById('sem_unlock');
 
         edit_buttons.forEach(element => {
             element.addEventListener('click', (e) => {
@@ -490,6 +500,12 @@ else {
                     document.getElementById('lock_unlock_form').submit();
                 }
             })
+        });
+
+        sem_unlock_btn.addEventListener('click',()=>{
+            if(confirm("Are You Sure? Press ok to continue, cancel to back!")){
+                document.getElementById('unlock_sem').submit();
+            }
         });
 
         document.getElementById("btn-close").addEventListener("click", () => {
@@ -579,6 +595,22 @@ else {
                 case 4:
                     echo 'alert("Failed to Unlock Scanner!");
                 window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                    break;
+                default:
+                    break;
+            }
+        }
+        if(isset($sem_unlocked)){
+            switch ($sem_unlocked) {
+                case 1:
+                    echo 'alert("Semester Unlocked Successfully! It will last for 15 days only!");
+                    window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                    break;
+                case 2:
+                    echo 'alert("Date is over! Contact with Dev-teams");';
+                    break;
+                case -1:
+                    echo 'alert("Failed to Unlock Semester! Try again..");';
                     break;
                 default:
                     break;

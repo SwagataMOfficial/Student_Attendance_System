@@ -1,6 +1,10 @@
 @media (max-width: 1025px) {
     /* student home responsivess */
 
+    .nav__right .right__notification .notification {
+        width: 21vw;
+    }
+
     .right-main .charts {
         height: 75vh;
     }
@@ -323,8 +327,8 @@
     }
 
     .welcome-heading .welcome-text {
-        font-size: 1.8rem;
-    }    
+        font-size: 1.65rem;
+    }   
 
     .welcome-heading {
         margin: 10px 45px 10px 15px;
@@ -336,6 +340,15 @@
     }
 
     /* student home responsiveness */
+
+    .nav__right .right__notification .notification {
+        width: 40vw;
+        left: -17vw;
+    }
+
+    .nav__right .right__notification .notification::after{
+        left: 17vw;
+    }
 
     .nofifications .scanner-button {
         width: 70px;
@@ -458,6 +471,10 @@
         font-size: 1.8rem;
     }
 
+    #sem_unlock {
+        width: 95px;
+    }
+
 
     .more-students-data .dataTables_wrapper{
         font-size: 0.755rem;
@@ -567,7 +584,7 @@
     }
 
     .right-main .nofifications {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
     }
 
     .nofifications .scanner-button .material-symbols-outlined {
@@ -577,6 +594,17 @@
     .header__navbar .nav__right {
         gap: 0.7rem;
         padding-right: 0.7rem;
+    }
+
+    /* student home responsiveness */
+
+    .nav__right .right__notification .notification {
+        width: 47vw;
+        left: -22vw;
+    }
+
+    .nav__right .right__notification .notification::after {
+        left: 21vw;
     }
 
     /* teacher home responsiveness */
@@ -595,8 +623,12 @@
         font-size: 1.6rem;
     }
 
-    button[class="essential-button"]{
-        width: 85px !important;    /* width of the unlock semester change btn */
+    #sem_unlock {
+        width: 85px;
+    }
+
+    .top-students .student {
+        width: 41vw;
     }
 
     .set-goal-input input {
@@ -703,6 +735,10 @@
     }
 
     /* student home responsiveness */
+
+    .nav__right .right__notification .notification {
+        width: 51vw;
+    }
 
     .right-main .charts {
         height: 72vh;

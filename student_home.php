@@ -113,7 +113,7 @@ else {
                         echo '<b style="font-size: 0.9em; color: #ffff20;">Your Attendance is Low!</b>';
                     }
                     elseif(isset($_SESSION['sem_unlocked']) && $_SESSION['sem_unlocked']){
-                        echo '<b style="font-size: 0.9em; color: #74ff20;">Change your semester!</b>';
+                        echo '<a href="profile_student.php" style="font-size: 0.9em; text-decoration:none; color: #74ff20;"><b>Change your semester!</b></a>';
                     }
                     else {
                         echo '0 Warnings';
