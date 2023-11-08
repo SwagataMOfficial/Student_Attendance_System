@@ -6,6 +6,9 @@ session_start();
 // checking if a student has logged in
 if (isset($_SESSION['student_loggedin']) && $_SESSION['student_loggedin'] == true) {
     $student = $_SESSION['student_obj']->getStudentDetails();
+    if($student['is_sem_unlocked'] == 1){
+        $_SESSION['sem_unlocked'] = true;
+    }
     $attendanceDetails = $_SESSION['student_obj']->getAttendanceDetails();
     
     // post request handle
@@ -190,6 +193,20 @@ else {
                 document.querySelector('.container .left-nav').style.display = "none";
             }
         });
+    </script>
+    <script>
+        <?php
+            if(isset($_SESSION['sem_unlocked']) && $_SESSION['sem_unlocked']){
+                echo 'document.querySelector(".nav__right .right__notification").addEventListener("click", ()=>{
+                    if(getComputedStyle(document.querySelector(".nav__right .right__notification .notification")).getPropertyValue("display") === "none"){
+                        document.querySelector(".nav__right .right__notification .notification").style.display = "flex";
+                    }
+                    else{
+                        document.querySelector(".nav__right .right__notification .notification").style.display = "none";
+                    }
+                });';
+            }
+        ?>
     </script>
 
 </body>

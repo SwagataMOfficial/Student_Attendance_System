@@ -92,6 +92,55 @@ header {
     transition: .7s;
 }
 
+.nav__right .right__notification {
+    position: relative;
+}
+
+.nav__right .right__notification .notification {
+    position: absolute;
+    width: 18vw;
+    /* height: 100px; */
+    top: 6vh;
+    left: -9vw;
+    background-color: var(--clr-nav);
+    border: 2px solid var(--clr-border);
+    border-radius: 12px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav__right .right__notification .notification::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    aspect-ratio: 1;
+    top: -1.7vh;
+    left: 9vw;
+    background-color: var(--clr-border);
+    transform: rotate(45deg);
+    z-index: -1;
+}
+
+.nav__right .right__notification .notification a {
+    display: block;
+    width: 100%;
+    background: var(--clr-bgcolor);
+    font-size: 0.7rem;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    padding: 8px 4px;
+    margin: 15px 5px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--clr-heading-mark);
+    transition: 0.6s;
+}
+
+.nav__right .right__notification .notification a:hover {
+    background: var(--clr-hover-color);
+    color: var(--clr-hover-p-color);
+}
+
 .nav__right .util-icons span {
     user-select: none;
     cursor: pointer;

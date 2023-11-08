@@ -15,6 +15,13 @@
                 <span class="material-symbols-outlined">
                     notifications
                 </span>
+                <?php
+                    if(isset($_SESSION['sem_unlocked']) && $_SESSION['sem_unlocked']){
+                        echo '<div class="notification">
+                            <a href="profile_student.php">Semester Change Unlocked! <strong>Click here to edit your semester.</strong></a>
+                        </div>';
+                    }
+                ?>
             </span>
             <span class="right__moreApps util-icons" title="Other Apps">
                 <span class="material-symbols-outlined">

@@ -50,6 +50,7 @@ class Student
             $this->details['attendance'] = $studentData[$this->details['month']];
             $this->details['goal'] = $studentData['attendance_goal'];
             $this->details['is_locked'] = $studentData['is_locked'];
+            $this->details['is_sem_unlocked'] = $studentData['sem_unlocked'];
             $this->details['grade'] = $studentData['grade'];
             $this->details['remarks'] = $studentData['remarks'];
             $i = 0;
