@@ -12,13 +12,11 @@ if (isset($_SESSION['student_loggedin']) && $_SESSION['student_loggedin'] == tru
     if (isset($_POST["scan"]) && $_POST["scan"] == "scan") {
         $scanResult = $_SESSION['student_obj']->getAttendance($pdo, $_POST);
         $_SESSION['student_obj']->setAttendanceDetails();
+        $_SESSION['student_obj']->update_grade_remarks($pdo);
+        
+        $student = $_SESSION['student_obj']->getStudentDetails();
         $attendanceDetails = $_SESSION['student_obj']->getAttendanceDetails();
     }
-
-    # TODO: add grading system and remarks calculation
-    # TODO: write sql query to update the remarks and grade
-    // $results = $_SESSION['student_obj']->get_grade_remarks();
-    // $_SESSION['student_obj']->update_grade_remarks($pdo, $results);
 }
 // if no one has logged in then don't allow anyone to enter the student home page
 else {
@@ -107,7 +105,11 @@ else {
                     <?php
                     if (isset($student["is_locked"]) && $student["is_locked"]) {
                         echo '<b style="font-size: 0.9em; color: #ffff20;">Your Scanner is Locked!</b>';
-                    } else {
+                    }
+                    elseif(date('d')>=15 && (isset($student['grade']) && ($student['grade'] == 'F' || $student['grade'] == 'D'))){
+                        echo '<b style="font-size: 0.9em; color: #ffff20;">Your Attendance is Low!</b>';
+                    }
+                    else {
                         echo '0 Warnings';
                     }
                     ?>

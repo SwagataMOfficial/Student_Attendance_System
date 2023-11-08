@@ -66,40 +66,86 @@ class Student
             $_SESSION['student_register'] = $registration;
             header("Location: /Minor_Project/Student_Attendance_System/studentProfile.php");
         }
-
-
-
-
     }
 
-    public function get_grade_remarks()
+    private function _grade($value)
     {
-        if ($this->details['grade']) {
-            #TODO: calculate grade using attendance goal and current attendance
-        }
-
-
-        switch ($this->details['grade']) {
-            case 'A':
-                $remarks = "Good";
-                break;
-            case 'B':
-                $remarks = "Well";
-                break;
-            case "C":
-                $remarks = "Fine";
-                break;
-            #TODO: add more cases
-            default:
-                $remarks = "Initial";
-                break;
-        }
+       $attendance = (100 / 15) * $value;
+       if ($attendance >= 90) {
+          return "O";
+       } elseif ($attendance >= 80) {
+          return "E";
+       } elseif ($attendance >= 70) {
+          return "A";
+       } elseif ($attendance >= 60) {
+          return "B";
+       } elseif ($attendance >= 50) {
+          return "C";
+       } elseif ($attendance >= 40) {
+          return "D";
+       } elseif ($attendance < 40) {
+          return "F";
+       }
     }
 
-    public function update_grade_remarks($pdo, $results){
-        $remarksUpdate = "";  //TODO: write sql to update remarks and grade
+
+    private function _remarks($grade)
+    {
+       $remarks = "";
+       switch ($grade) {
+          case 'O':
+             $remarks = "Outstanding";
+             break;
+          case 'E':
+             $remarks = "Excellent";
+             break;
+          case 'A':
+             $remarks = "Very Good";
+             break;
+          case 'B':
+             $remarks = "Good";
+             break;
+          case 'C':
+             $remarks = "Fair";
+             break;
+          case 'D':
+             $remarks = "Below Average";
+             break;
+          case 'F':
+             $remarks = "Failed";
+             break;
+          default:
+             $remarks = "Incomplete";
+             break;
+       }
+    
+       return $remarks;
+    }
+
+    private function calculateGrade_Remarks($attendance)
+    {
+        $this->details['grade'] = $this->_grade($attendance);
+        $this->details['remarks'] = $this->_remarks($this->details['grade']);
+    }
+
+    public function update_grade_remarks($pdo){
+        $this->calculateGrade_Remarks($this->details['attendance']);
+
+        // echo $this->details['remarks'] . '<br>';
+        // echo $this->details['grade'];
+        // exit();
+
+        $remarks = $this->details['remarks'];
+        $grade = $this->details['grade'];
+
+        $remarksUpdate = "UPDATE `student_attendance` SET `remarks`='$remarks',`grade`='$grade' WHERE `student_id`='$this->id';";
         $stmt = $pdo->prepare($remarksUpdate);
-        $stmt->execute();
+        if($stmt->execute()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public function getAttendanceDetails()
