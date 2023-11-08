@@ -112,6 +112,9 @@ else {
                     elseif(date('d')>=15 && (isset($student['grade']) && ($student['grade'] == 'F' || $student['grade'] == 'D'))){
                         echo '<b style="font-size: 0.9em; color: #ffff20;">Your Attendance is Low!</b>';
                     }
+                    elseif(isset($_SESSION['sem_unlocked']) && $_SESSION['sem_unlocked']){
+                        echo '<b style="font-size: 0.9em; color: #74ff20;">Change your semester!</b>';
+                    }
                     else {
                         echo '0 Warnings';
                     }
@@ -127,6 +130,23 @@ else {
                 <p class="bar-chart-heading">Your Monthly Attendance Report</p>
                 <div class="chart">
                     <div id="chartContainer" style=" width: 95%;"></div>
+                </div>
+            </section>
+            <section class="chart-options" id="charts">
+                <p>Select a Chart to Analyze</p>
+                <div class="btn-container">
+                    <button type="button" class="chart-btns" id="column">
+                        <div class="material-symbols-outlined chart-btn-logo">bar_chart</div>
+                        <div class="chart-btn-text">Column Chart</div>
+                    </button>
+                    <button type="button" class="chart-btns" id="pie">
+                        <div class="material-symbols-outlined chart-btn-logo">incomplete_circle</div>
+                        <div class="chart-btn-text">Pie Chart</div>
+                    </button>
+                    <button type="button" class="chart-btns" id="bar">
+                        <div class="material-symbols-outlined chart-btn-logo">signal_cellular_alt</div>
+                        <div class="chart-btn-text">Bar Chart</div>
+                    </button>
                 </div>
             </section>
         </div>
@@ -180,6 +200,12 @@ else {
     <script src="js/st_themeToggle.js"></script>
 
     <script>
+        document.querySelectorAll('.right-main .chart-options .chart-btns').forEach((e)=>{
+            e.addEventListener('click', ()=>{
+                generateChartWithType(e.id);
+            });
+        });
+
         document.querySelector('.header__navbar .nav__hamburger').addEventListener('click', ()=>{
             console.log('clicked');
             if(getComputedStyle(document.querySelector('.container .left-nav')).getPropertyValue('display') === "none"){

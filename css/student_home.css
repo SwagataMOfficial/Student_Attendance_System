@@ -113,7 +113,7 @@ header {
 }
 
 .right-main .charts {
-    height: 72vh;
+    height: 64vh;
     color: var(--clr-btn-text-logo);
     border-bottom: 1px solid var(--clr-border);
 }
@@ -131,4 +131,45 @@ header {
 
 .canvasjs-chart-credit {
     display: none;
+}
+
+
+
+.right-main .chart-options p {
+    font-size: 1.5rem;
+    text-align: center;
+    padding: 15px 0;
+    color: var(--clr-btn-text-logo);
+}
+
+.right-main .btn-container{
+    margin-bottom: 1.6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+}
+
+.right-main .chart-options .chart-btns{
+    color: var(--clr-btn-text-logo);
+    background: var(--clr-nav);
+    width: 8vw;
+    height: 12vh;
+    outline: none;
+    border: 1px solid var(--clr-border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.6s;
+}
+
+.right-main .chart-options .chart-btns:hover{
+    background: var(--clr-hover-color);
+    color: var(--clr-hover-p-color);
+}
+
+.right-main .chart-options .chart-btns .chart-btn-logo{
+    font-size: 3em;
+}
+.right-main .chart-options .chart-btns .chart-btn-text{
+    font-size: 1.3em;
 }

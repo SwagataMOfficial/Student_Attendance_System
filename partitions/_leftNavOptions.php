@@ -22,7 +22,7 @@
                 </span>
                 <p>Progress</p>
             </a>
-            <a href="#crm" class="links">
+            <a href="#charts" class="links">
                 <span class="material-symbols-outlined">
                     monitoring
                 </span>

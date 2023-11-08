@@ -1,4 +1,15 @@
 @media (max-width: 1025px) {
+    /* student home responsivess */
+
+    .right-main .charts {
+        height: 75vh;
+    }
+
+    .right-main .chart-options .chart-btns {
+        width: 14vw;
+        height: 14vh;
+    }
+
     /* teacher home page responsiveness */
     .set-goal-input input{
         width: 28vw;
@@ -324,6 +335,8 @@
         padding: 5px 9px;
     }
 
+    /* student home responsiveness */
+
     .nofifications .scanner-button {
         width: 70px;
         height: 64px;
@@ -344,6 +357,28 @@
     .charts .bar-chart-heading {
         font-size: 1.3rem;
     }
+
+    .right-main .btn-container {
+        gap: 2rem;
+    }
+
+    .right-main .chart-options .chart-btns {
+        width: 21vw;
+        height: 13vh;
+    }
+
+    .right-main .chart-options .chart-btns .chart-btn-text {
+        font-size: 1em;
+    }
+
+    .right-main .chart-options p {
+        font-size: 1.3rem;
+    }
+
+    .right-main .chart-options .chart-btns .chart-btn-logo {
+        font-size: 2em;
+    }
+
 
     /* login register responsiveness */
 
@@ -665,6 +700,25 @@
     #messageipt {
         margin-right: 0.9rem;
         font-size: 1.1rem;
+    }
+
+    /* student home responsiveness */
+
+    .right-main .charts {
+        height: 72vh;
+    }
+
+    .right-main .btn-container {
+        gap: 1.3rem;
+    }
+
+    .right-main .chart-options .chart-btns {
+        width: 26vw;
+        height: 14vh;
+    }
+
+    .right-main .chart-options .chart-btns .chart-btn-text {
+        font-size: 0.85em;
     }
 
     /* teacher home responsiveness */
