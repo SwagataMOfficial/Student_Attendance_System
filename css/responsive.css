@@ -286,7 +286,31 @@
         width: 9vw;
     height: 6vh;
     }
+}
 
+/* mobile extra large */
+@media (max-width: 600px) {
+    /* login-register responsiveness */
+    .wrapper {
+        width: 450px;
+        height: 400px;
+    }
+
+    .wrapper .bg-animate {
+        transform: rotate(13deg) skewY(48deg);
+    }
+
+    .wrapper .info-text.login {
+        padding: 0 20px 60px 49px;
+    }
+
+    .wrapper.active .bg-animate2 {
+        transform: rotate(-17deg) skewY(-49deg);
+    }
+
+    .input-box .c-password {
+        font-size: 12.5px;
+    }
 }
 
 /* mobile large */
@@ -415,11 +439,11 @@
     }
 
     .form-box h2 {
-        font-size: 20px;
+        font-size: 6.2vw;
     }
 
     .info-text h2 {
-        font-size: 22px;
+        font-size: 6vw;
     }
 
     .info-text p {
@@ -427,8 +451,9 @@
     }
 
     .btn {
-        height: 35px;
-        font-size: 14px;
+        height: 5vh;
+        font-size: 4vw;
+        width: 100%;
     }
 
     .form-box .input-box {
@@ -441,7 +466,15 @@
     }
 
     .input-box label {
-        font-size: 13px;
+        font-size: 3.5vw;
+    }
+
+    .input-box input:focus~label, .input-box input:valid~label {
+        top: -2px;
+    }
+
+    .input-box .c-password{
+        font-size: 3.2vw;
     }
 
     .form-box .logreg-link {
@@ -543,6 +576,31 @@
 /* mobile medium */
 @media (max-width: 376px) {
 
+    /* login-register responsivess */
+    .wrapper {
+        width: 335px;
+        height: 325px;
+    }
+
+    .wrapper.active .bg-animate2 {
+        transform: rotate(-18deg) skewY(-52deg);
+    }
+
+    .form-box .logreg-link {
+        width: 140px;
+        font-size: 0.65rem;
+    }
+
+    .wrapper .info-text.register {
+        padding: 0 35px 28px 10px;
+    }
+
+    .form-box .input-box {
+        height: 40px;
+        margin: 14px 0;
+    }
+
+    /* left navigation responsiveness */
     .container .left-nav {
         width: 27vw;
         z-index: 1;
@@ -646,6 +704,40 @@
 
 /* mobile small */
 @media (max-width: 321px) {
+    
+    /* login-register responsiveness */
+    .wrapper {
+        width: 295px;
+        height: 350px;
+    }
+
+    .wrapper .info-text.login {
+        padding: 0 10px 30px 44px;
+    }
+
+    .wrapper .form-box {
+        width: 58%;
+    }
+
+    .wrapper .bg-animate {
+        transform: rotate(27deg) skewY(43deg);
+    }
+
+    .wrapper.active .bg-animate2 {
+        left: 270px;
+        transform: rotate(-18deg) skewY(-57deg);
+    }
+
+    .form-box .logreg-link {
+        width: 140px;
+    }
+
+    .form-box .input-box {
+        height: 40px;
+        margin: 15px 0;
+    }
+
+    /* header responsiveness */
 
     .header__navbar .nav__left {
         font-size: 1.3rem;

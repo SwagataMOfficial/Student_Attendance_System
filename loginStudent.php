@@ -85,7 +85,7 @@ if (isset($_POST["login"]) && $_POST["login"] == "login") {
                 </div>
                 <div class="input-box animation" style="--i:20; --j:3;">
                     <input type="password" name="cpassword" required>
-                    <label for="password">Confirm Password</label>
+                    <label for="password" class="c-password">Confirm Password</label>
                     <i class='bx bx-show show-hide-btn' style="right: 23px; top: 54%; cursor: pointer;"></i>
                     <i class='bx bxs-lock'></i>
                 </div>

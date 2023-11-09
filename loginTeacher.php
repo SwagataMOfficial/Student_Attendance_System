@@ -24,6 +24,7 @@ if (isset($_POST["teacherLogin"]) && $_POST["teacherLogin"] == "teacherLogin") {
     <title>Login to Classified Teacher Login</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="css/login_register.css" type="text/css">
+    <link rel="stylesheet" href="css/responsive.css">
     <script>
         // handling mouse right clicks
         window.addEventListener('mousedown', (e)=> {
@@ -84,7 +85,7 @@ if (isset($_POST["teacherLogin"]) && $_POST["teacherLogin"] == "teacherLogin") {
                 </div>
                 <div class="input-box animation" style="--i:20; --j:3;">
                     <input type="password" name="cpassword" required>
-                    <label for="password">Confirm Password</label>
+                    <label for="password" class="c-password">Confirm Password</label>
                     <i class='bx bx-show show-hide-btn' style="right: 23px; top: 54%; cursor: pointer;"></i>
                     <i class='bx bxs-lock'></i>
                 </div>
