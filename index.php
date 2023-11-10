@@ -50,9 +50,6 @@
                         <a class="nav-link text-light" href="#">Docs</a>
                     </li>
                     <li class="nav-item mx-2">
-                        <a class="nav-link text-light" href="#">Blog</a>
-                    </li>
-                    <li class="nav-item mx-2">
                         <a class="nav-link text-light" href="contactUs.php">Contact Us</a>
                     </li>
                 </ul>

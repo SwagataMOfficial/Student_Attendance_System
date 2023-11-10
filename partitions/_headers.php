@@ -30,11 +30,6 @@
                     }
                 ?>
             </span>
-            <span class="right__moreApps util-icons" title="Other Apps">
-                <span class="material-symbols-outlined">
-                    apps
-                </span>
-            </span>
             <div class="right__imageLogo" title="Your profile">
                 <?php
                 if (isset($teacher['profile_picture'])) {

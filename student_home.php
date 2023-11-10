@@ -112,9 +112,6 @@ else {
                     elseif(date('d')>=15 && (isset($student['grade']) && ($student['grade'] == 'F' || $student['grade'] == 'D'))){
                         echo '<b style="font-size: 0.9em; color: #ffff20;">Your Attendance is Low!</b>';
                     }
-                    elseif(isset($_SESSION['sem_unlocked']) && $_SESSION['sem_unlocked']){
-                        echo '<a href="profile_student.php" style="font-size: 0.9em; text-decoration:none; color: #74ff20;"><b>Change your semester!</b></a>';
-                    }
                     else {
                         echo '0 Warnings';
                     }
@@ -124,7 +121,15 @@ else {
                     <span class="material-symbols-outlined">qr_code_scanner</span>
                     <span class="scanner-text">Scanner</span>
                 </a>
-                <span class="unread-messages">No unread messages</span>
+                <?php
+                    if(isset($_SESSION['sem_unlocked']) && $_SESSION['sem_unlocked']){
+                        echo '<a href="profile_student.php" style="font-size: 0.9em; text-decoration:none; color: #74ff20;"><b>Change your semester!</b></a>';
+                    }
+                    else {
+                        echo  '<span class="unread-messages">No unread messages</span>';
+                    }
+                    
+                ?>
             </section>
             <section class="charts" id="progress">
                 <p class="bar-chart-heading">Your Monthly Attendance Report</p>
