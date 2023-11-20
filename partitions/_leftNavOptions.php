@@ -35,13 +35,13 @@
             </div>
             <div class="link-wrapper">
                 <p class="link-heading">Report</p>
-                <a href="#ecom" class="links">
+                <a href="#report_card" class="links" style="cursor: not-allowed; filter: brightness(0.5);" title="Upcoming Feature...">
                     <span class="material-symbols-outlined">
                         lab_profile
                     </span>
                     <p>Report Card</p>
                 </a>
-                <a href="#crm" class="links">
+                <a href="#download_report" class="links" style="cursor: not-allowed; filter: brightness(0.5);" title="Upcoming Feature...">
                     <span class="material-symbols-outlined">
                         downloading
                     </span>

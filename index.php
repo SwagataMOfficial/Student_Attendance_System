@@ -47,7 +47,7 @@
                         <a class="nav-link text-light" aria-current="page" href="http://localhost/Minor_Project/Student_Attendance_System/">Home</a>
                     </li>
                     <li class="nav-item mx-2">
-                        <a class="nav-link text-light" href="#">Docs</a>
+                        <a class="nav-link text-light" href="assets/17_User Manual.pdf" target="_blank">Docs</a>
                     </li>
                     <li class="nav-item mx-2">
                         <a class="nav-link text-light" href="contactUs.php">Contact Us</a>
@@ -100,35 +100,12 @@
     </div>
 
     <div class="container-fluid position-relative" style="min-height: 100vh;">
-        <!-- <video class="position-fixed top-0 start-0" autoplay loop muted style=" -->
-                <!-- width: 100%; -->
-                <!-- /* filter:blur(1px); */ -->
-                <!-- pointer-events: none; -->
-            <!-- "> -->
-            <!-- <source src="../background_videos/bg1.mp4"> -->
-            <!-- default for me until now -->
-            <!-- <source src="../background_videos/bg2.mp4"> -->
-            <!-- not matching i think -->
-            <!-- <source src="../background_videos/bg3.mp4"> -->
-            <!-- very bad one for me -->
-            <!-- <source src="../background_videos/bg4.mp4"> -->
-            <!-- loving it -->
-            <!-- <source src="../background_videos/bg5.mp4"> -->
-            <!-- <source src="../background_videos/bg6.mp4">  -->
-            <!-- bad one for me -->
-            <!-- <source src="../background_videos/bg7.mp4"> -->
-            <!-- not relevant -->
-            <!-- <source src="../background_videos/bg8.mp4"> -->
-            <!-- others liked it -->
-        <!-- </video> -->
-
         <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
             <div class="card text-center bg-transparent" id="intro">
                 <div class="card-header fs-3 text-decoration-underline link-offset-2">Introducing</div>
                 <div class="card-body">
                     <h5 class="card-title mb-4 my-animated-text">Student Attendance System</h5>
                     <p class="card-text">Student Attendance System is the website in which students and teachers data is managed automatically. Student can scan specific QR code provided by their institution through this website to get attendance on daily basis. Teachers can view, search, analyze, edit, delete Students data and they can also lock/unlock student scanner for any reason. There is a message portal for both students and teachers. They can communicate through this message portal. Students can analyze there performance in their dashboard using different chart option, they can generate their performance report card and if they want to download their report card then they can click download report and the report card will be sent to their registered email. Teachers can set minimum attendance goal for students to achieve and low scoring students will get nofification to remind about their low performance. There is a contact page for user support. Register to explore more features. Thank You!</p>
-                    <!-- <a href="#features" class="btn btn-success py-2 px-4 mt-4 feature-link">Features</a> -->
                     <a class="link-light link-offset-0 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#features">
                         Features
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
