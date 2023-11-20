@@ -290,25 +290,27 @@ else {
                     <input type="hidden" name="d_email" id="d_email">
                 </form>
             </section>
+
+            <!-- set attendance goal section -->
             <?php
-            if (isset($teacher['hod'])) {
-                echo
-                '
-                <section class="set-goal-section" id="set_attendance_goal">
-                    <p class="set-goal-text">Set Attendance Goal</p>
-                    <div class="set-goal-container">
-                        <div class="set-goal">
-                            <form method="post" class="set-goal-input">
-                                <input type="number" name="attendance_goal" placeholder="Enter Goal (in numbers)" required>
-                                <button type="submit" name="goal_set" value="goal_set">
-                                    <span class="material-symbols-outlined">done</span>
-                                </button>
-                            </form>
+                if (isset($teacher['hod'])) {
+                    echo
+                    '
+                    <section class="set-goal-section" id="set_attendance_goal">
+                        <p class="set-goal-text">Set Attendance Goal</p>
+                        <div class="set-goal-container">
+                            <div class="set-goal">
+                                <form method="post" class="set-goal-input">
+                                    <input type="number" name="attendance_goal" placeholder="Enter Goal (in numbers)" required>
+                                    <button type="submit" name="goal_set" value="goal_set">
+                                        <span class="material-symbols-outlined">done</span>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                </section>
-            ';
-            }
+                    </section>
+                ';
+                }
             ?>
 
             <?php

@@ -101,36 +101,14 @@ if (isset($_SESSION['student_obj']) && isset($_SESSION['student_loggedin'])) {
                         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
                             $messageExists = true;
                             if (isset($row["student_message"])) {
-
                                 $msg = $message->getStudentMessage($pdo, $row['student_id'], $row["student_message"]);
                                 echo $msg;
-
-                                // delete this part
-                                // $student = "SELECT `student_name` FROM `student_profile` WHERE `student_id`='$row[student_id]'";
-                                // $gettingStudent = $pdo->prepare($student);
-                                // $gettingStudent->execute();
-                                // $student_data = $gettingStudent->fetch(PDO::FETCH_ASSOC);
-                                // echo '  <div class="message right">
-                                //             <p class="sender-name"><b style="transition: 0.3s ease-in;">' . $student_data["student_name"] . '</b></p>
-                                //             <span>' . $row["student_message"] . '</span>
-                                //         </div>';
                             }
                             if (isset($row["teacher_message"])) {
                                 $msg2 = $message->getTeacherMessage($pdo, $row['teacher_id'], $row["teacher_message"]);
                                 echo $msg2;
-                                // $teacher = "SELECT `teacher_name` FROM `teacher_profile` WHERE `teacher_id`='$row[teacher_id]'";
-                                // $gettingTeacher = $pdo->prepare($teacher);
-                                // $gettingTeacher->execute();
-                                // $teacher_data = $gettingTeacher->fetch(PDO::FETCH_ASSOC);
-                                // echo '  <div class="message left">
-                                //             <p class="sender-name">
-                                //             <b style="transition: 0.3s ease-in;">' . $teacher_data["teacher_name"] . '</b>
-                                //             </p>
-                                //             <span>' . $row["teacher_message"] . '</span>
-                                //         </div>';
                             }
                         }
-                        // var_dump($messageExists);
                         if (!$messageExists) {
                             echo "<h3>No Messages Found!</h3>";
                         }

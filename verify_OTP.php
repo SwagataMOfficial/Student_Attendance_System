@@ -1,46 +1,44 @@
 <?php
-// include('partitions/_dbconnect.php');
-// include('classes/Authenticate.php');
-// session_start();
-
-setcookie("expiry_time","1 min",time() + 60);
+include('partitions/_dbconnect.php');
+include('classes/Authenticate.php');
+session_start();
 
 // student otp validation.
-// if (isset($_SESSION['student_register'])) {
-    if(isset($_COOKIE['expiry_time'])){
-        if (isset($_POST['otp_btn']) && $_POST['otp_btn'] == "otp_btn") {
+if (isset($_SESSION['student_register'])) {
+    if (isset($_POST['otp_btn']) && $_POST['otp_btn'] == "otp_btn") {
+        if(isset($_COOKIE['expiry_time'])){
             $userOTP = $_POST['otp'][0] . $_POST['otp'][1] . $_POST['otp'][2] . $_POST['otp'][3] . $_POST['otp'][4] . $_POST['otp'][5];
-            // if ($_SESSION['student_register']->registerStudent($pdo, $userOTP)) {
-            //     $st_registered = true;
-            // } else {
-            //     $otpNotMatched = true;
-            // }
+            if ($_SESSION['student_register']->registerStudent($pdo, $userOTP)) {
+                $st_registered = true;
+            } else {
+                $otpNotMatched = true;
+            }
+        }
+        else{
+            $otpExpired = true;
         }
     }
-    else{
-        $otpExpired = true;
-    }
-// }
+}
 
 // teacher otp validation
-// elseif (isset($_SESSION['teacher_register'])) {
-    if(isset($_COOKIE['expiry_time'])){
-        if (isset($_POST['otp_btn']) && $_POST['otp_btn'] == "otp_btn") {
+elseif (isset($_SESSION['teacher_register'])) {
+    if (isset($_POST['otp_btn']) && $_POST['otp_btn'] == "otp_btn") {
+        if(isset($_COOKIE['expiry_time'])){
             $userOTP = $_POST['otp'][0] . $_POST['otp'][1] . $_POST['otp'][2] . $_POST['otp'][3] . $_POST['otp'][4] . $_POST['otp'][5];
-            // if ($_SESSION['teacher_register']->registerTeacher($pdo, $userOTP)) {
-            //     $t_registered = true;
-            // } else {
-            //     $otpNotMatched = true;
-            // }
+            if ($_SESSION['teacher_register']->registerTeacher($pdo, $userOTP)) {
+                $t_registered = true;
+            } else {
+                $otpNotMatched = true;
+            }
+        }
+        else{
+            $otpExpired = true;
         }
     }
-    else{
-        $otpExpired = true;
-    }
-// }
-// else {
-    // header("Location: /Minor_Project/Student_Attendance_System/");
-// }
+}
+else {
+    header("Location: /Minor_Project/Student_Attendance_System/");
+}
 ?>
 
 <!DOCTYPE html>
@@ -71,21 +69,19 @@ setcookie("expiry_time","1 min",time() + 60);
             <button type="submit" name="otp_btn" value="otp_btn" class="btn btn-primary" form="otp_form">Verify</button>
         </div>
         <small>
-            If you didn't receive a code! <strong> RESEND!!</strong>
+            OTP will expire in <strong>10 Seconds!!</strong>
         </small>
     </div>
-    
+
     <script>
         <?php
         if (isset($st_registered) && $st_registered) {
             echo 'alert("Registration Successful! Click Ok to Create Your Profile...");
-                    window.location.href = "/Minor_Project/Student_Attendance_System/studentProfile.php";
-                ';
+            window.location.href = "/Minor_Project/Student_Attendance_System/studentProfile.php"; ';
         }
         if (isset($t_registered) && $t_registered) {
             echo 'alert("Registration Successful! Click Ok to Create Your Profile...");
-                    window.location.href = "/Minor_Project/Student_Attendance_System/teacherProfile.php";
-                ';
+            window.location.href = "/Minor_Project/Student_Attendance_System/teacherProfile.php"; ';
         }
         if (isset($otpNotMatched) && $otpNotMatched) {
             echo 'alert("OTP did not matched! try again....");';
@@ -93,7 +89,7 @@ setcookie("expiry_time","1 min",time() + 60);
 
         if (isset($otpExpired) && $otpExpired) {
             echo 'alert("OTP Expired! Register again to get another otp....");
-            window.location.href = "/Minor_Project/Student_Attendance_System/";';
+            window.location.href = "/Minor_Project/Student_Attendance_System/"; ';
         }
         ?>
     </script>

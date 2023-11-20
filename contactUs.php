@@ -75,8 +75,6 @@ if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
 		const loginBtn = document.getElementById('loginBtn');
 		const signUpBtn = document.getElementById('signUpBtn');
 		const closeBtn = document.getElementById('closeBtn');
-		const confirmCloseBtn = document.getElementById('confirmCloseBtn');
-		const nonConfirmCloseBtn = document.getElementById('nonConfirmCloseBtn');
 
 		closeBtn.addEventListener('click', () => {
 			document.querySelector('.login-signup').style.display = 'none';
@@ -103,9 +101,9 @@ if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
 				case 1:
 					echo "alert('Your Concern has been submitted!');";
 					break;
-					case -1:
-						echo "alert('Failed to submit your concern!');";
-					break;
+				case -1:
+					echo "alert('Failed to submit your concern!');";
+				break;
 				default:
 					break;
 			}

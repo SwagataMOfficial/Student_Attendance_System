@@ -36,6 +36,9 @@ class Student
             $this->id = $student['student_id'];
             $this->details['name'] = $student['student_name'];
             $this->details['phone'] = $student['student_phone'];
+            $this->details['gender'] = $student['student_gender'];
+            $this->details['stream'] = $student['student_stream'];
+            $this->details['semester'] = $student['student_semester'];
             $this->details['month'] = strtolower(date("F"));
 
             if ($student['profile_picture'] != null) {
@@ -123,14 +126,14 @@ class Student
        return $remarks;
     }
 
-    private function calculateGrade_Remarks($attendance)
+    private function _calculateGrade_Remarks($attendance)
     {
         $this->details['grade'] = $this->_grade($attendance);
         $this->details['remarks'] = $this->_remarks($this->details['grade']);
     }
 
     public function update_grade_remarks($pdo){
-        $this->calculateGrade_Remarks($this->details['attendance']);
+        $this->_calculateGrade_Remarks($this->details['attendance']);
 
         // echo $this->details['remarks'] . '<br>';
         // echo $this->details['grade'];
@@ -195,6 +198,24 @@ class Student
         }
         else{
             return -1;
+        }
+    }
+
+    public function updateSemester($pdo, $post){
+        $semUpdate = "UPDATE `student_profile` SET `student_semester`='$post[new_sem]' WHERE `student_id`='". $this->id ."';";
+        $query = $pdo->prepare($semUpdate);
+        if($query->execute()){
+            $resetSemUnlock = "UPDATE `student_attendance` SET `sem_unlocked` = '0' WHERE `student_id` = '". $this->id ."';";
+            $query = $pdo->prepare($semUpdate);
+            if($query->execute()){
+                return 1;
+            }
+            else{
+                return 0;
+            }
+        }
+        else{
+            return 0;
         }
     }
 

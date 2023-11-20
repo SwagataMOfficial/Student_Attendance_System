@@ -30,7 +30,17 @@
                     }
                 ?>
             </span>
-            <div class="right__imageLogo" title="Your profile">
+            <a
+            <?php
+                if (isset($teacher['profile_picture'])) {
+                    echo ' href="profile_teacher.php" ';
+                } else if (isset($student['profile_picture'])) {
+                    echo ' href="profile_student.php" ';
+                } else {
+                    echo '';
+                }
+            ?>
+            class="right__imageLogo" title="Your profile">
                 <?php
                 if (isset($teacher['profile_picture'])) {
                     $image = $teacher['profile_picture'];
@@ -42,8 +52,7 @@
                     echo '<span class="material-symbols-outlined">account_circle</span>';
                 }
                 ?>
-
-            </div>
+            </a>
         </div>
     </nav>
 </header>

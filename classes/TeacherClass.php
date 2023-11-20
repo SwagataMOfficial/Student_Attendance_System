@@ -27,11 +27,11 @@ class Teacher
             }
         }
         else{
-        unset($_SESSION['teacher_loggedin']);
-        // teacher has registered but never created the profile
-        $registration = new Register($this->email);
-        $_SESSION['teacher_register'] = $registration;
-        header("Location: /Minor_Project/Student_Attendance_System/teacherProfile.php");
+            unset($_SESSION['teacher_loggedin']);
+            // teacher has registered but never created the profile
+            $registration = new Register($this->email);
+            $_SESSION['teacher_register'] = $registration;
+            header("Location: /Minor_Project/Student_Attendance_System/teacherProfile.php");
         }
     }
 
@@ -95,7 +95,8 @@ class Teacher
     }
 
     public function setAttendanceGoal($pdo, $post){
-        $attendance_goal_query = "UPDATE `student_attendance` SET `attendance_goal` = '$post[attendance_goal]';";
+        $hod_dept = $this->details['hod'];
+        $attendance_goal_query = "UPDATE `student_attendance` SET `attendance_goal` = '$post[attendance_goal]' WHERE `student_stream`='$hod_dept';";
         $goalSetting = $pdo->prepare($attendance_goal_query);
         if($goalSetting->execute()){
             return 1;
@@ -184,7 +185,8 @@ class Teacher
 
     public function unlockSemester($pdo, $date){
         if($date <= 15){
-            $unlockSem = "UPDATE `student_attendance` SET `sem_unlocked`='1';";
+            $hod_dept = $this->details['hod'];
+            $unlockSem = "UPDATE `student_attendance` SET `sem_unlocked`='1' WHERE `student_stream`='$hod_dept';";
             $stmt = $pdo->prepare($unlockSem);
             if($stmt->execute()){
                 return 1;   // semester unlocked successfully

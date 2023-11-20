@@ -147,7 +147,6 @@ class Register extends Credentials {
         if ($userOTP == $this->otp) {
             $sql = "INSERT INTO `student_registration` (`student_email`, `student_password`) VALUES ('$this->email', '$this->password')";
             $query = $pdo->prepare($sql);
-            $query = $pdo->prepare($sql);
             if ($query->execute()) {
                 return 1;
             }
@@ -185,6 +184,7 @@ class Register extends Credentials {
                 if ($this->sendMail()) {
                     $hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
                     $this->password = $hashedPassword;
+                    setcookie("expiry_time","1minute",time() + 600);
                     header("Location: /Minor_Project/Student_Attendance_System/verify_OTP.php");
                 }
                 else {
@@ -215,6 +215,7 @@ class Register extends Credentials {
                 if ($this->sendMail()) {
                     $hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
                     $this->password = $hashedPassword;
+                    setcookie("expiry_time","1minute",time() + 600);
                     header("Location: /Minor_Project/Student_Attendance_System/verify_OTP.php");
                 }
                 else {
@@ -423,6 +424,7 @@ class Login {
         $this->email = $post['email'];
         $this->password = $post['password'];
     }
+    
     public function verify_student($pdo) {
         $sql = "SELECT * FROM `student_registration` WHERE `student_email`='$this->email'";
 

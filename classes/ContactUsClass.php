@@ -68,7 +68,6 @@ class ContactUs extends Credentials
         if($this->sendQuery($name, $phone, $email, $message)){
             $sql = "INSERT INTO `contact_us` (`name`, `phone_number`, `email`, `user_concern`) VALUES ('$name', '$phone', '$email', '$message')";
             $query = $pdo->prepare($sql);
-
             if($query->execute()){
                 return 1;
             }
