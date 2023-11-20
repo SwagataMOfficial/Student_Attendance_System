@@ -22,7 +22,7 @@ if (isset($_POST['sent']) && $_POST['sent'] == "sent") {
 <body>
 	<header>
 		<nav>
-			<a href="/Minor_Project/Student_Attendance_System/" class="nav-logo">Classified.in</a>
+			<a href="/Student_Attendance_System/" class="nav-logo">Classified.in</a>
 			<div class="buttons">
 				<button class="btn" id="loginBtn">Login</button>
 				<button class="btn" id="signUpBtn">Sign Up</button>

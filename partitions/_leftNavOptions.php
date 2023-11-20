@@ -6,7 +6,7 @@
             } else if (isset($_SESSION['teacher_loggedin']) && $_SESSION['teacher_loggedin'] == true) {
                 echo 'href="teacher_home.php"';
             } else {
-                echo 'href=/Minor_Project/Student_Attendance_System/';
+                echo 'href=/Student_Attendance_System/';
             }
             ?> class="links" style="margin-top: 12px;">
             <span class="material-symbols-outlined">

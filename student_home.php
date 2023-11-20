@@ -14,6 +14,10 @@ if (isset($_SESSION['student_loggedin']) && $_SESSION['student_loggedin'] == tru
     // post request handle
     if (isset($_POST["scan"]) && $_POST["scan"] == "scan") {
         $scanResult = $_SESSION['student_obj']->getAttendance($pdo, $_POST);
+        if($scanResult == 2){
+            setcookie('current_time', strtotime('today'), );
+            setcookie('next_scan_time', strtotime('tomorrow'),);
+        }
         $_SESSION['student_obj']->setAttendanceDetails();
         $_SESSION['student_obj']->update_grade_remarks($pdo);
         
@@ -23,7 +27,7 @@ if (isset($_SESSION['student_loggedin']) && $_SESSION['student_loggedin'] == tru
 }
 // if no one has logged in then don't allow anyone to enter the student home page
 else {
-    header("Location: /Minor_Project/Student_Attendance_System/");
+    header("Location: /Student_Attendance_System/");
 }
 
 ?>
@@ -167,7 +171,7 @@ else {
             switch ($scanResult) {
                 case '1':
                     echo "alert('Wrong QR Code is Scanned!');
-                            document.location.href='/Minor_Project/Student_Attendance_System/ScannerSystem.php'";
+                            document.location.href='/Student_Attendance_System/ScannerSystem.php'";
                     break;
                 case '2':
                     echo "alert('Scanning Succesful!');";

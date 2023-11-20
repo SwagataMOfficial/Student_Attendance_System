@@ -8,7 +8,7 @@ session_start();
 // checking if a student or teacher has logged in
 // if not then redirect to index page
 if (!isset($_SESSION['teacher_loggedin']) && !isset($_SESSION['teacher_obj'])) {
-    header("Location: /Minor_Project/Student_Attendance_System/");
+    header("Location: /Student_Attendance_System/");
 }
 
 // getting all the messages
@@ -147,11 +147,11 @@ if (isset($_SESSION['teacher_obj']) && isset($_SESSION['teacher_obj'])) {
         if (isset($sent)) {
             switch ($sent) {
                 case 1:
-                    echo 'window.location.href="/Minor_Project/Student_Attendance_System/teacherMessage.php"';
+                    echo 'window.location.href="/Student_Attendance_System/teacherMessage.php"';
                     break;
                 case -1:
                     echo "alert('Failed to Send Message');
-                        window.location.href='/Minor_Project/Student_Attendance_System/teacherMessage.php'";
+                        window.location.href='/Student_Attendance_System/teacherMessage.php'";
                 default:
                     break;
             }

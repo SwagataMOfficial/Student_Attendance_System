@@ -140,7 +140,7 @@ if (isset($_POST["login"]) && $_POST["login"] == "login") {
                 switch ($verifyResult) {
                     case 1:
                         echo 'alert("You are successfully loggedin! Click ok to continue....");
-                            window.location.href = "/Minor_Project/Student_Attendance_System/student_home.php";';
+                            window.location.href = "/Student_Attendance_System/student_home.php";';
                         break;
                     case 2:
                         echo 'alert("Wrong Password!");';

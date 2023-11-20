@@ -37,14 +37,14 @@
     <!-- <nav class="navbar navbar-expand-lg bg-body-tertiary"> -->
     <nav class="navbar navbar-expand-lg fixed-top" data-bs-theme="dark" style="backdrop-filter: blur(7px); border-bottom: 1px solid cadetblue;">
         <div class="container-fluid">
-            <a class="navbar-brand text-warning" href="/Minor_Project/Student_Attendance_System/">Classified.in</a>
+            <a class="navbar-brand text-warning" href="/Student_Attendance_System/">Classified.in</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item mx-2">
-                        <a class="nav-link text-light" aria-current="page" href="http://localhost/Minor_Project/Student_Attendance_System/">Home</a>
+                        <a class="nav-link text-light" aria-current="page" href="http://localhost/Student_Attendance_System/">Home</a>
                     </li>
                     <li class="nav-item mx-2">
                         <a class="nav-link text-light" href="assets/17_User Manual.pdf" target="_blank">Docs</a>

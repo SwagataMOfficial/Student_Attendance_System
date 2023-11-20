@@ -8,7 +8,7 @@
     }
     // if no one has logged in then don't allow anyone to enter the student home page
     else {
-        header("Location: /Minor_Project/Student_Attendance_System/");
+        header("Location: /Student_Attendance_System/");
     }
 ?>
 
@@ -161,7 +161,7 @@
                     <div class="tab-content">
                         <div class="tab-pane fade active show" id="account-general">
                             <div class="card-body media align-items-center">
-                            <img <?php if(isset($teacher)){echo "src='../profile_pictures/$teacher[profile_picture]'";} ?> alt="teacher-profile-picture" class="d-block ui-w-80">
+                            <img <?php if(isset($teacher)){echo "src='assets/profile_pictures/$teacher[profile_picture]'";} ?> alt="teacher-profile-picture" class="d-block ui-w-80">
                                 <div class="media-body ml-4">
                                     <label class="btn btn-outline-primary">
                                         Upload new photo

@@ -37,7 +37,7 @@ elseif (isset($_SESSION['teacher_register'])) {
     }
 }
 else {
-    header("Location: /Minor_Project/Student_Attendance_System/");
+    header("Location: /Student_Attendance_System/");
 }
 ?>
 
@@ -77,11 +77,11 @@ else {
         <?php
         if (isset($st_registered) && $st_registered) {
             echo 'alert("Registration Successful! Click Ok to Create Your Profile...");
-            window.location.href = "/Minor_Project/Student_Attendance_System/studentProfile.php"; ';
+            window.location.href = "/Student_Attendance_System/studentProfile.php"; ';
         }
         if (isset($t_registered) && $t_registered) {
             echo 'alert("Registration Successful! Click Ok to Create Your Profile...");
-            window.location.href = "/Minor_Project/Student_Attendance_System/teacherProfile.php"; ';
+            window.location.href = "/Student_Attendance_System/teacherProfile.php"; ';
         }
         if (isset($otpNotMatched) && $otpNotMatched) {
             echo 'alert("OTP did not matched! try again....");';
@@ -89,7 +89,7 @@ else {
 
         if (isset($otpExpired) && $otpExpired) {
             echo 'alert("OTP Expired! Register again to get another otp....");
-            window.location.href = "/Minor_Project/Student_Attendance_System/"; ';
+            window.location.href = "/Student_Attendance_System/"; ';
         }
         ?>
     </script>

@@ -34,7 +34,7 @@ if (isset($_SESSION['teacher_loggedin']) && $_SESSION['teacher_loggedin'] == tru
 }
 // if no one has logged in then don't allow anyone to enter the student home page
 else {
-    header("Location: /Minor_Project/Student_Attendance_System/");
+    header("Location: /Student_Attendance_System/");
 }
 ?>
 <!DOCTYPE html>
@@ -46,6 +46,7 @@ else {
     <title>Home Page (Teacher)</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <script>
+        // this part of Js is defining all the colors needed to be painted in the DOM. Dark colors for dark mode and light colors for light mode.
         function darkTheme(){
             document.querySelector(':root').style.setProperty('--clr-nav', '#141824');
             document.querySelector(':root').style.setProperty('--clr-btn-text-logo', '#9fa6bc');
@@ -68,6 +69,7 @@ else {
         }
     </script>
     <script>
+        // setting all the colors according to the user's chosen theme.
         let initializeTheme = () => {
             if (localStorage.getItem('theme') === 'dark') {
                 darkTheme();
@@ -77,6 +79,7 @@ else {
         };
     </script>
     <script>
+        // calling the function that actually sets the colors for the DOM
         initializeTheme();
     </script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
@@ -116,13 +119,16 @@ else {
         </div>
     </div>
     <!-- edit modal structure ends here -->
-
+    
+    <!-- importing the common structure for this page -->
     <?php require("partitions/_headers.php") ?>
     <div class="container">
+        <!-- importing the common structure for this page -->
         <?php require("partitions/_leftNavOptions.php") ?>
         <div class="right-main">
             <div class="welcome-heading">
                 <span class="welcome-text">
+                    <!-- dynamically setting the user name in the welcome section -->
                     <?php
                     if (isset($teacher['name'])) {
                         echo "Welcome <em>'$teacher[name]'</em>";
@@ -181,7 +187,7 @@ else {
                     ';
             }
             ?>
-
+            <!-- this sections displays the top students based on their attendance count for current month -->
             <section class="top-students">
                 <p class="heading-text">Top Students in this Month</p>
                 <div class="students-container">
@@ -199,7 +205,7 @@ else {
                         echo
                         '  <div class="student">
                                     <div class="profile-image">
-                                        <img src="../profile_pictures/' . $picture['profile_picture'] . '" alt="profile image">
+                                        <img src="assets/profile_pictures/' . $picture['profile_picture'] . '" alt="profile image">
                                     </div>
                                     <p class="student-name">' . $top['student_name'] . '</p>
                                     <p class="attendance-count">Attendance Count: <span>' . $top[strtolower(date('F'))] . '</span></p>
@@ -209,6 +215,8 @@ else {
                     ?>
                 </div>
             </section>
+
+            <!-- displaying all the students data in table format using data tables of jquery -->
             <section class="more-students-data" id="more_students_table">
                 <p class="more-data-heading">All Students Data</p>
                 <table id="students_table" class="display">
@@ -240,6 +248,8 @@ else {
                         $getResult = $query1->execute();
                         $serial_no = 1;
                         $month = strtolower(date("F"));
+
+                        // generating the rows using this while loop
                         while ($student_profile = $query1->fetch(PDO::FETCH_ASSOC)) {
 
                             $query2 = $_SESSION['teacher_obj']->getStudentWithID($pdo, $student_profile['student_id']);
@@ -285,6 +295,9 @@ else {
                         ?>
                     </tbody>
                 </table>
+
+                <!-- this form is to delete a student -->
+                <!-- transform: scale(0) means that the element and it's childs will be invisible in the webpage -->
                 <form method="post" style="transform: scale(0);" id="delete_form">
                     <input type="hidden" name="d_id" id="d_id">
                     <input type="hidden" name="d_email" id="d_email">
@@ -292,6 +305,7 @@ else {
             </section>
 
             <!-- set attendance goal section -->
+            <!-- only HOD can get access to these options -->
             <?php
                 if (isset($teacher['hod'])) {
                     echo
@@ -313,6 +327,7 @@ else {
                 }
             ?>
 
+            <!-- only HOD can get access to these options -->
             <?php
             if (isset($teacher['hod'])) {
                 echo
@@ -418,10 +433,12 @@ else {
         </div>
     </div>
 
+    <!-- importing the footer -->
     <?php require("partitions/_footers.php") ?>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
     <script>
+        // generating data table here
         const data = document.getElementById("students_table");
         const search = document.getElementById("search_result");
         $(document).ready(function() {
@@ -434,6 +451,9 @@ else {
     </script>
 
     <script>
+        // writing action buttons and form submit Js
+
+        // getting all the necessary variables initialized
         const edit_buttons = document.querySelectorAll('.table-btn-edit');
         const delete_buttons = document.querySelectorAll('.table-btn-delete');
         const lock_buttons = document.querySelectorAll('.table-btn-lock');
@@ -441,6 +461,7 @@ else {
         const editForm = document.getElementById("edit-form");
         const sem_unlock_btn = document.getElementById('sem_unlock');
 
+        // adding event listener to all the edit buttons
         edit_buttons.forEach(element => {
             element.addEventListener('click', (e) => {
                 document.querySelector(".edit-modal-container").style.position = "fixed";
@@ -467,6 +488,7 @@ else {
             });
         });
 
+        // adding event listener to all the delete buttons
         delete_buttons.forEach(element => {
             element.addEventListener('click', (e) => {
                 if (confirm("Click Ok to confirm")) {
@@ -480,6 +502,7 @@ else {
             });
         });
 
+        // adding event listener to all the lock semester buttons
         lock_buttons.forEach(element => {
             element.addEventListener('click', (e) => {
                 if (confirm("Click Ok to confirm")) {
@@ -492,6 +515,7 @@ else {
             })
         });
 
+        // adding event listener to all the unlock semester buttons
         unlock_buttons.forEach(element => {
             element.addEventListener('click', (e) => {
                 if (confirm("Click Ok to confirm")) {
@@ -504,28 +528,33 @@ else {
             })
         });
 
+        // adding event listener to the semester unlock button
         sem_unlock_btn.addEventListener('click',()=>{
             if(confirm("Are You Sure? Press ok to continue, cancel to back!")){
                 document.getElementById('unlock_sem').submit();
             }
         });
 
+        // adding student record edit modal closing functionality here
         document.getElementById("btn-close").addEventListener("click", () => {
             document.querySelector(".edit-modal-container .edit-modal-wrapper").style.transform = "scale(0)";
             document.querySelector(".edit-modal-container").style.opacity = "0";
             document.querySelector(".edit-modal-container").style.zIndex = "-100";
         });
     </script>
+    <!-- this script is for left navigation collapsing feature -->
     <script src="js/collapse.js"></script>
+    <!-- script to toggle between the themes -->
     <script src="js/t_themeToggle.js"></script>
 
     <script>
+        // alert display scripts with php
         <?php
         if (isset($editing)) {
             switch ($editing) {
                 case 1:
                     echo 'alert("Profile Updated Successfully!");
-                    window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                    window.location.href = "/Student_Attendance_System/teacher_home.php";';
                     break;
                 case 2:
                     echo 'alert("Failed to Edit Student Attendance!");';
@@ -541,25 +570,25 @@ else {
             switch ($deletion) {
                 case 1:
                     echo 'alert("Student Deleted Successfully!");
-                        window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                        window.location.href = "/Student_Attendance_System/teacher_home.php";';
                     break;
                 case 2:
                     echo 'alert("Failed to Delete Student\'s Messages!");
-                        window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                        window.location.href = "/Student_Attendance_System/teacher_home.php";';
                     break;
 
                 case 3:
                     echo 'alert("Failed to Delete Student\'s Profile!");
-                        window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                        window.location.href = "/Student_Attendance_System/teacher_home.php";';
                     break;
 
                 case 4:
                     echo 'alert("Failed to Delete Student\'s Attendance Details!");
-                        window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                        window.location.href = "/Student_Attendance_System/teacher_home.php";';
                     break;
                 case 5:
                     echo 'alert("Failed to Delete Student\'s Registration Details!");
-                        window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                        window.location.href = "/Student_Attendance_System/teacher_home.php";';
                     break;
                 default:
                     break;
@@ -569,11 +598,11 @@ else {
             switch ($goalSetting) {
                 case 1:
                     echo 'alert("Attendance Goal Set Successfully!");
-                window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                window.location.href = "/Student_Attendance_System/teacher_home.php";';
                     break;
                 case -1:
                     echo 'alert("Failed to Set Attendance Goal!");
-                window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                window.location.href = "/Student_Attendance_System/teacher_home.php";';
                     break;
                 default:
                     break;
@@ -584,19 +613,19 @@ else {
             switch ($locking_unlocking) {
                 case 1:
                     echo 'alert("Scanner Locked Successfully!");
-                window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                window.location.href = "/Student_Attendance_System/teacher_home.php";';
                     break;
                 case 2:
                     echo 'alert("Failed to Lock Scanner!");
-                window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                window.location.href = "/Student_Attendance_System/teacher_home.php";';
                     break;
                 case 3:
                     echo 'alert("Scanner Unlocked Successfully!");
-                window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                window.location.href = "/Student_Attendance_System/teacher_home.php";';
                     break;
                 case 4:
                     echo 'alert("Failed to Unlock Scanner!");
-                window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                window.location.href = "/Student_Attendance_System/teacher_home.php";';
                     break;
                 default:
                     break;
@@ -605,11 +634,11 @@ else {
         if(isset($sem_unlocked)){
             switch ($sem_unlocked) {
                 case 1:
-                    echo 'alert("Semester Unlocked Successfully! It will last for 15 days only!");
-                    window.location.href = "/Minor_Project/Student_Attendance_System/teacher_home.php";';
+                    echo 'alert("Semester Unlocked Successfully! It will last for 15 days from the beginning of the month!");
+                    window.location.href = "/Student_Attendance_System/teacher_home.php";';
                     break;
                 case 2:
-                    echo 'alert("Date is over! Contact with Dev-teams");';
+                    echo 'alert("Date is over! Unlock Semester Selection in next month...");';
                     break;
                 case -1:
                     echo 'alert("Failed to Unlock Semester! Try again..");';
@@ -620,6 +649,8 @@ else {
         }
         ?>
     </script>
+
+    <!-- this script is for mobile devices where there will be a hamburger that hides or shows the floating left navigation -->
     <script>
         document.querySelector('.header__navbar .nav__hamburger').addEventListener('click', ()=>{
             console.log('clicked');

@@ -4,6 +4,6 @@
     session_destroy();
     echo '<script>
     alert("Logged out successfully");
-    window.location.replace("/Minor_Project/Student_Attendance_System/");
+    window.location.replace("/Student_Attendance_System/");
     </script>';
 ?>

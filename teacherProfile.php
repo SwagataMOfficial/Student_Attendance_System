@@ -10,7 +10,7 @@ if(isset($_SESSION['teacher_register'])){
     }
 }
 else{
-    header("Location: /Minor_Project/Student_Attendance_System/");
+    header("Location: /Student_Attendance_System/");
 }
 ?>
 
@@ -115,7 +115,7 @@ else{
             switch ($result) {
                 case 1:
                     echo "alert('Profile Successfully Created! Now you can login....');
-                          document.location.href='/Minor_Project/Student_Attendance_System/';";
+                          document.location.href='/Student_Attendance_System/';";
                     break;
                 case 2:
                     echo "alert('Image size too big');

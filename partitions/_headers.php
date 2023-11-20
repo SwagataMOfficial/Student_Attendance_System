@@ -44,10 +44,10 @@
                 <?php
                 if (isset($teacher['profile_picture'])) {
                     $image = $teacher['profile_picture'];
-                    echo '<img src="../profile_pictures/' . $image . '" alt="profile_image">';
+                    echo '<img src="assets/profile_pictures/' . $image . '" alt="profile_image">';
                 } else if (isset($student['profile_picture'])) {
                     $image = $student['profile_picture'];
-                    echo '<img src="../profile_pictures/' . $image . '" alt="profile_image">';
+                    echo '<img src="assets/profile_pictures/' . $image . '" alt="profile_image">';
                 } else {
                     echo '<span class="material-symbols-outlined">account_circle</span>';
                 }

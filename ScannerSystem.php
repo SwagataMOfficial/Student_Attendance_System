@@ -9,7 +9,7 @@ if (isset($_SESSION['student_loggedin']) && $_SESSION['student_loggedin'] == tru
 }
 // if no one has logged in then don't allow anyone to enter the student home page
 else {
-    header("Location: /Minor_Project/Student_Attendance_System/");
+    header("Location: /Student_Attendance_System/");
 }
 ?>
 <html>
@@ -120,7 +120,7 @@ else {
         <?php
         if (isset($student['is_locked']) && $student['is_locked']) {
             echo 'alert("Cannot Scan! Your HOD has locked your scanner!!");
-    document.location.href = "/Minor_Project/Student_Attendance_System/student_home.php";';
+    document.location.href = "/Student_Attendance_System/student_home.php";';
         }
         ?>
         let scanner = new Instascan.Scanner({

@@ -68,7 +68,7 @@ class Student
             // student has registered but never created the profile
             $registration = new Register($this->email);
             $_SESSION['student_register'] = $registration;
-            header("Location: /Minor_Project/Student_Attendance_System/studentProfile.php");
+            header("Location: /Student_Attendance_System/studentProfile.php");
         }
     }
 
