@@ -172,6 +172,15 @@ class Student
         return $this->details;
     }
 
+    public function getStudentData($pdo)
+    {
+        $sql = "SELECT * FROM `student_profile` WHERE `student_id`='". $this->id ."'";
+        $query = $pdo->prepare($sql);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
     public function getAttendance($pdo, $post)
     {
         // checking if correct qr code is scanned or not
@@ -205,8 +214,8 @@ class Student
         $semUpdate = "UPDATE `student_profile` SET `student_semester`='$post[new_sem]' WHERE `student_id`='". $this->id ."';";
         $query = $pdo->prepare($semUpdate);
         if($query->execute()){
-            $resetSemUnlock = "UPDATE `student_attendance` SET `sem_unlocked` = '0' WHERE `student_id` = '". $this->id ."';";
-            $query = $pdo->prepare($semUpdate);
+            $resetSemUnlock = "UPDATE `student_attendance` SET `sem_unlocked` = '0',`attendance_goal`='15',`january`='0',`february`='0',`march`='0',`april`='0',`may`='0',`june`='0',`july`='0',`august`='0',`september`='0',`october`='0',`november`='0',`december`='0' WHERE `student_id` = '". $this->id ."';";
+            $query = $pdo->prepare($resetSemUnlock);
             if($query->execute()){
                 return 1;
             }

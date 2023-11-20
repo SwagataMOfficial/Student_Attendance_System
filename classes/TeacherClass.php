@@ -40,6 +40,15 @@ class Teacher
         return $this->details;
     }
 
+    public function getTeacherData($pdo)
+    {
+        $sql = "SELECT * FROM `teacher_profile` WHERE `teacher_id` ='". $this->id ."'";
+        $query = $pdo->prepare($sql);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
     public function editStudent($pdo, $post){
 
         // profile update query

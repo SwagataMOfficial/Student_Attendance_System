@@ -75,7 +75,7 @@ else {
                 lightTheme();
             }
         };
-        </script>
+    </script>
     <script>
         initializeTheme();
     </script>
