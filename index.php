@@ -4,6 +4,8 @@
     session_start();
     session_destroy();
 
+    date_default_timezone_set('Asia/Kolkata');
+
     if(date('d')>15){
         $unlockSem = "UPDATE `student_attendance` SET `sem_unlocked`='0';";
         $stmt = $pdo->prepare($unlockSem);

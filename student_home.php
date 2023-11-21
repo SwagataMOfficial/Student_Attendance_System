@@ -15,8 +15,11 @@ if (isset($_SESSION['student_loggedin']) && $_SESSION['student_loggedin'] == tru
     if (isset($_POST["scan"]) && $_POST["scan"] == "scan") {
         $scanResult = $_SESSION['student_obj']->getAttendance($pdo, $_POST);
         if($scanResult == 2){
-            setcookie('current_time', strtotime('today'), );
-            setcookie('next_scan_time', strtotime('tomorrow'),);
+            $d1 = date('d-m-Y H:i:s', time());
+            $d2 = date('d-m-Y 6:30:00', time() + 86400);
+            $diff = date_diff(date_create($d2), date_create($d1));
+            $nextScanTime = $diff->d*86400 + $diff->h*3600 + $diff->i*60 + $diff->s;
+            setcookie("scanned", "yes", time() + $nextScanTime);
         }
         $_SESSION['student_obj']->setAttendanceDetails();
         $_SESSION['student_obj']->update_grade_remarks($pdo);

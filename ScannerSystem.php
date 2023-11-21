@@ -12,9 +12,15 @@ else {
     header("Location: /Student_Attendance_System/");
 }
 ?>
-<html>
+
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Scanner</title>
+    <script></script>
     <script type="text/javascript" src="assets/js/adapter.min.js"></script>
     <script type="text/javascript" src="assets/js/vue.min.js"></script>
     <script type="text/javascript" src="assets/js/instascan.min.js"></script>
@@ -120,7 +126,11 @@ else {
         <?php
         if (isset($student['is_locked']) && $student['is_locked']) {
             echo 'alert("Cannot Scan! Your HOD has locked your scanner!!");
-    document.location.href = "/Student_Attendance_System/student_home.php";';
+            document.location.href = "/Student_Attendance_System/student_home.php";';
+        }
+        if(isset($_COOKIE['scanned']) && $_COOKIE['scanned'] == 'yes'){
+            echo 'alert("You have already scanned! You can scan again in next day...");
+            document.location.href = "/Student_Attendance_System/student_home.php";';
         }
         ?>
         let scanner = new Instascan.Scanner({
