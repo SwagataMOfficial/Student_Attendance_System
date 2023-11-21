@@ -44,7 +44,7 @@ else{
             </div>
             <div class="mb-3">
                 <label for="t_phone" class="form-label">Teacher Phone</label>
-                <input type="tel" name="teacher_phone" class="form-control" id="t_phone" aria-describedby="emailHelp" placeholder="Enter Your Phone" required <?php if(isset($_POST["teacherAccount"])){echo "value=$_POST[teacher_phone]";} ?> >
+                <input type="tel" pattern="[0-9]{10}" max="9999999999" name="teacher_phone" class="form-control" id="t_phone" aria-describedby="emailHelp" placeholder="Enter Your Phone Number (10 digits)" required <?php if(isset($_POST["teacherAccount"])){echo "value=$_POST[teacher_phone]";} ?> >
             </div>
             <div class="mb-3">
                 <label for="t_male" class="form-check-label mb-2">Select Your Gender</label><br>

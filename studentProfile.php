@@ -29,12 +29,12 @@ else{
         <h2 class="text-center fw-bold mb-2">Create Your Profile</h2>
         <form method="post" id="account_create" enctype="multipart/form-data">
             <div class="mb-4">
-                <label for="exampleInputEmail1" class="form-label">Student Name</label>
-                <input type="text" name="student_name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Your Name" required <?php if(isset($_POST["createAccount"])){echo "value=$_POST[student_name]";} ?> >
+                <label for="name" class="form-label">Student Name</label>
+                <input type="text" name="student_name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Enter Your Name" required <?php if(isset($_POST["createAccount"])){echo "value=$_POST[student_name]";} ?> >
             </div>
             <div class="mb-4">
-                <label for="exampleInputEmail1" class="form-label">Student Phone</label>
-                <input type="tel" name="student_phone" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Your Phone" required <?php if(isset($_POST["createAccount"])){echo "value=$_POST[student_phone]";} ?> >
+                <label for="phone" class="form-label">Student Phone</label>
+                <input type="tel" pattern="[0-9]{10}" max="9999999999" name="student_phone" class="form-control" id="phone" aria-describedby="emailHelp" placeholder="Enter Your Phone Number (10 digits)" required <?php if(isset($_POST["createAccount"])){echo "value=$_POST[student_phone]";} ?> >
             </div>
             <div class="mb-2">
                 <label class="form-check-label mb-2" for="gender">Select Your Gender</label><br>
